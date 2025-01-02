@@ -17,33 +17,28 @@ class AppPages {
       name: _Paths.home,
       transition: Transition.fadeIn,
       page: () => const HomePage(),
-      bindings: [HomeBinding()],
+      binding: HomeBinding(),
+      middlewares: [AuthMiddleware()],
       children: [
-        GetPage(
-          name: _Paths.homeEmpty,
-          transition: Transition.fadeIn,
-          page: () => const HomeEmpty(),
-        ),
         GetPage(
           name: _Paths.accountManage,
           transition: Transition.fadeIn,
-          page: () => const AccountManage(),
-          middlewares: [AuthMiddleware()],
+          page: () => const AccountManageView(),
+          binding: AccountManageBinding(),
         ),
         GetPage(
           name: _Paths.accountOwner,
           transition: Transition.fadeIn,
-          page: () => const AccountOwner(),
-          middlewares: [AuthMiddleware()],
+          page: () => const AccountOwnerView(),
+          binding: AccountOwnerBinding(),
         ),
       ],
     ),
     GetPage(
       name: _Paths.login,
-      opaque: false,
       transition: Transition.fadeIn,
       page: () => const LoginPage(),
-      bindings: [LoginBinding()],
+      binding: LoginBinding(),
     ),
   ];
 }

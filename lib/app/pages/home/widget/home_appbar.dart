@@ -12,7 +12,7 @@ class HomeAppBar extends StatelessWidget {
   void onTapLogin() {}
 
   Widget buildAppBarContent(BuildContext context) {
-    return AppStorage().token.isEmpty
+    return AppStorage().beanLogin.token.isEmpty
         ? ElevatedButton(onPressed: onTapLogin, child: const Text("登录"))
         : Row(children: [
             CircleAvatar(
@@ -22,7 +22,7 @@ class HomeAppBar extends StatelessWidget {
             const SizedBox(width: 15),
             SizedBox(
               width: 100,
-              child: Text("momo.xyz",
+              child: Text(AppStorage().beanLogin.nickname,
                   style: Theme.of(context).textTheme.bodyLarge),
             ),
           ]);

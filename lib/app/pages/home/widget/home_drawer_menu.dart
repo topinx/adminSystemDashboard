@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/app_delegate.dart';
@@ -45,7 +46,6 @@ class HomeDrawer extends StatelessWidget {
     return ExpansionTile(
       leading: Icon(menu.menuIcon),
       title: Text(menu.menuTxt),
-      onExpansionChanged: (expand) => menu.expand = expand,
       initiallyExpanded: false,
       children: children,
     );
@@ -60,11 +60,13 @@ class HomeDrawer extends StatelessWidget {
         const HomeDrawerLogo(),
         Expanded(
           child: GetBuilder<HomeController>(builder: (ctr) {
-            return ListView.builder(
-              itemCount: ctr.menuList.length,
-              padding: EdgeInsets.zero,
-              itemBuilder: (_, i) => buildExpansionItem(ctr.menuList[i]),
-            );
+            return ctr.isLoadingMenu
+                ? const Center(child: CupertinoActivityIndicator(radius: 6))
+                : ListView.builder(
+                    itemCount: ctr.menuList.length,
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (_, i) => buildExpansionItem(ctr.menuList[i]),
+                  );
           }),
         ),
       ]),

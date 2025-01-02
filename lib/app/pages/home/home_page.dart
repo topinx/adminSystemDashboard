@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/pages.dart';
@@ -41,26 +42,34 @@ class _HomePageState extends State<HomePage> {
     return ret;
   }
 
+  Widget buildMenuPage() {
+    return GetBuilder<HomeController>(builder: (ctr) {
+      return Expanded(
+        child: ctr.isLoadingMenu
+            ? const Center(child: CupertinoActivityIndicator(radius: 6))
+            : GetRouterOutlet(
+                initialRoute: Routes.accountManage,
+                anchorRoute: Routes.home,
+                filterPages: onRouterFilterPages,
+              ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    Widget page = Expanded(
-      child: GetRouterOutlet(
-        initialRoute: Routes.accountManage,
-        anchorRoute: Routes.home,
-        filterPages: onRouterFilterPages,
-      ),
-    );
     return GetRouterOutlet.builder(
       route: Routes.home,
       builder: (context) {
         return Scaffold(
-          backgroundColor: Theme.of(context).secondaryHeaderColor,
-          drawer: const HomeDrawer(),
-          body: Row(children: [
-            const HomeDrawerMenu(),
-            Expanded(child: Column(children: [const HomeAppBar(), page])),
-          ]),
-        );
+            backgroundColor: Theme.of(context).secondaryHeaderColor,
+            drawer: const HomeDrawer(),
+            body: Row(children: [
+              const HomeDrawerMenu(),
+              Expanded(
+                child: Column(children: [const HomeAppBar(), buildMenuPage()]),
+              ),
+            ]));
       },
     );
   }

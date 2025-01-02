@@ -6,7 +6,7 @@ import 'pages.dart';
 class AuthMiddleware extends GetMiddleware {
   @override
   Future<RouteDecoder?> redirectDelegate(RouteDecoder route) async {
-    if (AppStorage().token.isEmpty) {
+    if (AppStorage().beanLogin.token.isEmpty) {
       final newRoute = Routes.LOGIN_THEN(route.pageSettings!.name);
       return RouteDecoder.fromRoute(newRoute);
     }

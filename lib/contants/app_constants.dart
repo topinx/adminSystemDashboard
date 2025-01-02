@@ -4,12 +4,12 @@ class AppConstants {
   /// 环境配置
   ///
   /// 分别为本地 测试 线上
-  static const AppEnv appEnv = AppEnv.onTest;
+  static const AppEnv appEnv = AppEnv.onLocal;
 
   /// http请求的host
   static final Map<AppEnv, String> _httpLink = {
-    AppEnv.onLocal: "http://192.168.101.25:8001",
-    AppEnv.onTest: "http://34.60.28.188:8000",
+    AppEnv.onLocal: "http://192.168.101.25:8090",
+    AppEnv.onTest: "",
     AppEnv.onLine: "",
   };
   static get httpLink => _httpLink[appEnv];

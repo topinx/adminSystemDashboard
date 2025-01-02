@@ -1,11 +1,14 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/app_delegate.dart';
+import 'package:top_back/contants/app_storage.dart';
 import 'package:top_back/contants/theme.dart';
 import 'package:top_back/app/pages.dart';
 
 void main() async {
-  runApp(const App());
+  WidgetsFlutterBinding.ensureInitialized();
+  AppStorage().init().then((_) => runApp(const App()));
 }
 
 class App extends StatefulWidget {
@@ -22,6 +25,8 @@ class _AppState extends State<App> {
       debugShowCheckedModeBanner: false,
       title: 'Top Backstage',
       theme: themeData,
+      builder: BotToastInit(),
+      navigatorObservers: [BotToastNavigatorObserver()],
       themeMode: ThemeMode.light,
       getPages: AppPages.routes,
       routerDelegate: AppDelegate.delegate,
