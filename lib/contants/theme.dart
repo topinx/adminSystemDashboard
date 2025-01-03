@@ -18,13 +18,41 @@ ThemeData themeData = ThemeData.light().copyWith(
   appBarTheme: const AppBarTheme(
     backgroundColor: Color(0xFFFFFFFF),
   ),
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      padding: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+    ),
+  ),
   inputDecorationTheme: InputDecorationTheme(
     floatingLabelBehavior: FloatingLabelBehavior.auto,
-    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+    constraints: const BoxConstraints(maxHeight: 45),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+    hintStyle: const TextStyle(color: Color(0xFFEBEBEB)),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(4),
+      borderSide: const BorderSide(color: Color(0xFFEBEBEB), width: 1),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(4),
+      borderSide: const BorderSide(color: Color(0xFFEBEBEB), width: 1),
+    ),
+    disabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(4),
+      borderSide: const BorderSide(color: Color(0xFFEBEBEB), width: 1),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(4),
+      borderSide: const BorderSide(color: Color(0xFF3871BB), width: 1),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(4),
+      borderSide: const BorderSide(color: Colors.red, width: 1),
+    ),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
     ),
   ),
 );

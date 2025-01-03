@@ -30,24 +30,24 @@ class HomeDrawer extends StatelessWidget {
   const HomeDrawer({super.key});
 
   void onTapMenu(String route) {
-    AppDelegate.delegate.toNamed(route);
+    AppDelegate.delegate.offAllNamed(route);
   }
 
   Widget buildExpansionItem(Menu menu) {
-    List<Widget> children = List.generate(
-      menu.children.length,
-      (i) => ListTile(
-        leading: const SizedBox(),
-        onTap: () => onTapMenu(menu.children[i].menuRoute),
-        title: Text(menu.children[i].menuTxt),
-      ),
-    );
-
     return ExpansionTile(
       leading: Icon(menu.menuIcon),
       title: Text(menu.menuTxt),
       initiallyExpanded: false,
-      children: children,
+      children: List.generate(
+        menu.children.length,
+        (i) {
+          Menu item = menu.children[i];
+          return ListTile(
+              leading: const SizedBox(),
+              onTap: () => onTapMenu(item.menuRoute),
+              title: Text(item.menuTxt));
+        },
+      ),
     );
   }
 
@@ -59,15 +59,18 @@ class HomeDrawer extends StatelessWidget {
       child: Column(children: [
         const HomeDrawerLogo(),
         Expanded(
-          child: GetBuilder<HomeController>(builder: (ctr) {
-            return ctr.isLoadingMenu
-                ? const Center(child: CupertinoActivityIndicator(radius: 6))
-                : ListView.builder(
-                    itemCount: ctr.menuList.length,
-                    padding: EdgeInsets.zero,
-                    itemBuilder: (_, i) => buildExpansionItem(ctr.menuList[i]),
-                  );
-          }),
+          child: GetBuilder<HomeController>(
+              id: "home-menu",
+              builder: (ctr) {
+                return ctr.isLoadingMenu
+                    ? const Center(child: CupertinoActivityIndicator(radius: 6))
+                    : ListView.builder(
+                        itemCount: ctr.menuList.length,
+                        padding: EdgeInsets.zero,
+                        itemBuilder: (_, i) =>
+                            buildExpansionItem(ctr.menuList[i]),
+                      );
+              }),
         ),
       ]),
     );

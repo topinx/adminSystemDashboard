@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/app_delegate.dart';
@@ -25,6 +26,8 @@ class _AppState extends State<App> {
       debugShowCheckedModeBanner: false,
       title: 'Top Backstage',
       theme: themeData,
+      scrollBehavior: const ScrollBehavior()
+          .copyWith(dragDevices: PointerDeviceKind.values.toSet()),
       builder: BotToastInit(),
       navigatorObservers: [BotToastNavigatorObserver()],
       themeMode: ThemeMode.light,

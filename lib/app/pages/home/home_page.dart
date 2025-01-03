@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/pages.dart';
@@ -17,7 +16,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final HomeController ctr = Get.find<HomeController>();
 
-  Iterable<GetPage> onRouterFilterPages(Iterable<GetPage> pageList) {
+  Iterable<GetPage> onRouterFilterPages(
+      Iterable<GetPage> pageList, String initialRoute) {
     var ret = pageList.toList();
     if (ret.isEmpty && ModalRoute.of(context)!.isCurrent) {
       ret.add(context.delegate.matchRoute(Routes.accountManage).route!);
@@ -44,13 +44,17 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildMenuPage() {
     return GetBuilder<HomeController>(builder: (ctr) {
+      String initialRoute = ctr.menuList.isEmpty
+          ? ""
+          : ctr.menuList.first.children.first.menuRoute;
+
       return Expanded(
         child: ctr.isLoadingMenu
-            ? const Center(child: CupertinoActivityIndicator(radius: 6))
+            ? const Center()
             : GetRouterOutlet(
-                initialRoute: Routes.accountManage,
+                initialRoute: initialRoute,
                 anchorRoute: Routes.home,
-                filterPages: onRouterFilterPages,
+                filterPages: (p) => onRouterFilterPages(p, initialRoute),
               ),
       );
     });

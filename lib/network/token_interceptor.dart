@@ -56,7 +56,7 @@ class TokenInterceptor extends QueuedInterceptorsWrapper {
       tokenDio.options.sendTimeout = err.requestOptions.sendTimeout;
       tokenDio.options.connectTimeout = err.requestOptions.connectTimeout;
 
-      int username = 0;
+      int username = AppStorage().beanLogin.userId;
       final response = await tokenDio.get(HttpConstants.refreshToken,
           queryParameters: {'userId': username});
       AppStorage().updateUserToken(response.data["data"]);
