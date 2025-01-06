@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/widgets/dropdown_btn.dart';
 import 'package:top_back/app/widgets/page_indicator.dart';
+import 'package:top_back/app/widgets/responsive_widget.dart';
 
 import 'controller/account_owner_controller.dart';
 import 'widget/account_input_field.dart';
@@ -53,7 +54,9 @@ class _AccountOwnerViewState extends State<AccountOwnerView> {
 
     return LayoutBuilder(builder: (_, constraints) {
       Widget content = SizedBox(
-        width: constraints.maxWidth < 640 ? 640 : constraints.maxWidth,
+        width: constraints.maxWidth < kMobileToTable
+            ? kMobileToTable
+            : constraints.maxWidth,
         child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
           OutlinedButton(
               style: style,

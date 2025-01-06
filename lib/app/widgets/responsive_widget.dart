@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 /// 手机到平板的过度边界
-const mobileToTable = 750;
+const double kMobileToTable = 640;
 
 /// 平板到桌面的过度边界
-const tableToDesktop = 1200;
+const double kTableToDesktop = 1200;
 
 enum ResponsiveType { mobile, table, desktop }
 
@@ -23,9 +23,9 @@ class ResponsiveWidget extends StatelessWidget {
 
         double screenW = media.size.width;
         ResponsiveType type = ResponsiveType.mobile;
-        if (screenW > mobileToTable && screenW <= tableToDesktop) {
+        if (screenW > kMobileToTable && screenW <= kTableToDesktop) {
           type = ResponsiveType.table;
-        } else if (screenW > tableToDesktop) {
+        } else if (screenW > kTableToDesktop) {
           type = ResponsiveType.desktop;
         }
         return builder(type, constraints);

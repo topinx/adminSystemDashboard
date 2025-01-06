@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:top_back/app/widgets/dropdown_btn.dart';
+import 'package:top_back/app/widgets/responsive_widget.dart';
 
 class PageIndicator extends StatefulWidget {
   const PageIndicator({super.key, required this.itemCount});
@@ -119,37 +120,48 @@ class _PageIndicatorState extends State<PageIndicator> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      margin: const EdgeInsets.only(top: 10),
-      height: 40,
-      child: Row(children: [
-        Text("共${widget.itemCount}条"),
-        const Spacer(),
-        DropdownBtn(
-          height: 32,
-          width: 80,
-          onChanged: onPageSizeChanged,
-          init: 0,
-          selectedItemBuilder: (_) => const [
-            Center(child: Text("10条/页", style: TextStyle(fontSize: 12))),
-            Center(child: Text("20条/页", style: TextStyle(fontSize: 12))),
-            Center(child: Text("50条/页", style: TextStyle(fontSize: 12))),
-          ],
-          menuList: const ["10", "20", "50"],
-        ),
-        const SizedBox(width: 2),
-        IndicatorPN(false, curPage != 1, onTapPrevious),
-        ...indicatorList(),
-        IndicatorPN(true, curPage != maxPage, onTapNext),
-        const SizedBox(width: 10),
-        const Text("前往"),
-        const SizedBox(width: 4),
-        buildJumpInput(),
-        const SizedBox(width: 4),
-        const Text("页"),
-      ]),
-    );
+    return LayoutBuilder(builder: (_, constraints) {
+      Widget content = Container(
+        color: Colors.white,
+        margin: const EdgeInsets.only(top: 10),
+        height: 40,
+        width: constraints.maxWidth < kMobileToTable
+            ? kMobileToTable
+            : constraints.maxWidth,
+        child: Row(children: [
+          Text("共${widget.itemCount}条"),
+          const Spacer(),
+          DropdownBtn(
+            height: 32,
+            width: 80,
+            onChanged: onPageSizeChanged,
+            init: 0,
+            selectedItemBuilder: (_) => const [
+              Center(child: Text("10条/页", style: TextStyle(fontSize: 12))),
+              Center(child: Text("20条/页", style: TextStyle(fontSize: 12))),
+              Center(child: Text("50条/页", style: TextStyle(fontSize: 12))),
+            ],
+            menuList: const ["10", "20", "50"],
+          ),
+          const SizedBox(width: 2),
+          IndicatorPN(false, curPage != 1, onTapPrevious),
+          ...indicatorList(),
+          IndicatorPN(true, curPage != maxPage, onTapNext),
+          const SizedBox(width: 10),
+          const Text("前往"),
+          const SizedBox(width: 4),
+          buildJumpInput(),
+          const SizedBox(width: 4),
+          const Text("页"),
+        ]),
+      );
+
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.zero,
+        child: content,
+      );
+    });
   }
 }
 
