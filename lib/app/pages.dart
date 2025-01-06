@@ -16,7 +16,6 @@ class AppPages {
 
   static final routes = [
     GetPage(
-      preventDuplicates: true,
       participatesInRootNavigator: true,
       name: _Paths.home,
       transition: Transition.fadeIn,

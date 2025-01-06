@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:top_back/app/app_delegate.dart';
 import 'package:top_back/app/pages.dart';
 
 import 'controller/home_controller.dart';

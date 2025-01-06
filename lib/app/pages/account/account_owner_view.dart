@@ -93,23 +93,25 @@ class _AccountOwnerViewState extends State<AccountOwnerView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.fromLTRB(30, 30, 30, 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(4),
+    return Material(
+      child: Container(
+        margin: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(30, 30, 30, 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Column(children: [
+          buildInputContent(),
+          const SizedBox(height: 20),
+          buildFilterContent(),
+          const SizedBox(height: 20),
+          buildButtonContent(),
+          const SizedBox(height: 20),
+          const Expanded(child: AccountOwnerTable()),
+          const PageIndicator(itemCount: 400),
+        ]),
       ),
-      child: Column(children: [
-        buildInputContent(),
-        const SizedBox(height: 20),
-        buildFilterContent(),
-        const SizedBox(height: 20),
-        buildButtonContent(),
-        const SizedBox(height: 20),
-        const Expanded(child: AccountOwnerTable()),
-        const PageIndicator(itemCount: 400),
-      ]),
     );
   }
 }

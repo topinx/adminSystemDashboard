@@ -26,7 +26,7 @@ ThemeData themeData = ThemeData.light().copyWith(
   ),
   inputDecorationTheme: InputDecorationTheme(
     floatingLabelBehavior: FloatingLabelBehavior.auto,
-    constraints: const BoxConstraints(maxHeight: 45),
+    constraints: const BoxConstraints(minHeight: 45),
     contentPadding: const EdgeInsets.symmetric(horizontal: 10),
     hintStyle: const TextStyle(color: Color(0xFFEBEBEB)),
     border: OutlineInputBorder(

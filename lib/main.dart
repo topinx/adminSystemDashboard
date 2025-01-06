@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/app_delegate.dart';
 import 'package:top_back/contants/app_storage.dart';
@@ -37,6 +38,13 @@ class _AppState extends State<App> {
         final delegate = Get.rootController.rootDelegate;
         delegate.navigatorObservers?.add(GetObserver(null, Get.routing));
       },
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: const Locale('zh', 'CN'),
+      supportedLocales: const [Locale('en', 'US'), Locale('zh', 'CN')],
     );
   }
 }

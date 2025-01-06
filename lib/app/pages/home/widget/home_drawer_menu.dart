@@ -30,7 +30,7 @@ class HomeDrawer extends StatelessWidget {
   const HomeDrawer({super.key});
 
   void onTapMenu(String route) {
-    AppDelegate.delegate.offAllNamed(route);
+    AppDelegate.delegate.offNamed(route);
   }
 
   Widget buildExpansionItem(Menu menu) {
