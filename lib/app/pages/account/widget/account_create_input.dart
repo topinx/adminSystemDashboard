@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -77,12 +75,12 @@ class AccountCreateAvatar extends StatelessWidget {
             height: 80,
             decoration: BoxDecoration(
               color: const Color(0xFFEBEBEB),
-              image: ctr.userAvatar.isEmpty
+              image: ctr.userAvatar == null
                   ? null
-                  : DecorationImage(image: FileImage(File(ctr.userAvatar))),
+                  : DecorationImage(image: MemoryImage(ctr.userAvatar!)),
             ),
             alignment: Alignment.center,
-            child: ctr.userAvatar.isEmpty ? const Text("点击上传图片") : null,
+            child: ctr.userAvatar == null ? const Text("点击上传图片") : null,
           ),
         );
       }),
@@ -108,12 +106,12 @@ class AccountCreateCover extends StatelessWidget {
             height: 80,
             decoration: BoxDecoration(
               color: const Color(0xFFEBEBEB),
-              image: ctr.userCover.isEmpty
+              image: ctr.userCover == null
                   ? null
-                  : DecorationImage(image: FileImage(File(ctr.userCover))),
+                  : DecorationImage(image: MemoryImage(ctr.userCover!)),
             ),
             alignment: Alignment.center,
-            child: ctr.userCover.isEmpty ? const Text("点击上传图片") : null,
+            child: ctr.userCover == null ? const Text("点击上传图片") : null,
           ),
         );
       }),

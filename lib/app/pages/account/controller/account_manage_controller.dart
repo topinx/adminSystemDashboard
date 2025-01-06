@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AccountManageController extends GetxController {
   TextEditingController inputNick = TextEditingController();
@@ -14,9 +17,11 @@ class AccountManageController extends GetxController {
 
   DateTime? birthday;
 
-  String userAvatar = "";
+  Uint8List? userAvatar;
 
-  String userCover = "";
+  Uint8List? userCover;
+
+  ImagePicker imagePicker = ImagePicker();
 
   @override
   void onClose() {
@@ -69,9 +74,25 @@ class AccountManageController extends GetxController {
 
   void onGenderChanged(int value) => gender = value;
 
-  void onTapAvatar() async {}
+  void onTapAvatar() async {
+    XFile? file = await imagePicker.pickImage(
+        source: ImageSource.camera, maxWidth: 300, maxHeight: 300);
+    if (file == null) return;
+    userAvatar = await file.readAsBytes();
+    update();
+  }
 
-  void onTapCover() async {}
+  void onTapCover() async {
+    XFile? file = await imagePicker.pickImage(
+      source: ImageSource.camera,
+      maxWidth: 600,
+      maxHeight: 800,
+      imageQuality: 80,
+    );
+    if (file == null) return;
+    userCover = await file.readAsBytes();
+    update();
+  }
 
   void onTapBirth(BuildContext context) async {
     DateTime? dateTime = await showDatePicker(

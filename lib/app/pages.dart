@@ -21,7 +21,7 @@ class AppPages {
       transition: Transition.fadeIn,
       page: () => const HomePage(),
       binding: HomeBinding(),
-      // middlewares: [AuthMiddleware()],
+      middlewares: [AuthMiddleware()],
       children: [
         GetPage(
           name: _Paths.accountManage,

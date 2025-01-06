@@ -114,11 +114,11 @@ class HomeController extends GetxController with RequestMixin {
 
   bool isLoadingMenu = false;
 
-  // @override
-  // void onReady() {
-  //   super.onReady();
-  //   requestMenuList();
-  // }
+  @override
+  void onReady() {
+    super.onReady();
+    requestMenuList();
+  }
 
   Future<void> requestMenuList() async {
     await get(HttpConstants.menuList, success: onMenuListSuccess);
