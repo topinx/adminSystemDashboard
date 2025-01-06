@@ -15,12 +15,6 @@ class AccountManageView extends StatefulWidget {
 class _AccountManageViewState extends State<AccountManageView> {
   final AccountManageController ctr = Get.find<AccountManageController>();
 
-  @override
-  void dispose() {
-    super.dispose();
-    print("------------------");
-  }
-
   Widget buildViewContent() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
