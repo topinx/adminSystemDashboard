@@ -1,7 +1,12 @@
+import 'dart:typed_data';
+
+import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:encrypt/encrypt.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/pages.dart';
 import 'package:top_back/contants/app_storage.dart';
+import 'package:top_back/contants/http_constants.dart';
 
 import 'dio_client.dart';
 import 'dio_response.dart';
@@ -85,6 +90,19 @@ mixin RequestMixin {
     );
   }
 
+  Future<String> upload(Uint8List data, String name) async {
+    var source = dio.MultipartFile.fromBytes(data, filename: name);
+
+    String sourceLink = "";
+    await post(
+      HttpConstants.upload,
+      param: dio.FormData.fromMap({"file": source}),
+      success: (d) => sourceLink = d,
+    );
+
+    return sourceLink;
+  }
+
   void _onResponseError(int code, String msg, {DioCallbackE? error}) {
     if (code == DioResponse.codeNeedLogin || code == DioResponse.codeExpired) {
       showToast("登录已过期");
@@ -98,5 +116,19 @@ mixin RequestMixin {
     }
   }
 
-  void showToast(String msg) {}
+  void showToast(String msg) {
+    BotToast.showText(text: msg);
+  }
+
+  final String _publicPem = '''
+-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC90FUsMRCrNH1kjzRTUJdRwUcufXXZ449ePwKke1m/q9KuCtQIe0bTPKrD55MoLU1k8fa9J0dH3tyPE5bB/zm7Oayt8s8LAG5jbukkkABztxK7jCKWB9ObXx0atfZ7yWnthBGI070IW3ojOKSVSlY4xKc8wm2ODuDRawmF6zMoowIDAQAB
+-----END PUBLIC KEY-----
+  ''';
+
+  String encryptPassword(String input) {
+    dynamic parser = RSAKeyParser().parse(_publicPem);
+    final encrypt = Encrypter(RSA(publicKey: parser));
+    return encrypt.encrypt(input).base64;
+  }
 }

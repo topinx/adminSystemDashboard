@@ -10,4 +10,10 @@ class HttpConstants {
 
   /// token刷新
   static const refreshToken = "/adminsystem/user/refreshToken";
+
+  /// 上传
+  static const upload = "/adminsystem/system/file/upload";
+
+  /// 创建应用账号
+  static const createAccount = "/adminsystem/accountManagement/createAccount";
 }

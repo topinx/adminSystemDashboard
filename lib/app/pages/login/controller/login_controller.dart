@@ -1,4 +1,3 @@
-import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/pages.dart';
@@ -14,18 +13,6 @@ class LoginController extends GetxController with RequestMixin {
 
   TextEditingController userIdCtr = TextEditingController();
   TextEditingController passwordCtr = TextEditingController();
-
-  final String _publicPem = '''
------BEGIN PUBLIC KEY-----
-MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC90FUsMRCrNH1kjzRTUJdRwUcufXXZ449ePwKke1m/q9KuCtQIe0bTPKrD55MoLU1k8fa9J0dH3tyPE5bB/zm7Oayt8s8LAG5jbukkkABztxK7jCKWB9ObXx0atfZ7yWnthBGI070IW3ojOKSVSlY4xKc8wm2ODuDRawmF6zMoowIDAQAB
------END PUBLIC KEY-----
-  ''';
-
-  String encryptPassword(String input) {
-    dynamic parser = RSAKeyParser().parse(_publicPem);
-    final encrypt = Encrypter(RSA(publicKey: parser));
-    return encrypt.encrypt(input).base64;
-  }
 
   @override
   void onClose() {
