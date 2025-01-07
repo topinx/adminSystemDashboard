@@ -26,12 +26,12 @@ class AccountInfoImage extends StatelessWidget {
         height: 50,
         color: Colors.transparent,
         alignment: Alignment.centerLeft,
-        child: const Text(":  "),
+        child: const Text(":"),
       ),
       Container(
         width: 200,
         height: 120,
-        margin: const EdgeInsets.only(top: 20),
+        margin: const EdgeInsets.only(top: 20, left: 10),
         decoration: BoxDecoration(color: const Color(0xFFEBEBEB), image: null),
       ),
     ]);

@@ -13,11 +13,20 @@ class AccountInfoController extends GetxController with RequestMixin {
   BeanAccountInfo info = BeanAccountInfo.empty();
   BeanInterCnt cnt = BeanInterCnt.empty();
 
+  bool isEditView = false;
+
   TextEditingController inputNick = TextEditingController();
   TextEditingController inputId = TextEditingController();
+  TextEditingController inputAge = TextEditingController();
+  TextEditingController inputCreate = TextEditingController();
   TextEditingController inputPhone = TextEditingController();
   TextEditingController inputEmail = TextEditingController();
   TextEditingController inputBrief = TextEditingController();
+
+  TextEditingController inputFans = TextEditingController();
+  TextEditingController inputLike = TextEditingController();
+  TextEditingController inputFollow = TextEditingController();
+  TextEditingController inputFriend = TextEditingController();
 
   @override
   void onInit() {
@@ -28,8 +37,8 @@ class AccountInfoController extends GetxController with RequestMixin {
   @override
   void onReady() {
     super.onReady();
-    // requestUserInfo();
-    // requestInteractiveCnt();
+    requestUserInfo();
+    requestInteractiveCnt();
   }
 
   @override
@@ -37,9 +46,20 @@ class AccountInfoController extends GetxController with RequestMixin {
     super.onClose();
     inputNick.dispose();
     inputId.dispose();
+    inputAge.dispose();
+    inputCreate.dispose();
     inputPhone.dispose();
     inputEmail.dispose();
     inputBrief.dispose();
+    inputFans.dispose();
+    inputLike.dispose();
+    inputFollow.dispose();
+    inputFriend.dispose();
+  }
+
+  void onTapEdit() {
+    isEditView = !isEditView;
+    update();
   }
 
   String getUserAge() {
@@ -81,7 +101,14 @@ class AccountInfoController extends GetxController with RequestMixin {
 
   void onUserInfoSuccess(data) {
     info = BeanAccountInfo.fromJson(data);
-    update();
+
+    inputNick.text = info.nickname;
+    inputId.text = "${info.userId}";
+    inputAge.text = getUserAge();
+    inputCreate.text = getUserCreate();
+    inputPhone.text = info.phone;
+    inputEmail.text = info.email;
+    inputBrief.text = info.brief;
   }
 
   Future<void> requestInteractiveCnt() async {
@@ -91,6 +118,10 @@ class AccountInfoController extends GetxController with RequestMixin {
 
   void onInteractiveCnt(data) {
     cnt = BeanInterCnt.fromJson(data);
-    update();
+
+    inputFans.text = "${cnt.fansCnt}";
+    inputLike.text = "${cnt.beLikedCnt}";
+    inputFollow.text = "${cnt.followingCnt}";
+    inputFriend.text = "${cnt.friendCnt}";
   }
 }
