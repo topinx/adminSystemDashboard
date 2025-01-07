@@ -16,4 +16,7 @@ class HttpConstants {
 
   /// 创建应用账号
   static const createAccount = "/adminsystem/accountManagement/createAccount";
+
+  /// 账号列表
+  static const accountList = "/adminsystem/accountManagement/getUserList";
 }

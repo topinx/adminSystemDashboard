@@ -4,9 +4,21 @@ import 'package:top_back/app/widgets/dropdown_btn.dart';
 import 'package:top_back/app/widgets/responsive_widget.dart';
 
 class PageIndicator extends StatefulWidget {
-  const PageIndicator({super.key, required this.itemCount});
+  const PageIndicator({
+    super.key,
+    required this.itemCount,
+    required this.curPage,
+    required this.onTapPage,
+    required this.onSizeChang,
+  });
 
   final int itemCount;
+
+  final int curPage;
+
+  final Function(int) onTapPage;
+
+  final Function(int) onSizeChang;
 
   @override
   State<PageIndicator> createState() => _PageIndicatorState();
@@ -24,6 +36,7 @@ class _PageIndicatorState extends State<PageIndicator> {
     super.initState();
     maxPage = (widget.itemCount / pageSize).ceil();
     maxPage = maxPage == 0 ? 1 : maxPage;
+    curPage = widget.curPage;
     inputCtr.text = "$curPage";
   }
 
@@ -32,6 +45,7 @@ class _PageIndicatorState extends State<PageIndicator> {
     super.didUpdateWidget(oldWidget);
     maxPage = (widget.itemCount / pageSize).ceil();
     maxPage = maxPage == 0 ? 1 : maxPage;
+    curPage = widget.curPage;
   }
 
   @override
@@ -49,6 +63,7 @@ class _PageIndicatorState extends State<PageIndicator> {
     maxPage = maxPage == 0 ? 1 : maxPage;
     inputCtr.text = "$curPage";
     if (mounted) setState(() {});
+    widget.onSizeChang(pageSize);
   }
 
   void onTapPage(int page) {
@@ -56,6 +71,7 @@ class _PageIndicatorState extends State<PageIndicator> {
     curPage = page;
     inputCtr.text = "$curPage";
     if (mounted) setState(() {});
+    widget.onTapPage(curPage);
   }
 
   void onTapNext() {
@@ -80,8 +96,17 @@ class _PageIndicatorState extends State<PageIndicator> {
         onSubmitted: (string) {
           int number = int.tryParse(string) ?? 0;
           if (number == 0) {
-            inputCtr.text = "1";
+            curPage = 1;
+            inputCtr.text = "$curPage";
+            if (mounted) setState(() {});
+            return;
+          } else if (number > maxPage) {
+            curPage = maxPage;
+            inputCtr.text = "$curPage";
+            if (mounted) setState(() {});
+            return;
           }
+          onTapPage(number);
         },
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         textAlign: TextAlign.center,
@@ -118,6 +143,13 @@ class _PageIndicatorState extends State<PageIndicator> {
     ];
   }
 
+  int getPageSizeDropIndex() {
+    if (pageSize == 10) return 0;
+    if (pageSize == 20) return 1;
+    if (pageSize == 50) return 2;
+    return 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (_, constraints) {
@@ -135,7 +167,7 @@ class _PageIndicatorState extends State<PageIndicator> {
             height: 32,
             width: 80,
             onChanged: onPageSizeChanged,
-            init: 0,
+            init: getPageSizeDropIndex(),
             selectedItemBuilder: (_) => const [
               Center(child: Text("10条/页", style: TextStyle(fontSize: 12))),
               Center(child: Text("20条/页", style: TextStyle(fontSize: 12))),
@@ -176,7 +208,7 @@ class IndicatorNum extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color = active ? const Color(0xFF3871BB) : Colors.black;
+    Color color = active ? Colors.black : Colors.black45;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2),

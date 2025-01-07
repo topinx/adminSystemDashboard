@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:top_back/app/widgets/dropdown_btn.dart';
 
 class AccountStatusField extends StatelessWidget {
-  const AccountStatusField(this.text, this.menuList,
+  const AccountStatusField(this.status, this.text, this.menuList,
       {super.key, this.onChanged});
+
+  final int status;
 
   final String text;
 
@@ -17,7 +19,8 @@ class AccountStatusField extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 240),
         child: LayoutBuilder(builder: (_, constraints) {
-          return DropdownBtn(init: 0, menuList: menuList, onChanged: onChanged);
+          return DropdownBtn(
+              init: status, menuList: menuList, onChanged: onChanged);
         }),
       ),
     );

@@ -24,6 +24,16 @@ ThemeData themeData = ThemeData.light().copyWith(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
     ),
   ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+    ),
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+    ),
+  ),
   inputDecorationTheme: InputDecorationTheme(
     floatingLabelBehavior: FloatingLabelBehavior.auto,
     constraints: const BoxConstraints(minHeight: 45),
@@ -48,11 +58,6 @@ ThemeData themeData = ThemeData.light().copyWith(
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(4),
       borderSide: const BorderSide(color: Colors.red, width: 1),
-    ),
-  ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
     ),
   ),
 );
