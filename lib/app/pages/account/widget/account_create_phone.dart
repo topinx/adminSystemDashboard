@@ -40,8 +40,9 @@ class AccountCreatePhone extends StatelessWidget {
       textAlign: TextAlign.end,
     );
 
-    return Row(children: [
-      SizedBox(width: 70, child: textWidget),
+    textWidget = Align(alignment: Alignment.centerRight, child: textWidget);
+    return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      SizedBox(width: 70, height: 45, child: textWidget),
       const SizedBox(width: 5),
       SizedBox(
         width: 240,

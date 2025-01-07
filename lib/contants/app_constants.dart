@@ -21,4 +21,7 @@ class AppConstants {
     AppEnv.onLine: "",
   };
   static get socketLink => _socketLink[appEnv];
+
+  static get imgLink =>
+      httpLink + "/adminsystem/system/file/getSignUrl?objectName=";
 }

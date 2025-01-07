@@ -20,7 +20,16 @@ class HttpConstants {
   /// 账号列表
   static const accountList = "/adminsystem/accountManagement/getUserList";
 
+  /// 账号数
+  static const accountCnt = "/adminsystem/accountManagement/countUser";
+
   /// 批量修改账号状态
   static const modifyStatus =
       "/adminsystem/accountManagement/batchUpdateStatus";
+
+  /// 查询账号详情
+  static const accountInfo = "/adminsystem/accountManagement/getUserDetail";
+
+  /// 查询用户互动数据
+  static const interactiveCnt = "/adminsystem/accountManagement/homePageCnt";
 }

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:top_back/app/widgets/dropdown_btn.dart';
 import 'package:top_back/app/widgets/page_indicator.dart';
 import 'package:top_back/app/widgets/responsive_widget.dart';
+import 'package:top_back/app/widgets/view_container.dart';
 
 import 'controller/account_owner_controller.dart';
 import 'widget/account_input_field.dart';
@@ -47,7 +48,7 @@ class _AccountOwnerViewState extends State<AccountOwnerView> {
               )),
       GetBuilder<AccountOwnerController>(
         id: "user-count",
-        builder: (ctr) => StatusText("共${ctr.accountCnt}用户"),
+        builder: (ctr) => StatusText("共${ctr.accountCnt}个用户"),
       ),
     ]);
   }
@@ -100,34 +101,26 @@ class _AccountOwnerViewState extends State<AccountOwnerView> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Container(
-        margin: const EdgeInsets.all(16),
-        padding: const EdgeInsets.fromLTRB(30, 30, 30, 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: Column(children: [
-          buildInputContent(),
-          const SizedBox(height: 20),
-          buildFilterContent(),
-          const SizedBox(height: 20),
-          buildButtonContent(),
-          const SizedBox(height: 20),
-          const Expanded(child: AccountOwnerTable()),
-          GetBuilder<AccountOwnerController>(
-              id: "check-page",
-              builder: (ctr) {
-                return PageIndicator(
-                  itemCount: ctr.checkAccountCount,
-                  onTapPage: ctr.onTapPage,
-                  curPage: ctr.pageNum,
-                  onSizeChang: ctr.onPageSizeChanged,
-                );
-              }),
-        ]),
-      ),
+    return ViewContainer(
+      child: Column(children: [
+        buildInputContent(),
+        const SizedBox(height: 20),
+        buildFilterContent(),
+        const SizedBox(height: 20),
+        buildButtonContent(),
+        const SizedBox(height: 20),
+        const Expanded(child: AccountOwnerTable()),
+        GetBuilder<AccountOwnerController>(
+            id: "check-page",
+            builder: (ctr) {
+              return PageIndicator(
+                itemCount: ctr.checkCnt,
+                onTapPage: ctr.onTapPage,
+                curPage: ctr.pageNum,
+                onSizeChang: ctr.onPageSizeChanged,
+              );
+            }),
+      ]),
     );
   }
 }

@@ -181,8 +181,13 @@ class AccountManageController extends GetxController with RequestMixin {
     isLoading = true;
     update();
 
-    String birthday =
-        birth == null ? "" : "${birth!.year}-${birth!.month}-${birth!.day}";
+    String birthday = "";
+    if (birth != null) {
+      String year = "${birth!.year}".padLeft(4, "0");
+      String month = "${birth!.month}".padLeft(2, "0");
+      String day = "${birth!.day}".padLeft(2, "0");
+      birthday = "$year-$month-$day";
+    }
 
     String avatarPath = await getUserAvatar();
     String coverPath = await getUserCover();

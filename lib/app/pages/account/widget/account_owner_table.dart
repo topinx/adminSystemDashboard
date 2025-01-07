@@ -10,7 +10,7 @@ class AccountOwnerTable extends StatelessWidget {
 
   TableRow buildTableTitle(AccountOwnerController ctr, int count) {
     bool select = ctr.selectList.isNotEmpty;
-    bool selectAll = ctr.selectList.length == count;
+    bool selectAll = ctr.selectList.length == count && count > 0;
 
     return TableRow(
       decoration: const BoxDecoration(color: Colors.black12),

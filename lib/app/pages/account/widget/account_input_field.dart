@@ -23,8 +23,9 @@ class AccountInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(width: 60, child: Text(text)),
+          SizedBox(width: 60, height: 45, child: Text(text)),
           const SizedBox(width: 5),
           Expanded(child: buildTextField(context)),
           const SizedBox(width: 20),

@@ -13,14 +13,14 @@ class AccountOwnerController extends GetxController with RequestMixin {
   TextEditingController inputPhone = TextEditingController();
   TextEditingController inputEmail = TextEditingController();
 
+  int accountCnt = 0;
+  int checkCnt = 0;
+
   /// 账号状态 0 全部 1 正常使用 2 已停用
   int statusAccount = 0;
 
   /// 认证状态 0 全部 1 普通用户 2 认证博主 3 认证商户
   int statusVerify = 0;
-
-  /// 用户数量
-  int accountCnt = 0;
 
   int pageNum = 1;
 
@@ -33,9 +33,14 @@ class AccountOwnerController extends GetxController with RequestMixin {
   int? checkStatusV; // 1 普通 2 博主 3 商户
 
   List<BeanAccountList> beanList = [];
-  int checkAccountCount = 0;
 
   List<BeanAccountList> selectList = [];
+
+  @override
+  void onReady() {
+    super.onReady();
+    requestCheckCount(all: true);
+  }
 
   @override
   void onClose() {
@@ -139,8 +144,7 @@ class AccountOwnerController extends GetxController with RequestMixin {
   }
 
   void onTapCheck(BeanAccountList bean) {
-    AppDelegate.delegate
-        .toNamed(Routes.accountInfo, arguments: {"userId": bean.userId});
+    AppDelegate.delegate.toNamed(Routes.ACCOUNT_INFO("${bean.userId}"));
   }
 
   void onMultiOperate(int value) {
@@ -158,10 +162,24 @@ class AccountOwnerController extends GetxController with RequestMixin {
     }
   }
 
-  void requestCheckCount() async {
-    checkAccountCount = 1;
-    await Future.delayed(const Duration(seconds: 1));
-    update(["check-page"]);
+  void requestCheckCount({bool all = false}) async {
+    int user = AppStorage().beanLogin.userId;
+    await get(
+      HttpConstants.accountCnt,
+      param: all
+          ? {"userId": user}
+          : {
+              "userId": user,
+              "nickname": checkNick,
+              "phone": checkPhone,
+              "email": checkEmail,
+              "status": checkStatusA,
+              "authenticationStatus": checkStatusV,
+            },
+      success: (data) => all ? accountCnt = data : checkCnt = data,
+    );
+
+    update([all ? "user-count" : "check-page"]);
   }
 
   Future<void> requestAccountList() async {

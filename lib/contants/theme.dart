@@ -22,16 +22,19 @@ ThemeData themeData = ThemeData.light().copyWith(
     style: OutlinedButton.styleFrom(
       padding: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+      textStyle: const TextStyle(color: Colors.black),
     ),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+      textStyle: const TextStyle(color: Colors.black),
     ),
   ),
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+      textStyle: const TextStyle(color: Colors.black),
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(

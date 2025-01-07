@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:top_back/app/widgets/view_container.dart';
 
 import 'controller/account_manage_controller.dart';
 import 'widget/account_create_birth.dart';
@@ -78,18 +79,10 @@ class _AccountManageViewState extends State<AccountManageView> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Container(
-        margin: const EdgeInsets.all(16),
-        padding: const EdgeInsets.fromLTRB(30, 30, 30, 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: SingleChildScrollView(
-          padding: EdgeInsets.zero,
-          child: Form(key: ctr.formKey, child: buildViewContent()),
-        ),
+    return ViewContainer(
+      child: SingleChildScrollView(
+        padding: EdgeInsets.zero,
+        child: Form(key: ctr.formKey, child: buildViewContent()),
       ),
     );
   }
