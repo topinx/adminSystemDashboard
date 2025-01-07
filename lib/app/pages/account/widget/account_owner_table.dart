@@ -8,16 +8,15 @@ import '../controller/account_owner_controller.dart';
 class AccountOwnerTable extends StatelessWidget {
   const AccountOwnerTable({super.key});
 
-  TableRow buildTableTitle(AccountOwnerController ctr) {
-    List tempList = ctr.selectList[ctr.pageNum] ?? [];
-    bool selectAll = tempList.length == ctr.beanList[ctr.pageNum]?.length;
+  TableRow buildTableTitle(AccountOwnerController ctr, int count) {
+    bool select = ctr.selectList.isNotEmpty;
+    bool selectAll = ctr.selectList.length == count;
 
     return TableRow(
       decoration: const BoxDecoration(color: Colors.black12),
       children: [
         TableCell(
-          child:
-              TableSelect(ctr.onTapSelectAll, tempList.isNotEmpty, selectAll),
+          child: TableSelect(ctr.onTapSelectAll, select, selectAll),
         ),
         const TableCell(child: TableText("账号名称", true)),
         const TableCell(child: TableText("手机号", true)),
@@ -30,10 +29,10 @@ class AccountOwnerTable extends StatelessWidget {
   }
 
   TableRow buildTableRow(AccountOwnerController ctr, BeanAccountList bean) {
-    String statusV = ["", "普通用户", "认证博主", "认证商户"][bean.authenticationStatus];
-    String statusA = ["已停用", "正常使用"][bean.authenticationStatus];
+    String status1 = ["", "普通用户", "认证博主", "认证商户"][bean.authenticationStatus];
+    String status2 = ["已停用", "正常使用"][bean.status];
 
-    bool contain = ctr.selectList[ctr.pageNum]?.contains(bean) == true;
+    bool contain = ctr.selectList.contains(bean);
 
     return TableRow(
       children: [
@@ -42,8 +41,8 @@ class AccountOwnerTable extends StatelessWidget {
         TableCell(child: TableText(bean.nickname, false)),
         TableCell(child: TableText(bean.phone, false)),
         TableCell(child: TableText(bean.email, false)),
-        TableCell(child: TableText(statusV, false)),
-        TableCell(child: TableText(statusA, false)),
+        TableCell(child: TableText(status1, false)),
+        TableCell(child: TableText(status2, false)),
         TableCell(child: TableCheckInfo(() => ctr.onTapCheck(bean))),
       ],
     );
@@ -56,7 +55,11 @@ class AccountOwnerTable extends StatelessWidget {
       child: GetBuilder<AccountOwnerController>(
           id: "check-table",
           builder: (ctr) {
-            List<BeanAccountList> tempList = ctr.beanList[ctr.pageNum] ?? [];
+            int start = (ctr.pageNum - 1) * ctr.pageSize;
+            int end = start + ctr.pageSize;
+            end = end > ctr.beanList.length ? ctr.beanList.length : end;
+
+            List<BeanAccountList> tempList = ctr.beanList.sublist(start, end);
             return Table(
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               columnWidths: const {
@@ -76,7 +79,7 @@ class AccountOwnerTable extends StatelessWidget {
                     FixedColumnWidth(80.0), FractionColumnWidth(0.1)),
               },
               children: [
-                buildTableTitle(ctr),
+                buildTableTitle(ctr, tempList.length),
                 ...List.generate(
                     tempList.length, (i) => buildTableRow(ctr, tempList[i]))
               ],

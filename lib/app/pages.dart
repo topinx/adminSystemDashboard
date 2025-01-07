@@ -39,6 +39,13 @@ class AppPages {
         ),
         GetPage(
           maintainState: false,
+          name: _Paths.accountInfo,
+          transition: Transition.rightToLeft,
+          page: () => const AccountInfoView(),
+          binding: AccountInfoBinding(),
+        ),
+        GetPage(
+          maintainState: false,
           name: _Paths.manageNote,
           transition: Transition.rightToLeft,
           page: () => const ManageNoteView(),

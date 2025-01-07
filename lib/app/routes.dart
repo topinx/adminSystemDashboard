@@ -11,6 +11,7 @@ abstract class Routes {
 
   static const accountManage = home + _Paths.accountManage;
   static const accountOwner = home + _Paths.accountOwner;
+  static const accountInfo = home + _Paths.accountInfo;
 
   static const manageNote = home + _Paths.manageNote;
   static const manageTopic = home + _Paths.manageTopic;
@@ -41,6 +42,7 @@ abstract class _Paths {
 
   static const accountManage = '/accountManage';
   static const accountOwner = '/accountOwner';
+  static const accountInfo = '/accountInfo';
 
   static const manageNote = '/manageNote';
   static const manageTopic = '/manageTopic';

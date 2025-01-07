@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:encrypt/encrypt.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/pages.dart';
 import 'package:top_back/contants/app_storage.dart';
@@ -117,7 +118,7 @@ mixin RequestMixin {
   }
 
   void showToast(String msg) {
-    BotToast.showText(text: msg);
+    BotToast.showText(text: msg, align: Alignment.topCenter);
   }
 
   final String _publicPem = '''

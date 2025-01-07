@@ -12,7 +12,7 @@ class TableText extends StatelessWidget {
     return SizedBox(
       height: isTitle ? 60 : 50,
       child: Center(
-        child: Text(text,
+        child: Text(text.isEmpty ? "--" : text,
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis),

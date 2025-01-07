@@ -19,4 +19,8 @@ class HttpConstants {
 
   /// 账号列表
   static const accountList = "/adminsystem/accountManagement/getUserList";
+
+  /// 批量修改账号状态
+  static const modifyStatus =
+      "/adminsystem/accountManagement/batchUpdateStatus";
 }

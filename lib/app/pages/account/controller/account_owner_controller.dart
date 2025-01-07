@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/app_delegate.dart';
@@ -31,10 +32,10 @@ class AccountOwnerController extends GetxController with RequestMixin {
   int? checkStatusA; // 1 正常 0 停用
   int? checkStatusV; // 1 普通 2 博主 3 商户
 
-  Map<int, List<BeanAccountList>> beanList = {};
+  List<BeanAccountList> beanList = [];
   int checkAccountCount = 0;
 
-  Map<int, List<BeanAccountList>> selectList = {};
+  List<BeanAccountList> selectList = [];
 
   @override
   void onClose() {
@@ -116,44 +117,55 @@ class AccountOwnerController extends GetxController with RequestMixin {
   }
 
   void onTapSelect(BeanAccountList bean) {
-    if (!selectList.containsKey(pageNum)) {
-      selectList[pageNum] = [];
-    }
-    if (selectList[pageNum]!.contains(bean)) {
-      selectList[pageNum]!.remove(bean);
+    if (selectList.contains(bean)) {
+      selectList.remove(bean);
     } else {
-      selectList[pageNum]!.add(bean);
+      selectList.add(bean);
     }
     update(["check-table"]);
   }
 
   void onTapSelectAll() {
-    List tempList = selectList[pageNum] ?? [];
-    if (tempList.length == beanList[pageNum]?.length) {
-      selectList.remove(pageNum);
+    int start = (pageNum - 1) * pageSize;
+    int end = start + pageSize;
+    end = end > beanList.length ? beanList.length : end;
+
+    if (selectList.length < end - start) {
+      selectList = beanList.sublist(start, end);
     } else {
-      selectList[pageNum] = beanList[pageNum] ?? [];
+      selectList.clear();
     }
     update(["check-table"]);
   }
 
-  void onTapCheck(BeanAccountList bean) {}
+  void onTapCheck(BeanAccountList bean) {
+    AppDelegate.delegate
+        .toNamed(Routes.accountInfo, arguments: {"userId": bean.userId});
+  }
 
   void onMultiOperate(int value) {
+    if (selectList.isEmpty) {
+      showToast("请先选择用户");
+      return;
+    }
+
     if (value == 0) {
       // 批量启用
+      requestModify(1);
     } else {
       // 批量停用
+      requestModify(0);
     }
   }
 
   void requestCheckCount() async {
-    checkAccountCount = 14;
+    checkAccountCount = 1;
     await Future.delayed(const Duration(seconds: 1));
     update(["check-page"]);
   }
 
   Future<void> requestAccountList() async {
+    BotToast.showLoading();
     int user = AppStorage().beanLogin.userId;
     await get(
       HttpConstants.accountList,
@@ -169,13 +181,43 @@ class AccountOwnerController extends GetxController with RequestMixin {
       },
       success: onAccountList,
     );
+    BotToast.closeAllLoading();
   }
 
   void onAccountList(data) {
     pageNum = data["pageNo"];
+    if (pageNum == 1) {
+      beanList.clear();
+    }
     List tempList = data["list"] ?? [];
-    beanList[pageNum] =
-        tempList.map((x) => BeanAccountList.fromJson(x)).toList();
+    beanList.addAll(tempList.map((x) => BeanAccountList.fromJson(x)).toList());
     update(["check-table"]);
+  }
+
+  Future<void> requestModify(int status) async {
+    BotToast.showLoading();
+    List users = selectList.map((x) => x.userId).toList();
+
+    await post(
+      HttpConstants.modifyStatus,
+      param: {
+        "userIdList": users,
+        "status": status,
+      },
+      success: (data) {
+        for (var user in users) {
+          var bean1 = selectList.firstWhereOrNull((x) => x.userId == user);
+          if (bean1 != null) {
+            bean1.status = status;
+          }
+          var bean2 = beanList.firstWhereOrNull((x) => x.userId == user);
+          if (bean2 != null) {
+            bean2.status = status;
+          }
+        }
+        update(["check-table"]);
+      },
+    );
+    BotToast.closeAllLoading();
   }
 }
