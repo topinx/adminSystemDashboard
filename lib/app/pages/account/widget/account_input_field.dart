@@ -21,11 +21,14 @@ class AccountInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget textWidget =
+        Align(alignment: Alignment.centerRight, child: Text(text));
+
     return Expanded(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(width: 60, height: 45, child: Text(text)),
+          SizedBox(width: 60, height: 45, child: textWidget),
           const SizedBox(width: 5),
           Expanded(child: buildTextField(context)),
           const SizedBox(width: 20),

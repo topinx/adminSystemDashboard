@@ -10,6 +10,7 @@ class AccountInfoBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
+      height: 45,
       color: Colors.transparent,
       child: GetBuilder<AccountInfoController>(builder: (ctr) {
         return Row(children: [
@@ -25,21 +26,21 @@ class AccountInfoBar extends StatelessWidget {
           const Spacer(),
           if (ctr.isEditView) ...[
             OutlinedButton(
-              onPressed: () {},
+              onPressed: ctr.onTapResetAccount,
               style:
                   OutlinedButton.styleFrom(fixedSize: const Size.fromWidth(80)),
               child: const Text("重置信息"),
             ),
             const SizedBox(width: 10),
             OutlinedButton(
-              onPressed: () {},
+              onPressed: ctr.onTapResetPassword,
               style:
                   OutlinedButton.styleFrom(fixedSize: const Size.fromWidth(80)),
               child: const Text("重置密码"),
             ),
             const SizedBox(width: 10),
             OutlinedButton(
-              onPressed: () {},
+              onPressed: ctr.onTapEditConfirm,
               style:
                   OutlinedButton.styleFrom(fixedSize: const Size.fromWidth(80)),
               child: const Text("保存"),

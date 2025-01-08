@@ -82,7 +82,6 @@ class _DropdownBtnState extends State<DropdownBtn> {
           ),
         ),
         dropdownStyleData: DropdownStyleData(
-          maxHeight: 240,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(4),

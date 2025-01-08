@@ -24,9 +24,9 @@ class AccountManageController extends GetxController with RequestMixin {
 
   String phoneCode = "1";
 
-  XFile? userAvatarFile;
+  String fileAvatarName = "";
   Uint8List? userAvatar;
-  XFile? userCoverFile;
+  String fileCoverName = "";
   Uint8List? userCover;
 
   ImagePicker imagePicker = ImagePicker();
@@ -92,9 +92,13 @@ class AccountManageController extends GetxController with RequestMixin {
 
   void onTapAvatar() async {
     XFile? file = await imagePicker.pickImage(
-        source: ImageSource.camera, maxWidth: 300, maxHeight: 300);
+      source: ImageSource.camera,
+      maxWidth: 300,
+      maxHeight: 300,
+      imageQuality: 80,
+    );
     if (file == null) return;
-    userAvatarFile = file;
+    fileAvatarName = file.name;
     userAvatar = await file.readAsBytes();
     update();
   }
@@ -107,7 +111,7 @@ class AccountManageController extends GetxController with RequestMixin {
       imageQuality: 80,
     );
     if (file == null) return;
-    userCoverFile = file;
+    fileCoverName = file.name;
     userCover = await file.readAsBytes();
     update();
   }
@@ -132,7 +136,7 @@ class AccountManageController extends GetxController with RequestMixin {
       showPhoneCode: true,
       countryListTheme: const CountryListThemeData(
         bottomSheetWidth: kMobileToTable,
-        bottomSheetHeight: 400,
+        bottomSheetHeight: 600,
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       onSelect: (Country country) {
@@ -143,18 +147,18 @@ class AccountManageController extends GetxController with RequestMixin {
   }
 
   Future<String> getUserAvatar() async {
-    if (userAvatar == null || userAvatarFile == null) return "";
+    if (userAvatar == null) return "";
 
     String name =
-        "avatar/${DateTime.now().millisecondsSinceEpoch}/${userAvatarFile!.name}";
+        "avatar/${DateTime.now().millisecondsSinceEpoch}/$fileAvatarName";
     return await upload(userAvatar!, name);
   }
 
   Future<String> getUserCover() async {
-    if (userCover == null || userCoverFile == null) return "";
+    if (userCover == null) return "";
 
     String name =
-        "cover/${DateTime.now().millisecondsSinceEpoch}/${userCoverFile!.name}";
+        "cover/${DateTime.now().millisecondsSinceEpoch}/$fileCoverName";
     return await upload(userCover!, name);
   }
 
@@ -169,9 +173,9 @@ class AccountManageController extends GetxController with RequestMixin {
     birth = null;
     phoneCode = "1";
 
-    userAvatarFile = null;
+    fileAvatarName = "";
     userAvatar = null;
-    userCoverFile = null;
+    fileCoverName = "";
     userCover = null;
   }
 

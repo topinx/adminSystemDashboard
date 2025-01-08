@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:typed_data';
+import 'package:dio/dio.dart' as dio;
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,6 +14,8 @@ class AccountInfoController extends GetxController with RequestMixin {
 
   BeanAccountInfo info = BeanAccountInfo.empty();
   BeanInterCnt cnt = BeanInterCnt.empty();
+
+  BeanAccountInfo edit = BeanAccountInfo.empty();
 
   bool isEditView = false;
 
@@ -27,6 +31,14 @@ class AccountInfoController extends GetxController with RequestMixin {
   TextEditingController inputLike = TextEditingController();
   TextEditingController inputFollow = TextEditingController();
   TextEditingController inputFriend = TextEditingController();
+
+  Uint8List? dataAvatar;
+  String nameAvatar = "";
+
+  Uint8List? dataCover;
+  String nameCover = "";
+
+  bool isLoading = false;
 
   @override
   void onInit() {
@@ -57,15 +69,97 @@ class AccountInfoController extends GetxController with RequestMixin {
     inputFriend.dispose();
   }
 
-  void onTapEdit() {
+  void onTapEdit({bool? removeImg = true}) {
     isEditView = !isEditView;
+    if (isEditView) {
+      edit = BeanAccountInfo.fromJson(info.toJson());
+
+      if (removeImg ?? true) {
+        dataAvatar = null;
+        dataCover = null;
+      }
+    } else {
+      inputNick.text = info.nickname;
+      inputId.text = "${info.userId}";
+      inputAge.text = getUserAge(birthday: info.birthday);
+      inputCreate.text = getUserCreate();
+      inputPhone.text = info.phone.replaceFirst(info.areaCode, "");
+      inputEmail.text = info.email;
+      inputBrief.text = info.brief;
+    }
+
     update();
   }
 
-  String getUserAge() {
-    if (info.birthday.isEmpty) return "";
+  void onTapResetAccount() {
+    requestResetAccount();
+  }
 
-    DateTime birthDate = DateTime.parse(info.birthday);
+  void onTapResetPassword() {
+    requestResetPassword();
+  }
+
+  void onTapEditConfirm() async {
+    if (isLoading) return;
+    isLoading = true;
+
+    BeanAccountInfo bean = BeanAccountInfo.fromJson(edit.toJson());
+    bean.nickname = inputNick.text;
+    bean.brief = inputBrief.text;
+    bean.email = inputEmail.text;
+
+    onTapEdit(removeImg: false);
+
+    if (dataAvatar != null) {
+      bean.avatar = await upload(dataAvatar!, nameAvatar);
+    }
+    if (dataCover != null) {
+      bean.bgImg = await upload(dataCover!, nameCover);
+    }
+    dataAvatar = null;
+    dataCover = null;
+    await requestEditAccount(bean);
+
+    isLoading = false;
+  }
+
+  void onGenderChange(int value) {
+    edit.gender = value;
+  }
+
+  void onStatusAChange(int value) {
+    edit.authenticationStatus = value + 1;
+  }
+
+  void onStatusVChange(int value) {
+    edit.status = value;
+  }
+
+  void onBirthChange(String value) {
+    edit.birthday = value;
+    inputAge.text = getUserAge(birthday: edit.birthday);
+  }
+
+  void onCodeChange(String code) {
+    edit.areaCode = code;
+    edit.phone = code + inputPhone.text;
+  }
+
+  void onAvatarChange(String name, Uint8List data) {
+    nameAvatar = name;
+    dataAvatar = data;
+  }
+
+  void onCoverChange(String name, Uint8List data) {
+    nameCover = name;
+    dataCover = data;
+  }
+
+  String getUserAge({String? birthday}) {
+    birthday ??= info.birthday;
+    if (birthday.isEmpty) return "";
+
+    DateTime birthDate = DateTime.parse(birthday);
     DateTime today = DateTime.now();
 
     int age = today.year - birthDate.year;
@@ -101,14 +195,17 @@ class AccountInfoController extends GetxController with RequestMixin {
 
   void onUserInfoSuccess(data) {
     info = BeanAccountInfo.fromJson(data);
+    edit = BeanAccountInfo.fromJson(data);
 
     inputNick.text = info.nickname;
     inputId.text = "${info.userId}";
     inputAge.text = getUserAge();
     inputCreate.text = getUserCreate();
-    inputPhone.text = info.phone;
+    inputPhone.text = info.phone.replaceFirst(info.areaCode, "");
     inputEmail.text = info.email;
     inputBrief.text = info.brief;
+
+    update();
   }
 
   Future<void> requestInteractiveCnt() async {
@@ -123,5 +220,51 @@ class AccountInfoController extends GetxController with RequestMixin {
     inputLike.text = "${cnt.beLikedCnt}";
     inputFollow.text = "${cnt.followingCnt}";
     inputFriend.text = "${cnt.friendCnt}";
+  }
+
+  Future<void> requestEditAccount(BeanAccountInfo bean) async {
+    await post(
+      HttpConstants.editAccount,
+      param: {
+        "userId": bean.userId,
+        "phone": bean.phone,
+        "areaCode": bean.areaCode,
+        "nickname": bean.nickname,
+        "brief": bean.brief,
+        "gender": bean.gender,
+        "birthday": bean.birthday,
+        "bgImg": bean.bgImg,
+        "email": bean.email,
+        "avatar": bean.avatar,
+        "area": bean.area,
+        "status": bean.status,
+        "authenticationStatus": bean.authenticationStatus,
+      },
+      success: (data) {
+        showToast("账号已修改");
+        onUserInfoSuccess(data);
+      },
+    );
+  }
+
+  Future<void> requestResetAccount() async {
+    onTapEdit();
+    await post(
+      HttpConstants.resetAccount,
+      param: dio.FormData.fromMap({"userId": info.userId, "phone": info.phone}),
+      success: (data) {
+        showToast("账号已重置");
+        onUserInfoSuccess(data);
+      },
+    );
+  }
+
+  Future<void> requestResetPassword() async {
+    onTapEdit();
+    await post(
+      HttpConstants.resetPassword,
+      param: dio.FormData.fromMap({"userId": info.userId}),
+      success: (_) => showToast("密码已重置"),
+    );
   }
 }

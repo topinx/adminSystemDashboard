@@ -32,4 +32,13 @@ class HttpConstants {
 
   /// 查询用户互动数据
   static const interactiveCnt = "/adminsystem/accountManagement/homePageCnt";
+
+  /// 编辑用户信息
+  static const editAccount = "/adminsystem/accountManagement/updateInfo";
+
+  /// 重置密码
+  static const resetPassword = "/adminsystem/accountManagement/resetPwd";
+
+  /// 重置用户信息
+  static const resetAccount = "/adminsystem/accountManagement/resetInfo";
 }
