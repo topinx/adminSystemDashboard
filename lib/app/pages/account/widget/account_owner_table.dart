@@ -48,6 +48,15 @@ class AccountOwnerTable extends StatelessWidget {
     );
   }
 
+  Widget title(String string) {
+    return Container(
+      height: 50,
+      width: 200,
+      alignment: Alignment.center,
+      child: Text(string),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -63,20 +72,12 @@ class AccountOwnerTable extends StatelessWidget {
             return Table(
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               columnWidths: const {
-                1: MaxColumnWidth(
-                    FixedColumnWidth(50.0), FractionColumnWidth(0.1)),
-                2: MaxColumnWidth(
-                    FixedColumnWidth(100.0), FractionColumnWidth(0.2)),
-                3: MaxColumnWidth(
-                    FixedColumnWidth(100.0), FractionColumnWidth(0.2)),
-                4: MaxColumnWidth(
-                    FixedColumnWidth(100.0), FractionColumnWidth(0.2)),
-                5: MaxColumnWidth(
-                    FixedColumnWidth(80.0), FractionColumnWidth(0.1)),
-                6: MaxColumnWidth(
-                    FixedColumnWidth(80.0), FractionColumnWidth(0.1)),
-                7: MaxColumnWidth(
-                    FixedColumnWidth(80.0), FractionColumnWidth(0.1)),
+                1: FlexColumnWidth(),
+                2: FlexColumnWidth(),
+                3: FlexColumnWidth(),
+                4: FlexColumnWidth(),
+                5: FlexColumnWidth(),
+                6: FlexColumnWidth(),
               },
               children: [
                 buildTableTitle(ctr, tempList.length),

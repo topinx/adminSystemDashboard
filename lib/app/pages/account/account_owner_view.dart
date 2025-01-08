@@ -79,7 +79,7 @@ class _AccountOwnerViewState extends State<AccountOwnerView> {
               child: const Text("创建账号")),
           const SizedBox(width: 30),
           DropdownBtn(
-              hint: Center(child: Text("批量处理", style: textStyle)),
+              hint: "批量处理",
               width: 100,
               height: 36,
               onChanged: ctr.onMultiOperate,

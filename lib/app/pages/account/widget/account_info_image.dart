@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:top_back/contants/app_constants.dart';
 
 class AccountInfoImage extends StatefulWidget {
   const AccountInfoImage(this.imgType, this.img,
@@ -54,8 +55,9 @@ class _AccountInfoImageState extends State<AccountInfoImage> {
     DecorationImage? decImage;
     if (widget.enable == true && imageData != null) {
       decImage = DecorationImage(image: MemoryImage(imageData!));
-    } else {
-      // decImage = DecorationImage(image: NetworkImage(AppConstants.imgLink + widget.img));
+    } else if (widget.img.isNotEmpty) {
+      decImage = DecorationImage(
+          image: NetworkImage(AppConstants.imgLink + widget.img));
     }
 
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [

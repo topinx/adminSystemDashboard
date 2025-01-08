@@ -144,7 +144,7 @@ class AccountOwnerController extends GetxController with RequestMixin {
   }
 
   void onTapCheck(BeanAccountList bean) {
-    AppDelegate.delegate.toNamed(Routes.ACCOUNT_INFO("${bean.userId}"));
+    Get.toNamed(Routes.ACCOUNT_INFO("${bean.userId}"));
   }
 
   void onMultiOperate(int value) {

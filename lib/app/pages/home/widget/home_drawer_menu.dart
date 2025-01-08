@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:top_back/app/app_delegate.dart';
 import 'package:top_back/app/widgets/responsive_widget.dart';
 
 import '../controller/home_controller.dart';
@@ -30,7 +29,7 @@ class HomeDrawer extends StatelessWidget {
   const HomeDrawer({super.key});
 
   void onTapMenu(String route) {
-    AppDelegate.delegate.offNamed(route);
+    Get.offNamed(route);
   }
 
   Widget buildExpansionItem(Menu menu) {

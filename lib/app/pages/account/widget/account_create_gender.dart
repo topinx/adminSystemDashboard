@@ -11,8 +11,7 @@ class AccountCreateGender extends StatelessWidget {
     return Row(children: [
       const SizedBox(width: 70, child: Text("性别: ", textAlign: TextAlign.end)),
       const SizedBox(width: 5),
-      GetBuilder<AccountManageController>(builder: (ctr){
-
+      GetBuilder<AccountManageController>(builder: (ctr) {
         return DropdownBtn(
           menuList: const ["男", "女"],
           width: 100,
@@ -28,9 +27,8 @@ class AccountCreateGender extends StatelessWidget {
               child: Align(alignment: Alignment.centerLeft, child: Text("女")),
             ),
           ],
-          hint: const Center(child: Text("选择性别")),
+          hint: "选择性别",
         );
-
       }),
     ]);
   }

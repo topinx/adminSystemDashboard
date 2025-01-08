@@ -5,6 +5,8 @@ part of "pages.dart";
 abstract class Routes {
   static const unknown = _Paths.unknown;
   static const login = _Paths.login;
+  static String LOGIN_THEN(String after) =>
+      '$login?then=${Uri.encodeQueryComponent(after)}';
 
   static const home = _Paths.home;
   static const homeEmpty = home + _Paths.homeEmpty;
@@ -12,6 +14,7 @@ abstract class Routes {
   static const accountManage = home + _Paths.accountManage;
   static const accountOwner = home + _Paths.accountOwner;
   static String ACCOUNT_INFO(String userId) => '$home/accountInfo/$userId';
+  static String ACCOUNT_NOTE(String userId) => '$home/accountNote/$userId';
 
   static const manageNote = home + _Paths.manageNote;
   static const manageTopic = home + _Paths.manageTopic;
@@ -28,9 +31,6 @@ abstract class Routes {
   static const reportNote = home + _Paths.reportNote;
 
   Routes._();
-
-  static String LOGIN_THEN(String after) =>
-      '$login?then=${Uri.encodeQueryComponent(after)}';
 }
 
 abstract class _Paths {
@@ -43,6 +43,7 @@ abstract class _Paths {
   static const accountManage = '/accountManage';
   static const accountOwner = '/accountOwner';
   static const accountInfo = '/accountInfo/:userId';
+  static const accountNote = '/accountNote/:userId';
 
   static const manageNote = '/manageNote';
   static const manageTopic = '/manageTopic';

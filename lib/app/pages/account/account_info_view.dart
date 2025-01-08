@@ -7,6 +7,7 @@ import 'controller/account_info_controller.dart';
 import 'widget/account_info_bar.dart';
 import 'widget/account_info_birth.dart';
 import 'widget/account_info_image.dart';
+import 'widget/account_info_note.dart';
 import 'widget/account_info_phone.dart';
 import 'widget/account_info_text.dart';
 
@@ -97,8 +98,9 @@ class _AccountInfoViewState extends State<AccountInfoView> {
           style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
         ),
         const Spacer(),
-        TextButton(onPressed: () {}, child: const Text("查看全部")),
+        TextButton(onPressed: ctr.onTapNote, child: const Text("查看全部")),
       ]),
+      const AccountInfoNote(),
     ];
   }
 

@@ -23,5 +23,5 @@ class AppConstants {
   static get socketLink => _socketLink[appEnv];
 
   static get imgLink =>
-      httpLink + "/adminsystem/system/file/getSignUrl?objectName=";
+      httpLink + "/adminsystem/system/file/download?objectName=";
 }

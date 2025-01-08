@@ -5,6 +5,7 @@ import 'package:dio/dio.dart' as dio;
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:top_back/app/pages.dart';
 import 'package:top_back/bean/bean_account_info.dart';
 import 'package:top_back/bean/bean_inter_cnt.dart';
 import 'package:top_back/contants/http_constants.dart';
@@ -88,6 +89,10 @@ class AccountInfoController extends GetxController with RequestMixin {
     }
 
     update();
+  }
+
+  void onTapNote() {
+    Get.toNamed(Routes.ACCOUNT_NOTE(userId));
   }
 
   void onTapResetAccount() {

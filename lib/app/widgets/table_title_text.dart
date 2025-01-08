@@ -9,14 +9,13 @@ class TableText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: isTitle ? 60 : 50,
-      child: Center(
-        child: Text(text.isEmpty ? "--" : text,
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis),
-      ),
+      alignment: Alignment.center,
+      child: Text(text.isEmpty ? "--" : text,
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis),
     );
   }
 }
@@ -37,7 +36,8 @@ class TableSelect extends StatelessWidget {
         : (active
             ? Icons.indeterminate_check_box
             : Icons.check_box_outline_blank);
-    return Center(
+    return Align(
+      alignment: Alignment.centerLeft,
       child: IconButton(
         onPressed: onTap,
         icon: Icon(icon,
@@ -59,6 +59,31 @@ class TableCheckInfo extends StatelessWidget {
         onPressed: onTap,
         child: const Text("查看详情", style: TextStyle(color: Color(0xFF3871BB))),
       ),
+    );
+  }
+}
+
+class TableNoteOperate extends StatelessWidget {
+  const TableNoteOperate({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: SizedBox(
+          width: 140,
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            TextButton(
+              onPressed: () {},
+              child:
+                  const Text("推荐", style: TextStyle(color: Color(0xFF3871BB))),
+            ),
+            TextButton(
+              onPressed: () {},
+              child:
+                  const Text("违规", style: TextStyle(color: Color(0xFF3871BB))),
+            ),
+          ])),
     );
   }
 }

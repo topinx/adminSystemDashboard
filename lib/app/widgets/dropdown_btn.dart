@@ -13,7 +13,7 @@ class DropdownBtn extends StatefulWidget {
     this.onChanged,
   });
 
-  final Widget? hint;
+  final String? hint;
 
   final double? width;
 
@@ -61,10 +61,16 @@ class _DropdownBtnState extends State<DropdownBtn> {
 
   @override
   Widget build(BuildContext context) {
+    Widget hint = Center(
+      child: Text(
+        widget.hint ?? "",
+        style: const TextStyle(color: Colors.black12, fontSize: 14),
+      ),
+    );
     return DropdownButtonHideUnderline(
       child: DropdownButton2<String>(
         isExpanded: true,
-        hint: widget.hint,
+        hint: widget.hint == null ? null : hint,
         items: List.generate(
           widget.menuList.length,
           (i) => DropdownMenuItem(value: "$i", child: Text(widget.menuList[i])),
