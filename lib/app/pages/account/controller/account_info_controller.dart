@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart' as dio;
 
 import 'package:flutter/material.dart';
@@ -37,8 +38,6 @@ class AccountInfoController extends GetxController with RequestMixin {
 
   Uint8List? dataCover;
   String nameCover = "";
-
-  bool isLoading = false;
 
   @override
   void onInit() {
@@ -100,10 +99,10 @@ class AccountInfoController extends GetxController with RequestMixin {
   }
 
   void onTapEditConfirm() async {
-    if (isLoading) return;
-    isLoading = true;
+    BotToast.showLoading();
 
     BeanAccountInfo bean = BeanAccountInfo.fromJson(edit.toJson());
+    bean.phone = bean.areaCode + inputPhone.text;
     bean.nickname = inputNick.text;
     bean.brief = inputBrief.text;
     bean.email = inputEmail.text;
@@ -120,7 +119,7 @@ class AccountInfoController extends GetxController with RequestMixin {
     dataCover = null;
     await requestEditAccount(bean);
 
-    isLoading = false;
+    BotToast.closeAllLoading();
   }
 
   void onGenderChange(int value) {

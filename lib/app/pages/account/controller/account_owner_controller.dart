@@ -114,7 +114,7 @@ class AccountOwnerController extends GetxController with RequestMixin {
   void onPageSizeChanged(int size) {
     pageSize = size;
     pageNum = 1;
-    if ((pageNum - 1) * pageSize <= beanList.length) {
+    if (pageNum * pageSize <= beanList.length) {
       update(["check-table"]);
     } else {
       requestAccountList();

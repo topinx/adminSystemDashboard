@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -30,8 +31,6 @@ class AccountManageController extends GetxController with RequestMixin {
   Uint8List? userCover;
 
   ImagePicker imagePicker = ImagePicker();
-
-  bool isLoading = false;
 
   @override
   void onClose() {
@@ -181,9 +180,7 @@ class AccountManageController extends GetxController with RequestMixin {
 
   void onTapConfirm() async {
     if (formKey.currentState?.validate() == false) return;
-    if (isLoading) return;
-    isLoading = true;
-    update();
+    BotToast.showLoading();
 
     String birthday = "";
     if (birth != null) {
@@ -218,7 +215,7 @@ class AccountManageController extends GetxController with RequestMixin {
       },
     );
 
-    isLoading = false;
+    BotToast.closeAllLoading();
     update();
   }
 }

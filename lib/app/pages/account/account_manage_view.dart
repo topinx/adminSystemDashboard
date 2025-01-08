@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -26,9 +25,7 @@ class _AccountManageViewState extends State<AccountManageView> {
       return OutlinedButton(
         style: OutlinedButton.styleFrom(fixedSize: const Size.fromWidth(100)),
         onPressed: ctr.onTapConfirm,
-        child: ctr.isLoading
-            ? const CupertinoActivityIndicator(radius: 6)
-            : const Text("确定"),
+        child: const Text("确定"),
       );
     });
   }
