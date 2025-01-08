@@ -13,36 +13,123 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>top_back</title>
-  <link rel="manifest" href="manifest.json">
-  <style>
-    body {
-      margin: 0;
+  <style type="text/css">
+    .preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
-      background-color: #FCFCFC;
+      background: white;
+      z-index: 9999;
+      transition: opacity .65s
     }
-    @media (prefers-color-scheme: dark) {
-      body {
-        background-color: #D1D1D1;
+
+    .preloader-hidden-add {
+      opacity: 1;
+      display: block
+    }
+
+    .preloader-hidden-add-active {
+      opacity: 0
+    }
+
+    .preloader-hidden {
+      display: none
+    }
+
+    .cs-loader {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%
+    }
+
+    .cs-loader-inner {
+      transform: translateY(-50%);
+      top: 50%;
+      position: absolute;
+      width: 100%;
+      color: #EF5138;
+      text-align: center
+    }
+
+    .cs-loader-inner label {
+      font-size: 20px;
+      opacity: 0;
+      display: inline-block
+    }
+
+    @keyframes lol {
+      0% {
+        opacity: 0;
+        transform: translateX(-300px)
+      }
+
+      33% {
+        opacity: 1;
+        transform: translateX(0)
+      }
+
+      66% {
+        opacity: 1;
+        transform: translateX(0)
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateX(300px)
       }
     }
-    #loading-spinner {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+
+    .cs-loader-inner label:nth-child(6) {
+      animation: lol 3s infinite ease-in-out
+    }
+
+    .cs-loader-inner label:nth-child(5) {
+      animation: lol 3s .1s infinite ease-in-out
+    }
+
+    .cs-loader-inner label:nth-child(4) {
+      animation: lol 3s .2s infinite ease-in-out
+    }
+
+    .cs-loader-inner label:nth-child(3) {
+      animation: lol 3s .3s infinite ease-in-out
+    }
+
+    .cs-loader-inner label:nth-child(2) {
+      animation: lol 3s .4s infinite ease-in-out
+    }
+
+    .cs-loader-inner label:nth-child(1) {
+      animation: lol 3s .5s infinite ease-in-out
     }
   </style>
+  <title>top_back</title>
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <div id="loading-spinner">
-    <img src="assets/loading.gif" alt="Loading..." width="100" height="100">
+<div id="app_splash">
+  <div class="preloader">
+    <div class="cs-loader">
+      <div class="cs-loader-inner">
+        <label> ●</label>
+        <label> ●</label>
+        <label> ●</label>
+        <label> ●</label>
+        <label> ●</label>
+        <label> ●</label>
+      </div>
+    </div>
   </div>
+</div>
   <script src="flutter_bootstrap.js" async></script>
   <script>
     window.addEventListener('flutter-first-frame', function () {
-      document.getElementById('loading-spinner').style.display = 'none';
+      document.getElementById("app_splash")?.remove();
     });
   </script>
 </body>

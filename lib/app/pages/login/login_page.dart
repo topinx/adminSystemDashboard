@@ -8,7 +8,7 @@ class LoginPage extends StatelessWidget {
 
   Widget buildLoginCard(BuildContext context) {
     return Card(
-      color: Theme.of(context).cardColor,
+      color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
