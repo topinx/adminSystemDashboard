@@ -2,16 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:top_back/app/widgets/dropdown_btn.dart';
 import 'package:top_back/app/widgets/note_drop_filter.dart';
 
-class ManageNoteFilter extends StatelessWidget {
-  const ManageNoteFilter({super.key});
+class ManageRecordFilter extends StatelessWidget {
+  const ManageRecordFilter({super.key});
 
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle1 = const TextStyle(fontSize: 14);
 
     Widget content = Row(children: [
-      const NoteDropPreferences(),
-      const NoteDropLimit(),
+      const Text("审核人："),
+      SizedBox(
+        width: 120,
+        height: 36,
+        child: TextField(
+          decoration: InputDecoration(
+            hintText: "请输入并查找",
+            hintStyle: textStyle1,
+          ),
+        ),
+      ),
+      const SizedBox(width: 20),
       const NoteDropType(),
       const NoteDropStatus(),
       const NoteDropDate(),
@@ -24,7 +34,7 @@ class ManageNoteFilter extends StatelessWidget {
                 Center(child: Text("批量处理", style: textStyle1)),
                 Center(child: Text("批量处理", style: textStyle1)),
               ],
-          menuList: const ["批量删除", "批量推荐"]),
+          menuList: const ["批量通过", "批量驳回"]),
     ]);
 
     return SizedBox(

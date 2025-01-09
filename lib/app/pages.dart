@@ -81,10 +81,10 @@ class AppPages {
         ),
         GetPage(
           maintainState: false,
-          name: _Paths.manageVerify,
+          name: _Paths.manageRecord,
           transition: Transition.rightToLeft,
-          page: () => const ManageVerifyView(),
-          binding: ManageVerifyBinding(),
+          page: () => const ManageRecordView(),
+          binding: ManageRecordBinding(),
         ),
         GetPage(
           maintainState: false,
@@ -106,6 +106,13 @@ class AppPages {
           transition: Transition.rightToLeft,
           page: () => const PubCreativeView(),
           binding: PubCreativeBinding(),
+        ),
+        GetPage(
+          maintainState: false,
+          name: _Paths.publish,
+          transition: Transition.rightToLeft,
+          page: () => const PublishView(),
+          binding: PublishBinding(),
         ),
         GetPage(
           maintainState: false,

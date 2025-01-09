@@ -56,7 +56,7 @@ class _AccountOwnerViewState extends State<AccountOwnerView> {
     ButtonStyle style =
         OutlinedButton.styleFrom(fixedSize: const Size.fromWidth(100));
 
-    TextStyle textStyle = const TextStyle(fontSize: 14, color: Colors.black12);
+    TextStyle textStyle = const TextStyle(fontSize: 14, color: Colors.black);
 
     Widget content = Row(mainAxisAlignment: MainAxisAlignment.end, children: [
       OutlinedButton(

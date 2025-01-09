@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:top_back/app/widgets/note_drop_filter.dart';
 import 'package:top_back/app/widgets/page_indicator.dart';
 import 'package:top_back/app/widgets/view_container.dart';
 
 import '../account/widget/account_note_input.dart';
-import 'controller/pub_creative_controller.dart';
+import 'widget/manage_record_filter.dart';
+import 'widget/manage_record_table.dart';
 
-class PubCreativeView extends StatefulWidget {
-  const PubCreativeView({super.key});
+class ManageRecordView extends StatefulWidget {
+  const ManageRecordView({super.key});
 
   @override
-  State<PubCreativeView> createState() => _PubCreativeViewState();
+  State<ManageRecordView> createState() => _ManageRecordViewState();
 }
 
-class _PubCreativeViewState extends State<PubCreativeView> {
-  final PubCreativeController ctr = Get.find<PubCreativeController>();
-
+class _ManageRecordViewState extends State<ManageRecordView> {
   @override
   Widget build(BuildContext context) {
     return ViewContainer(
       child: Column(children: [
         const AccountNoteInput(),
         const SizedBox(height: 40),
-        NoteDropPub(onTap: ctr.onTapPublish),
+        const ManageRecordFilter(),
         const SizedBox(height: 20),
+        const Expanded(child: ManageRecordTable()),
         PageIndicator(
             itemCount: 200, onTapPage: (_) {}, curPage: 1, onSizeChang: (_) {})
       ]),

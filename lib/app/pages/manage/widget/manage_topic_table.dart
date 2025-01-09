@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:top_back/app/widgets/table_title_text.dart';
 
-class ManageNoteTable extends StatelessWidget {
-  const ManageNoteTable({super.key});
+class ManageTopicTable extends StatelessWidget {
+  const ManageTopicTable({super.key});
 
   TableRow buildTableTitle() {
     return TableRow(
       decoration: const BoxDecoration(color: Colors.black12),
       children: [
         TableCell(child: TableSelect(() {}, false, false)),
-        const TableCell(child: TableText("笔记", true)),
-        const TableCell(child: TableText("标题内容", true)),
-        const TableCell(child: TableText("审核状态", true)),
-        const TableCell(child: TableText("推荐状态", true)),
-        const TableCell(child: TableText("笔记类型", true)),
-        const TableCell(child: TableText("笔记权限", true)),
-        const TableCell(child: TableText("发布者", true)),
-        const TableCell(child: TableText("发布时间", true)),
+        const TableCell(child: TableText("话题名称", true)),
+        const TableCell(child: TableText("话题封面", true)),
+        const TableCell(child: TableText("话题笔记数", true)),
+        const TableCell(child: TableText("话题状态", true)),
+        const TableCell(child: TableText("关联热搜", true)),
+        const TableCell(child: TableText("创建时间", true)),
+        const TableCell(child: TableText("创建人", true)),
         const TableCell(child: TableText("操作", true)),
       ],
     );
@@ -26,11 +25,10 @@ class ManageNoteTable extends StatelessWidget {
     return TableRow(
       children: [
         TableCell(child: TableSelect(() {}, false, false)),
-        TableCell(child: buildNote()),
+        const TableCell(child: TableText("", false)),
+        TableCell(child: buildCover()),
         const TableCell(child: TableText("", false)),
         const TableCell(child: TableText("", false)),
-        const TableCell(child: TableText("未推荐", false)),
-        const TableCell(child: TableText("图文笔记", false)),
         const TableCell(child: TableText("", false)),
         const TableCell(child: TableText("", false)),
         const TableCell(child: TableText("2020-01-01", false)),
@@ -40,27 +38,15 @@ class ManageNoteTable extends StatelessWidget {
   }
 
   Widget buildOperate() {
-    // 通过 驳回 删除 推荐 取消推荐
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SizedBox(
-          width: 140,
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            TextButton(
-              onPressed: () {},
-              child:
-                  const Text("推荐", style: TextStyle(color: Color(0xFF3871BB))),
-            ),
-            TextButton(
-              onPressed: () {},
-              child:
-                  const Text("删除", style: TextStyle(color: Color(0xFF3871BB))),
-            ),
-          ])),
+    return Center(
+      child: TextButton(
+        onPressed: () {},
+        child: const Text("编辑", style: TextStyle(color: Color(0xFF3871BB))),
+      ),
     );
   }
 
-  Widget buildNote() {
+  Widget buildCover() {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(5),
@@ -84,7 +70,6 @@ class ManageNoteTable extends StatelessWidget {
           6: FlexColumnWidth(),
           7: FlexColumnWidth(),
           8: FlexColumnWidth(),
-          9: FlexColumnWidth(),
         },
         children: [
           buildTableTitle(),

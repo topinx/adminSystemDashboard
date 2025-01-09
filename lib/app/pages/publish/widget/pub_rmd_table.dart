@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:top_back/app/widgets/table_title_text.dart';
 
-class ManageNoteTable extends StatelessWidget {
-  const ManageNoteTable({super.key});
+class PubRmdTable extends StatelessWidget {
+  const PubRmdTable({super.key});
 
   TableRow buildTableTitle() {
     return TableRow(
@@ -14,7 +14,6 @@ class ManageNoteTable extends StatelessWidget {
         const TableCell(child: TableText("审核状态", true)),
         const TableCell(child: TableText("推荐状态", true)),
         const TableCell(child: TableText("笔记类型", true)),
-        const TableCell(child: TableText("笔记权限", true)),
         const TableCell(child: TableText("发布者", true)),
         const TableCell(child: TableText("发布时间", true)),
         const TableCell(child: TableText("操作", true)),
@@ -27,7 +26,6 @@ class ManageNoteTable extends StatelessWidget {
       children: [
         TableCell(child: TableSelect(() {}, false, false)),
         TableCell(child: buildNote()),
-        const TableCell(child: TableText("", false)),
         const TableCell(child: TableText("", false)),
         const TableCell(child: TableText("未推荐", false)),
         const TableCell(child: TableText("图文笔记", false)),
@@ -82,7 +80,6 @@ class ManageNoteTable extends StatelessWidget {
           4: FlexColumnWidth(),
           5: FlexColumnWidth(),
           6: FlexColumnWidth(),
-          7: FlexColumnWidth(),
           8: FlexColumnWidth(),
           9: FlexColumnWidth(),
         },

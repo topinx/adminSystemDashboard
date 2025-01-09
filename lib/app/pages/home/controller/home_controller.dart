@@ -49,9 +49,9 @@ class HomeController extends GetxController with RequestMixin {
       ..menuRoute = Routes.manageClassify,
     9: Menu()
       ..menuIcon = Icons.add
-      ..menuTxt = "笔记审核"
+      ..menuTxt = "审核记录"
       ..menuId = 9
-      ..menuRoute = Routes.manageVerify,
+      ..menuRoute = Routes.manageRecord,
     10: Menu()
       ..menuIcon = Icons.search
       ..menuTxt = "搜索管理"

@@ -20,12 +20,13 @@ abstract class Routes {
   static const manageTopic = home + _Paths.manageTopic;
   static const manageEmoji = home + _Paths.manageEmoji;
   static const manageClassify = home + _Paths.manageClassify;
-  static const manageVerify = home + _Paths.manageVerify;
+  static const manageRecord = home + _Paths.manageRecord;
 
   static const searchManage = home + _Paths.searchManage;
 
   static const pubRecommend = home + _Paths.pubRecommend;
   static const pubCreative = home + _Paths.pubCreative;
+  static String PUBLISH(int id, int type) => '$home/publish/$id/$type';
 
   static const reportUser = home + _Paths.reportUser;
   static const reportNote = home + _Paths.reportNote;
@@ -49,12 +50,13 @@ abstract class _Paths {
   static const manageTopic = '/manageTopic';
   static const manageEmoji = '/manageEmoji';
   static const manageClassify = '/manageClassify';
-  static const manageVerify = '/manageVerify';
+  static const manageRecord = '/manageRecord';
 
   static const searchManage = "/searchManage";
 
   static const pubRecommend = "/pubRecommend";
   static const pubCreative = "/pubCreative";
+  static const publish = "/publish/:id/:type";
 
   static const reportUser = "/reportUser";
   static const reportNote = "/reportNote";

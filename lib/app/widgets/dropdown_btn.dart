@@ -64,7 +64,7 @@ class _DropdownBtnState extends State<DropdownBtn> {
     Widget hint = Center(
       child: Text(
         widget.hint ?? "",
-        style: const TextStyle(color: Colors.black12, fontSize: 14),
+        style: const TextStyle(color: Colors.black, fontSize: 14),
       ),
     );
     return DropdownButtonHideUnderline(

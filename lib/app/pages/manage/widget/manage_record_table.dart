@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:top_back/app/widgets/table_title_text.dart';
 
-class ManageNoteTable extends StatelessWidget {
-  const ManageNoteTable({super.key});
+class ManageRecordTable extends StatelessWidget {
+  const ManageRecordTable({super.key});
 
   TableRow buildTableTitle() {
     return TableRow(
@@ -13,8 +13,9 @@ class ManageNoteTable extends StatelessWidget {
         const TableCell(child: TableText("标题内容", true)),
         const TableCell(child: TableText("审核状态", true)),
         const TableCell(child: TableText("推荐状态", true)),
+        const TableCell(child: TableText("审核人", true)),
         const TableCell(child: TableText("笔记类型", true)),
-        const TableCell(child: TableText("笔记权限", true)),
+        const TableCell(child: TableText("笔记分类", true)),
         const TableCell(child: TableText("发布者", true)),
         const TableCell(child: TableText("发布时间", true)),
         const TableCell(child: TableText("操作", true)),
@@ -29,8 +30,9 @@ class ManageNoteTable extends StatelessWidget {
         TableCell(child: buildNote()),
         const TableCell(child: TableText("", false)),
         const TableCell(child: TableText("", false)),
-        const TableCell(child: TableText("未推荐", false)),
-        const TableCell(child: TableText("图文笔记", false)),
+        const TableCell(child: TableText("", false)),
+        const TableCell(child: TableText("", false)),
+        const TableCell(child: TableText("", false)),
         const TableCell(child: TableText("", false)),
         const TableCell(child: TableText("", false)),
         const TableCell(child: TableText("2020-01-01", false)),
@@ -40,7 +42,6 @@ class ManageNoteTable extends StatelessWidget {
   }
 
   Widget buildOperate() {
-    // 通过 驳回 删除 推荐 取消推荐
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: SizedBox(
@@ -49,12 +50,12 @@ class ManageNoteTable extends StatelessWidget {
             TextButton(
               onPressed: () {},
               child:
-                  const Text("推荐", style: TextStyle(color: Color(0xFF3871BB))),
+                  const Text("通过", style: TextStyle(color: Color(0xFF3871BB))),
             ),
             TextButton(
               onPressed: () {},
               child:
-                  const Text("删除", style: TextStyle(color: Color(0xFF3871BB))),
+                  const Text("驳回", style: TextStyle(color: Color(0xFF3871BB))),
             ),
           ])),
     );
@@ -85,6 +86,7 @@ class ManageNoteTable extends StatelessWidget {
           7: FlexColumnWidth(),
           8: FlexColumnWidth(),
           9: FlexColumnWidth(),
+          10: FlexColumnWidth(),
         },
         children: [
           buildTableTitle(),

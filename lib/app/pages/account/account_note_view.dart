@@ -16,7 +16,6 @@ class AccountNoteView extends StatefulWidget {
 
 class _AccountNoteViewState extends State<AccountNoteView> {
   Widget buildButtonContent() {
-    TextStyle textStyle1 = const TextStyle(fontSize: 14, color: Colors.black12);
     TextStyle textStyle2 = const TextStyle(fontSize: 14);
 
     return Row(mainAxisAlignment: MainAxisAlignment.end, children: [
@@ -26,20 +25,22 @@ class _AccountNoteViewState extends State<AccountNoteView> {
           init: 0,
           selectedItemBuilder: (_) => [
                 Center(child: Text("全部", style: textStyle2)),
+                Center(child: Text("未审核", style: textStyle2)),
+                Center(child: Text("已审核", style: textStyle2)),
                 Center(child: Text("未推荐", style: textStyle2)),
                 Center(child: Text("已推荐", style: textStyle2)),
               ],
           onChanged: (_) {},
-          menuList: const ["全部", "未推荐", "已推荐"]),
+          menuList: const ["全部", "未审核", "已审核", "未推荐", "已推荐"]),
       const SizedBox(width: 30),
       DropdownBtn(
           hint: "批量处理",
           width: 100,
           height: 36,
           selectedItemBuilder: (_) => [
-                Center(child: Text("批量处理", style: textStyle1)),
-                Center(child: Text("批量处理", style: textStyle1)),
-                Center(child: Text("批量处理", style: textStyle1)),
+                Center(child: Text("批量处理", style: textStyle2)),
+                Center(child: Text("批量处理", style: textStyle2)),
+                Center(child: Text("批量处理", style: textStyle2)),
               ],
           onChanged: (_) {},
           menuList: const ["推荐", "取消推荐", "删除"]),

@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:top_back/app/widgets/dropdown_btn.dart';
 import 'package:top_back/app/widgets/note_drop_filter.dart';
 
-class ManageNoteFilter extends StatelessWidget {
-  const ManageNoteFilter({super.key});
+class PubRmdFilter extends StatelessWidget {
+  const PubRmdFilter({super.key});
 
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle1 = const TextStyle(fontSize: 14);
 
     Widget content = Row(children: [
-      const NoteDropPreferences(),
-      const NoteDropLimit(),
+      const NoteDropUser(),
       const NoteDropType(),
       const NoteDropStatus(),
       const NoteDropDate(),
