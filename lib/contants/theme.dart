@@ -39,7 +39,7 @@ ThemeData themeData = ThemeData.light().copyWith(
   ),
   inputDecorationTheme: InputDecorationTheme(
     floatingLabelBehavior: FloatingLabelBehavior.auto,
-    constraints: const BoxConstraints(minHeight: 45),
+    constraints: const BoxConstraints(minHeight: 25),
     contentPadding: const EdgeInsets.symmetric(horizontal: 10),
     hintStyle: const TextStyle(color: Color(0xFFEBEBEB)),
     border: OutlineInputBorder(
@@ -62,5 +62,8 @@ ThemeData themeData = ThemeData.light().copyWith(
       borderRadius: BorderRadius.circular(4),
       borderSide: const BorderSide(color: Colors.red, width: 1),
     ),
+  ),
+  bottomSheetTheme: const BottomSheetThemeData(
+    constraints: BoxConstraints(maxWidth: double.infinity),
   ),
 );

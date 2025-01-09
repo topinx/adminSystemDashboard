@@ -1,6 +1,7 @@
+import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
 
-class AccountInfoBirth extends StatefulWidget {
+class AccountInfoBirth extends StatelessWidget {
   const AccountInfoBirth(this.text2,
       {super.key, this.enable, required this.onChange});
 
@@ -10,66 +11,38 @@ class AccountInfoBirth extends StatefulWidget {
 
   final Function(String) onChange;
 
-  @override
-  State<AccountInfoBirth> createState() => _AccountInfoBirthState();
-}
-
-class _AccountInfoBirthState extends State<AccountInfoBirth> {
-  String text = "";
-
-  @override
-  void initState() {
-    super.initState();
-    text = widget.text2;
-  }
-
-  @override
-  void didUpdateWidget(covariant AccountInfoBirth oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    text = widget.text2;
-  }
-
-  void onTapDrop(BuildContext context) async {
-    if (widget.enable != true) return;
-
-    DateTime? birth = text.isEmpty ? null : DateTime.parse(text);
-    DateTime? dateTime = await showDatePicker(
-      context: context,
-      initialEntryMode: DatePickerEntryMode.calendarOnly,
-      initialDatePickerMode: DatePickerMode.year,
-      initialDate: birth,
-      firstDate: DateTime(1790, 1, 1),
-      lastDate: DateTime.now(),
-    );
-    if (dateTime == null) return;
-    String year = "${dateTime.year}".padLeft(4, "0");
-    String month = "${dateTime.month}".padLeft(2, "0");
-    String day = "${dateTime.day}".padLeft(2, "0");
-    text = "$year-$month-$day";
-    if (mounted) setState(() {});
-    widget.onChange(text);
-  }
-
   Widget buildBirthDrop(BuildContext context) {
-    Border border = Border.all(
-        color: widget.enable == true
-            ? const Color(0xFFEBEBEB)
-            : Colors.transparent,
-        width: 1);
-
-    Widget child = Container(
+    return SizedBox(
       height: 25,
       width: 240,
-      padding: const EdgeInsets.only(left: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        border: border,
+      child: BoardDateTimeInputField(
+        enabled: enable,
+        key: UniqueKey(),
+        textStyle: const TextStyle(color: Colors.black, fontSize: 14),
+        decoration: const InputDecoration(
+          disabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.transparent),
+          ),
+        ),
+        pickerType: DateTimePickerType.date,
+        options: const BoardDateTimeOptions(
+          inputable: false,
+          backgroundColor: Color(0xFFF5F5F5),
+          foregroundColor: Colors.white,
+        ),
+        delimiter: "-",
+        initialDate: text2.isEmpty ? null : DateTime.parse(text2),
+        maximumDate: DateTime.now(),
+        minimumDate: DateTime(1900, 1, 1),
+        onResult: (BoardDateResult date) {
+          String year = "${date.year}".padLeft(4, "0");
+          String month = "${date.month}".padLeft(2, "0");
+          String day = "${date.day}".padLeft(2, "0");
+          onChange("$year-$month-$day");
+        },
+        onChanged: (DateTime date) {},
       ),
-      child:
-          Text(text, style: const TextStyle(color: Colors.black, fontSize: 14)),
     );
-
-    return GestureDetector(onTap: () => onTapDrop(context), child: child);
   }
 
   @override

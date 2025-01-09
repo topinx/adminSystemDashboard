@@ -115,20 +115,6 @@ class AccountManageController extends GetxController with RequestMixin {
     update();
   }
 
-  void onTapBirth(BuildContext context) async {
-    DateTime? dateTime = await showDatePicker(
-      context: context,
-      initialEntryMode: DatePickerEntryMode.calendarOnly,
-      initialDatePickerMode: DatePickerMode.year,
-      initialDate: birth,
-      firstDate: DateTime(1790, 1, 1),
-      lastDate: DateTime.now(),
-    );
-    if (dateTime == null) return;
-    birth = dateTime;
-    update();
-  }
-
   void onTapAreaCode(BuildContext context) async {
     showCountryPicker(
       context: context,

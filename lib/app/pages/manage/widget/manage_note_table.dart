@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:top_back/app/widgets/table_title_text.dart';
 
-class AccountNoteTable extends StatelessWidget {
-  const AccountNoteTable({super.key});
+class ManageNoteTable extends StatelessWidget {
+  const ManageNoteTable({super.key});
 
   TableRow buildTableTitle() {
     return TableRow(
@@ -12,9 +12,9 @@ class AccountNoteTable extends StatelessWidget {
         const TableCell(child: TableText("笔记", true)),
         const TableCell(child: TableText("标题内容", true)),
         const TableCell(child: TableText("推荐状态", true)),
-        const TableCell(child: TableText("阅读量", true)),
-        const TableCell(child: TableText("点赞量", true)),
-        const TableCell(child: TableText("评论量", true)),
+        const TableCell(child: TableText("笔记类型", true)),
+        const TableCell(child: TableText("笔记分类", true)),
+        const TableCell(child: TableText("发布者", true)),
         const TableCell(child: TableText("发布时间", true)),
         const TableCell(child: TableText("操作", true)),
       ],
@@ -28,9 +28,9 @@ class AccountNoteTable extends StatelessWidget {
         TableCell(child: buildNote()),
         const TableCell(child: TableText("", false)),
         const TableCell(child: TableText("未推荐", false)),
-        const TableCell(child: TableText("100", false)),
-        const TableCell(child: TableText("100", false)),
-        const TableCell(child: TableText("100", false)),
+        const TableCell(child: TableText("图文笔记", false)),
+        const TableCell(child: TableText("", false)),
+        const TableCell(child: TableText("", false)),
         const TableCell(child: TableText("2020-01-01", false)),
         TableCell(child: buildOperate()),
       ],
@@ -51,7 +51,7 @@ class AccountNoteTable extends StatelessWidget {
             TextButton(
               onPressed: () {},
               child:
-                  const Text("违规", style: TextStyle(color: Color(0xFF3871BB))),
+                  const Text("删除", style: TextStyle(color: Color(0xFF3871BB))),
             ),
           ])),
     );
@@ -77,7 +77,7 @@ class AccountNoteTable extends StatelessWidget {
           2: FlexColumnWidth(1.5),
           3: FlexColumnWidth(),
           4: FlexColumnWidth(),
-          5: FlexColumnWidth(),
+          5: FlexColumnWidth(1.5),
           6: FlexColumnWidth(),
           7: FlexColumnWidth(),
           8: FlexColumnWidth(),

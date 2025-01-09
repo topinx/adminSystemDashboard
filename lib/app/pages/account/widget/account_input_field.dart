@@ -22,7 +22,7 @@ class AccountInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget textWidget =
-        Align(alignment: Alignment.centerRight, child: Text(text));
+        Align(alignment: Alignment.centerLeft, child: Text(text));
 
     return Expanded(
       child: Row(

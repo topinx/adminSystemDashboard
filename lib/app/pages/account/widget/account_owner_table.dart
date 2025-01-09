@@ -43,8 +43,17 @@ class AccountOwnerTable extends StatelessWidget {
         TableCell(child: TableText(bean.email, false)),
         TableCell(child: TableText(status1, false)),
         TableCell(child: TableText(status2, false)),
-        TableCell(child: TableCheckInfo(() => ctr.onTapCheck(bean))),
+        TableCell(child: buildCheckButton(() => ctr.onTapCheck(bean))),
       ],
+    );
+  }
+
+  Widget buildCheckButton(Function() onTap) {
+    return Center(
+      child: TextButton(
+        onPressed: onTap,
+        child: const Text("查看详情", style: TextStyle(color: Color(0xFF3871BB))),
+      ),
     );
   }
 

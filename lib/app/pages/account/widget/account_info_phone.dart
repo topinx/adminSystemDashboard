@@ -1,6 +1,5 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:top_back/app/widgets/responsive_widget.dart';
 
 class AccountInfoPhone extends StatefulWidget {
   const AccountInfoPhone(
@@ -42,7 +41,7 @@ class _AccountInfoPhoneState extends State<AccountInfoPhone> {
       context: context,
       showPhoneCode: true,
       countryListTheme: const CountryListThemeData(
-        bottomSheetWidth: kMobileToTable,
+        bottomSheetWidth: double.infinity,
         bottomSheetHeight: 600,
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),

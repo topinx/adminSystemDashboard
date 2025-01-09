@@ -1,3 +1,4 @@
+import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,23 +14,25 @@ class AccountCreateBirth extends StatelessWidget {
           width: 70, child: Text("出生日期: ", textAlign: TextAlign.end)),
       const SizedBox(width: 5),
       GetBuilder<AccountManageController>(builder: (ctr) {
-        return GestureDetector(
-          onTap: () => ctr.onTapBirth(context),
-          child: Container(
-            height: 45,
-            width: 240,
-            alignment: Alignment.centerLeft,
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(color: const Color(0xFFEBEBEB), width: 1),
+        return SizedBox(
+          width: 240,
+          height: 45,
+          child: BoardDateTimeInputField(
+            key: UniqueKey(),
+            decoration: const InputDecoration(hintText: "请选择"),
+            pickerType: DateTimePickerType.date,
+            options: const BoardDateTimeOptions(
+              inputable: false,
+              backgroundColor: Color(0xFFF5F5F5),
+              foregroundColor: Colors.white,
             ),
-            padding: const EdgeInsets.only(left: 10),
-            child: ctr.birth == null
-                ? Text("请选择",
-                    style: Theme.of(context).inputDecorationTheme.hintStyle)
-                : Text(
-                    "${ctr.birth!.year}-${ctr.birth!.month}-${ctr.birth!.day}"),
+            delimiter: "-",
+            initialDate: ctr.birth,
+            maximumDate: DateTime.now(),
+            minimumDate: DateTime(1900, 1, 1),
+            onResult: (BoardDateResult date) =>
+                ctr.birth = DateTime(date.year, date.month, date.day),
+            onChanged: (DateTime date) {},
           ),
         );
       }),
