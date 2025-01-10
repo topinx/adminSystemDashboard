@@ -53,7 +53,7 @@ class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 300,
+      width: 260,
       color: const Color(0xFF252A34),
       child: Column(children: [
         const HomeDrawerLogo(),

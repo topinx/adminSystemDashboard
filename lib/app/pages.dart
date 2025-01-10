@@ -123,6 +123,13 @@ class AppPages {
         ),
         GetPage(
           maintainState: false,
+          name: _Paths.noteDetail,
+          transition: Transition.noTransition,
+          page: () => const NoteDetailView(),
+          binding: NoteDetailBinding(),
+        ),
+        GetPage(
+          maintainState: false,
           name: _Paths.reportUser,
           transition: Transition.noTransition,
           page: () => const ReportUserView(),

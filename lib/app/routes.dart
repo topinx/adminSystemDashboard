@@ -28,6 +28,7 @@ abstract class Routes {
   static const pubRecommend = home + _Paths.pubRecommend;
   static const pubCreative = home + _Paths.pubCreative;
   static String PUBLISH(int id, int type) => '$home/publish/id=$id/type=$type';
+  static const noteDetail = home + _Paths.noteDetail;
 
   static const reportUser = home + _Paths.reportUser;
   static const reportNote = home + _Paths.reportNote;
@@ -59,6 +60,7 @@ abstract class _Paths {
   static const pubRecommend = "/pubRecommend";
   static const pubCreative = "/pubCreative";
   static const publish = "/publish/id=:id/type=:type";
+  static const noteDetail = "/noteDetail";
 
   static const reportUser = "/reportUser";
   static const reportNote = "/reportNote";
