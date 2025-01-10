@@ -1,53 +1,71 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:top_back/bean/bean_topic.dart';
+import 'package:top_back/contants/app_constants.dart';
+
+import '../controller/topic_create_controller.dart';
 
 class ManageTopicEdit extends StatefulWidget {
-  const ManageTopicEdit({super.key});
+  const ManageTopicEdit({super.key, this.topic});
+
+  final BeanTopic? topic;
 
   @override
   State<ManageTopicEdit> createState() => _ManageTopicEditState();
 }
 
 class _ManageTopicEditState extends State<ManageTopicEdit> {
-  void onTapCover() {}
+  final TopicCreateController ctr = Get.put(TopicCreateController());
 
-  void onTapBan() {}
-
-  void onTapUnban() {}
+  @override
+  void initState() {
+    super.initState();
+    ctr.topic = widget.topic;
+  }
 
   void onTapCancel() {
     Navigator.of(context).pop();
   }
 
-  void onTapConfirm() {}
-
   Widget buildCoverContent() {
-    return GestureDetector(
-      onTap: onTapCover,
-      child: Container(
-        width: 120,
-        height: 80,
-        alignment: Alignment.center,
-        color: const Color(0xFFEBEBEB),
-        child: const Text("点击上传"),
-      ),
-    );
+    return GetBuilder<TopicCreateController>(builder: (ctr) {
+      DecorationImage? image;
+      if (ctr.dataCover != null) {
+        image = DecorationImage(image: MemoryImage(ctr.dataCover!));
+      } else if (ctr.topic != null && ctr.topic!.avatar.isNotEmpty) {
+        image = DecorationImage(
+            image: NetworkImage(AppConstants.imgLink + ctr.topic!.avatar));
+      }
+
+      return GestureDetector(
+        onTap: ctr.onTapCover,
+        child: Container(
+          width: 120,
+          height: 80,
+          alignment: Alignment.center,
+          decoration:
+              BoxDecoration(color: const Color(0xFFEBEBEB), image: image),
+          child: image == null ? const Text("点击上传") : null,
+        ),
+      );
+    });
   }
 
   Widget buildEditContent() {
     return Column(children: [
-      const Row(children: [
-        SizedBox(width: 15),
-        Text("编辑话题",
-            style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
-        Spacer(),
-        CloseButton(),
+      Row(children: [
+        const SizedBox(width: 15),
+        Text(widget.topic == null ? "创建话题" : "编辑话题",
+            style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
+        const Spacer(),
+        const CloseButton(),
       ]),
       Container(
         margin: const EdgeInsets.fromLTRB(20, 20, 60, 20),
         height: 35,
-        child: const Row(children: [
-          Text("话题标题："),
-          Expanded(child: TextField()),
+        child: Row(children: [
+          const Text("话题标题："),
+          Expanded(child: TextField(controller: ctr.inputName)),
         ]),
       ),
       Padding(
@@ -57,27 +75,37 @@ class _ManageTopicEditState extends State<ManageTopicEdit> {
           buildCoverContent(),
         ]),
       ),
-      Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 60, 20),
-        child: Row(children: [
-          const Text("封禁开关："),
-          OutlinedButton(onPressed: onTapBan, child: const Text("封禁")),
-          const SizedBox(width: 10),
-          OutlinedButton(
-            onPressed: onTapUnban,
-            style: OutlinedButton.styleFrom(
-              fixedSize: const Size.fromWidth(100),
+      Visibility(
+        visible: widget.topic != null,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 60, 20),
+          child: Row(children: [
+            const Text("封禁开关："),
+            OutlinedButton(onPressed: ctr.onTapBan, child: const Text("封禁")),
+            const SizedBox(width: 10),
+            OutlinedButton(
+              onPressed: ctr.onTapUnban,
+              style: OutlinedButton.styleFrom(
+                fixedSize: const Size.fromWidth(100),
+              ),
+              child: const Text("解除封禁"),
             ),
-            child: const Text("解除封禁"),
-          ),
-        ]),
+          ]),
+        ),
       ),
+      const Spacer(),
       Row(mainAxisAlignment: MainAxisAlignment.end, children: [
         OutlinedButton(onPressed: onTapCancel, child: const Text("取消")),
         const SizedBox(width: 10),
-        OutlinedButton(onPressed: onTapConfirm, child: const Text("确定")),
+        OutlinedButton(
+            onPressed: () async {
+              bool success = await ctr.onTapConfirm();
+              if (success) onTapCancel();
+            },
+            child: const Text("确定")),
         const SizedBox(width: 20)
       ]),
+      const SizedBox(height: 20),
     ]);
   }
 

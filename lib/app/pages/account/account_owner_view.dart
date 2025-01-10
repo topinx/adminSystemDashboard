@@ -103,15 +103,14 @@ class _AccountOwnerViewState extends State<AccountOwnerView> {
         const SizedBox(height: 20),
         const Expanded(child: AccountOwnerTable()),
         GetBuilder<AccountOwnerController>(
-            id: "check-page",
-            builder: (ctr) {
-              return PageIndicator(
-                itemCount: ctr.checkCnt,
-                onTapPage: ctr.onTapPage,
-                curPage: ctr.pageNum,
-                onSizeChang: ctr.onPageSizeChanged,
-              );
-            }),
+          id: "check-page",
+          builder: (ctr) => PageIndicator(
+            itemCount: ctr.checkCnt,
+            onTapPage: ctr.onTapPage,
+            curPage: ctr.pageNum,
+            onSizeChang: ctr.onPageSizeChanged,
+          ),
+        ),
       ]),
     );
   }

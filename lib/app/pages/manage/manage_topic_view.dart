@@ -50,8 +50,15 @@ class _ManageTopicViewState extends State<ManageTopicView> {
         buildFilterButton(),
         const SizedBox(height: 20),
         const Expanded(child: ManageTopicTable()),
-        PageIndicator(
-            itemCount: 200, onTapPage: (_) {}, curPage: 1, onSizeChang: (_) {})
+        GetBuilder<ManageTopicController>(
+          id: "check-page",
+          builder: (ctr) => PageIndicator(
+            itemCount: ctr.topicCnt,
+            onTapPage: ctr.onTapPage,
+            curPage: ctr.pageNum,
+            onSizeChang: ctr.onPageSizeChanged,
+          ),
+        )
       ]),
     );
   }

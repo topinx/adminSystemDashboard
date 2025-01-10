@@ -34,29 +34,8 @@ class ManageNoteTable extends StatelessWidget {
         const TableCell(child: TableText("", false)),
         const TableCell(child: TableText("", false)),
         const TableCell(child: TableText("2020-01-01", false)),
-        TableCell(child: buildOperate()),
+        TableCell(child: TableCheck(() {})),
       ],
-    );
-  }
-
-  Widget buildOperate() {
-    // 通过 驳回 删除 推荐 取消推荐
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SizedBox(
-          width: 140,
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            TextButton(
-              onPressed: () {},
-              child:
-                  const Text("推荐", style: TextStyle(color: Color(0xFF3871BB))),
-            ),
-            TextButton(
-              onPressed: () {},
-              child:
-                  const Text("删除", style: TextStyle(color: Color(0xFF3871BB))),
-            ),
-          ])),
     );
   }
 

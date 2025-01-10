@@ -134,7 +134,7 @@ class NoteDropLimit extends StatelessWidget {
     TextStyle textStyle1 = const TextStyle(fontSize: 14);
 
     return Row(children: [
-      const Text("笔记权限："),
+      const Text("可见范围："),
       DropdownBtn(
           width: 100,
           height: 36,

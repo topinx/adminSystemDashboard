@@ -100,15 +100,14 @@ class _AccountManageViewState extends State<AccountManageView> {
         const SizedBox(height: 20),
         const Expanded(child: AccountManageTable()),
         GetBuilder<AccountManageController>(
-            id: "check-page",
-            builder: (ctr) {
-              return PageIndicator(
-                itemCount: ctr.checkCnt,
-                onTapPage: ctr.onTapPage,
-                curPage: ctr.pageNum,
-                onSizeChang: ctr.onPageSizeChanged,
-              );
-            }),
+          id: "check-page",
+          builder: (ctr) => PageIndicator(
+            itemCount: ctr.checkCnt,
+            onTapPage: ctr.onTapPage,
+            curPage: ctr.pageNum,
+            onSizeChang: ctr.onPageSizeChanged,
+          ),
+        ),
       ]),
     );
   }

@@ -53,4 +53,7 @@ class HttpConstants {
 
   /// 话题总数
   static const topicCnt = "/adminsystem/contentManagement/countTopic";
+
+  /// 创建话题
+  static const topicCreate = "/adminsystem/contentManagement/createTopic";
 }

@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:top_back/bean/bean_topic.dart';
 import 'package:top_back/contants/http_constants.dart';
 import 'package:top_back/network/request_mixin.dart';
 
@@ -11,11 +12,18 @@ class ManageTopicController extends GetxController with RequestMixin {
 
   String checkName = "";
 
-  List beanList = [];
+  List<BeanTopic> beanList = [];
   int topicCnt = 0;
 
   int pageNum = 1;
   int pageSize = 10;
+  List<BeanTopic> selectList = [];
+
+  @override
+  void onReady() {
+    super.onReady();
+    onTapSearch();
+  }
 
   @override
   void onClose() {
@@ -27,12 +35,13 @@ class ManageTopicController extends GetxController with RequestMixin {
     if (inputName.text != checkName) {
       pageNum = 1;
     }
+    requestTopicCount();
     requestTopicList();
   }
 
   void onTapPage(int page) {
     pageNum = page;
-    if ((pageNum - 1) * pageSize <= beanList.length) {
+    if (beanList.length - pageSize * (pageNum - 1) > 0) {
       update(["check-table"]);
     } else {
       requestTopicList();
@@ -42,18 +51,57 @@ class ManageTopicController extends GetxController with RequestMixin {
   void onPageSizeChanged(int size) {
     pageSize = size;
     pageNum = 1;
-    if (pageNum * pageSize <= beanList.length) {
+    if (beanList.length - pageSize * (pageNum - 1) > 0) {
       update(["check-table"]);
     } else {
       requestTopicList();
     }
   }
 
+  void onTapSelect(BeanTopic bean) {
+    if (selectList.contains(bean)) {
+      selectList.remove(bean);
+    } else {
+      selectList.add(bean);
+    }
+    update(["check-table"]);
+  }
+
+  void onTapSelectAll() {
+    int start = (pageNum - 1) * pageSize;
+    int end = start + pageSize;
+    end = end > beanList.length ? beanList.length : end;
+
+    if (selectList.length < end - start) {
+      selectList = beanList.sublist(start, end);
+    } else {
+      selectList.clear();
+    }
+    update(["check-table"]);
+  }
+
   void onTapCreate() {
     Get.dialog(const ManageTopicEdit());
   }
 
-  void onTapEdit() {}
+  void onTapEdit(BeanTopic topic) {
+    Get.dialog(ManageTopicEdit(topic: topic));
+  }
+
+  void onTapDelete(BeanTopic topic) {}
+
+  void onMultiOperate(int value) {
+    if (selectList.isEmpty) {
+      showToast("请先选择话题");
+      return;
+    }
+
+    if (value == 0) {
+      // 批量封禁
+    } else {
+      // 批量删除
+    }
+  }
 
   Future<void> requestTopicList() async {
     BotToast.showLoading();
@@ -64,13 +112,24 @@ class ManageTopicController extends GetxController with RequestMixin {
         "limit": pageSize,
         "name": checkName,
       },
+      success: onTopicList,
     );
     BotToast.closeAllLoading();
   }
 
-  void requestTopicCount({bool all = false}) async {
+  void onTopicList(data) {
+    pageNum = data["pageNo"];
+    if (pageNum == 1) {
+      beanList.clear();
+    }
+    List tempList = data["list"] ?? [];
+    beanList.addAll(tempList.map((x) => BeanTopic.fromJson(x)).toList());
+    update(["check-table"]);
+  }
+
+  void requestTopicCount() async {
     await get(
-      HttpConstants.accountCnt,
+      HttpConstants.topicCnt,
       param: {"name": checkName},
       success: (data) => topicCnt = data,
     );
