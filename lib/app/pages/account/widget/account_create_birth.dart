@@ -2,7 +2,7 @@ import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../controller/account_manage_controller.dart';
+import '../controller/account_create_controller.dart';
 
 class AccountCreateBirth extends StatelessWidget {
   const AccountCreateBirth({super.key});
@@ -13,7 +13,7 @@ class AccountCreateBirth extends StatelessWidget {
       const SizedBox(
           width: 70, child: Text("出生日期: ", textAlign: TextAlign.end)),
       const SizedBox(width: 5),
-      GetBuilder<AccountManageController>(builder: (ctr) {
+      GetBuilder<AccountCreateController>(builder: (ctr) {
         return SizedBox(
           width: 240,
           height: 45,

@@ -45,7 +45,7 @@ class _ManageTopicViewState extends State<ManageTopicView> {
   Widget build(BuildContext context) {
     return ViewContainer(
       child: Column(children: [
-        const AccountNoteInput(),
+        AccountNoteInput(ctr: ctr.inputName, onTap: ctr.onTapSearch),
         const SizedBox(height: 40),
         buildFilterButton(),
         const SizedBox(height: 20),

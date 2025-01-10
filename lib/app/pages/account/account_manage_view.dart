@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:top_back/app/widgets/dropdown_btn.dart';
+import 'package:top_back/app/widgets/page_indicator.dart';
 import 'package:top_back/app/widgets/view_container.dart';
 
 import 'controller/account_manage_controller.dart';
-import 'widget/account_create_birth.dart';
-import 'widget/account_create_gender.dart';
-import 'widget/account_create_image.dart';
-import 'widget/account_create_input.dart';
-import 'widget/account_create_phone.dart';
+import 'widget/account_input_field.dart';
+import 'widget/account_manage_table.dart';
+import 'widget/account_status_field.dart';
 
 class AccountManageView extends StatefulWidget {
   const AccountManageView({super.key});
@@ -20,67 +19,97 @@ class AccountManageView extends StatefulWidget {
 class _AccountManageViewState extends State<AccountManageView> {
   final AccountManageController ctr = Get.find<AccountManageController>();
 
-  Widget buildCreateButton() {
-    return GetBuilder<AccountManageController>(builder: (ctr) {
-      return OutlinedButton(
-        style: OutlinedButton.styleFrom(fixedSize: const Size.fromWidth(100)),
-        onPressed: ctr.onTapConfirm,
-        child: const Text("确定"),
-      );
-    });
+  Widget buildInputContent() {
+    return Row(children: [
+      AccountInputField("用户昵称", ctr.inputName),
+      AccountInputField("手机号", ctr.inputPhone),
+      AccountInputField("邮箱", ctr.inputEmail)
+    ]);
   }
 
-  Widget buildViewContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text("基本信息",
-            style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18)),
-        const SizedBox(height: 20),
-        const AccountCreateAvatar("用户头像"),
-        const SizedBox(height: 20),
-        AccountCreateInput(
-          "用户昵称",
-          need: true,
-          validator: ctr.validatorNick,
-          input: ctr.inputNick,
-        ),
-        const SizedBox(height: 20),
-        const AccountCreateGender(),
-        const SizedBox(height: 20),
-        const AccountCreateBirth(),
-        const SizedBox(height: 20),
-        const AccountCreatePhone(),
-        const SizedBox(height: 20),
-        AccountCreateInput("邮箱", input: ctr.inputEmail),
-        const SizedBox(height: 20),
-        AccountCreateInput(
-          "密码",
-          need: true,
-          validator: ctr.validatorPassword,
-          input: ctr.inputPassword,
-          formatter: [
-            FilteringTextInputFormatter.allow(RegExp(r'[0-9a-zA-Z]')),
-            LengthLimitingTextInputFormatter(16),
-          ],
-        ),
-        const SizedBox(height: 20),
-        AccountCreateInput("用户简介", maxWidth: 330, input: ctr.inputBrief),
-        const SizedBox(height: 20),
-        const AccountCreateCover("背景图"),
-        const SizedBox(height: 40),
-        Center(child: buildCreateButton())
-      ],
+  Widget buildFilterContent() {
+    return Row(children: [
+      GetBuilder<AccountManageController>(
+          id: "check-status",
+          builder: (ctr) => AccountStatusField(
+                ctr.statusAccount,
+                "账号状态",
+                const ["全部", "正常使用", "已停用"],
+                onChanged: ctr.onStatusAChanged,
+              )),
+      GetBuilder<AccountManageController>(
+          id: "check-status",
+          builder: (ctr) => AccountStatusField(
+                ctr.statusVerify,
+                "认证状态",
+                const ["全部", "普通用户", "认证博主", "认证商户"],
+                onChanged: ctr.onStatusVChanged,
+              )),
+      GetBuilder<AccountManageController>(
+        id: "user-count",
+        builder: (ctr) => StatusText("共${ctr.accountCnt}个用户"),
+      ),
+    ]);
+  }
+
+  Widget buildButtonContent() {
+    ButtonStyle style =
+        OutlinedButton.styleFrom(fixedSize: const Size.fromWidth(100));
+
+    TextStyle textStyle = const TextStyle(fontSize: 14, color: Colors.black);
+
+    Widget content = Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+      OutlinedButton(
+          style: style, onPressed: ctr.onTapSearch, child: const Text("查询")),
+      const SizedBox(width: 30),
+      OutlinedButton(
+          style: style, onPressed: ctr.onTapReset, child: const Text("重置")),
+      const SizedBox(width: 30),
+      DropdownBtn(
+          hint: "批量处理",
+          width: 100,
+          height: 36,
+          onChanged: ctr.onMultiOperate,
+          selectedItemBuilder: (_) => [
+                Center(child: Text("批量处理", style: textStyle)),
+                Center(child: Text("批量处理", style: textStyle)),
+              ],
+          menuList: const ["批量启用", "批量停用"]),
+    ]);
+
+    return SizedBox(
+      width: double.infinity,
+      child: SingleChildScrollView(
+        reverse: true,
+        padding: EdgeInsets.zero,
+        scrollDirection: Axis.horizontal,
+        child: content,
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return ViewContainer(
-      child: SingleChildScrollView(
-        padding: EdgeInsets.zero,
-        child: Form(key: ctr.formKey, child: buildViewContent()),
-      ),
+      child: Column(children: [
+        buildInputContent(),
+        const SizedBox(height: 20),
+        buildFilterContent(),
+        const SizedBox(height: 20),
+        buildButtonContent(),
+        const SizedBox(height: 20),
+        const Expanded(child: AccountManageTable()),
+        GetBuilder<AccountManageController>(
+            id: "check-page",
+            builder: (ctr) {
+              return PageIndicator(
+                itemCount: ctr.checkCnt,
+                onTapPage: ctr.onTapPage,
+                curPage: ctr.pageNum,
+                onSizeChang: ctr.onPageSizeChanged,
+              );
+            }),
+      ]),
     );
   }
 }

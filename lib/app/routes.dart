@@ -13,8 +13,9 @@ abstract class Routes {
 
   static const accountManage = home + _Paths.accountManage;
   static const accountOwner = home + _Paths.accountOwner;
-  static String ACCOUNT_INFO(String userId) => '$home/accountInfo/$userId';
-  static String ACCOUNT_NOTE(String userId) => '$home/accountNote/$userId';
+  static const accountCreate = home + _Paths.accountCreate;
+  static String ACCOUNT_INFO(int userId) => '$home/accountInfo/id=$userId';
+  static String ACCOUNT_NOTE(int userId) => '$home/accountNote/id=$userId';
 
   static const manageNote = home + _Paths.manageNote;
   static const manageTopic = home + _Paths.manageTopic;
@@ -26,7 +27,7 @@ abstract class Routes {
 
   static const pubRecommend = home + _Paths.pubRecommend;
   static const pubCreative = home + _Paths.pubCreative;
-  static String PUBLISH(int id, int type) => '$home/publish/$id/$type';
+  static String PUBLISH(int id, int type) => '$home/publish/id=$id/type=$type';
 
   static const reportUser = home + _Paths.reportUser;
   static const reportNote = home + _Paths.reportNote;
@@ -43,8 +44,9 @@ abstract class _Paths {
 
   static const accountManage = '/accountManage';
   static const accountOwner = '/accountOwner';
-  static const accountInfo = '/accountInfo/:userId';
-  static const accountNote = '/accountNote/:userId';
+  static const accountCreate = '/accountCreate';
+  static const accountInfo = '/accountInfo/id=:userId';
+  static const accountNote = '/accountNote/id=:userId';
 
   static const manageNote = '/manageNote';
   static const manageTopic = '/manageTopic';
@@ -56,7 +58,7 @@ abstract class _Paths {
 
   static const pubRecommend = "/pubRecommend";
   static const pubCreative = "/pubCreative";
-  static const publish = "/publish/:id/:type";
+  static const publish = "/publish/id=:id/type=:type";
 
   static const reportUser = "/reportUser";
   static const reportNote = "/reportNote";

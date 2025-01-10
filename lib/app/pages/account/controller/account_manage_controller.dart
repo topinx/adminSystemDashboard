@@ -1,207 +1,237 @@
-import 'dart:typed_data';
-
 import 'package:bot_toast/bot_toast.dart';
-import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:top_back/app/widgets/responsive_widget.dart';
+import 'package:top_back/app/pages.dart';
+import 'package:top_back/bean/bean_account_list.dart';
 import 'package:top_back/contants/http_constants.dart';
 import 'package:top_back/network/request_mixin.dart';
 
 class AccountManageController extends GetxController with RequestMixin {
-  TextEditingController inputNick = TextEditingController();
+  TextEditingController inputName = TextEditingController();
   TextEditingController inputPhone = TextEditingController();
   TextEditingController inputEmail = TextEditingController();
-  TextEditingController inputPassword = TextEditingController();
-  TextEditingController inputBrief = TextEditingController();
 
-  GlobalKey<FormState> formKey = GlobalKey();
+  int accountCnt = 0;
+  int checkCnt = 0;
 
-  /// (1-男性 2-女性 3-其他 0-未设置)
-  int gender = 0;
+  /// 账号状态 0 全部 1 正常使用 2 已停用
+  int statusAccount = 0;
 
-  DateTime? birth;
+  /// 认证状态 0 全部 1 普通用户 2 认证博主 3 认证商户
+  int statusVerify = 0;
 
-  String phoneCode = "1";
+  int pageNum = 1;
 
-  String fileAvatarName = "";
-  Uint8List? userAvatar;
-  String fileCoverName = "";
-  Uint8List? userCover;
+  int pageSize = 10;
 
-  ImagePicker imagePicker = ImagePicker();
+  String checkNick = "";
+  String checkPhone = "";
+  String checkEmail = "";
+  int? checkStatusA; // 1 正常 0 停用
+  int? checkStatusV; // 1 普通 2 博主 3 商户
+
+  List<BeanAccountList> beanList = [];
+
+  List<BeanAccountList> selectList = [];
+
+  @override
+  void onReady() {
+    super.onReady();
+    requestCheckCount(all: true);
+    onTapSearch();
+  }
 
   @override
   void onClose() {
     super.onClose();
-    inputNick.dispose();
+    inputName.dispose();
     inputPhone.dispose();
     inputEmail.dispose();
-    inputPassword.dispose();
-    inputBrief.dispose();
   }
 
-  String? validatorNick(String? string) {
-    if (string == null || string.isEmpty) {
-      return "请输入用户昵称";
-    }
+  void onTapSearch() {
+    checkNick = inputName.text;
+    checkPhone = inputPhone.text;
+    checkEmail = inputEmail.text;
+    checkStatusA = getCheckStatusA();
+    checkStatusV = getCheckStatusV();
 
-    return null;
+    pageNum = 1;
+    requestCheckCount();
+    requestAccountList();
   }
 
-  String? validatorPhone(String? string) {
-    if (string == null || string.isEmpty) {
-      return "请输入手机号";
-    }
-    if (!string.isPhoneNumber) {
-      return "请输入正确的手机号";
-    }
-
-    return null;
-  }
-
-  String? validatorEmail(String? string) {
-    if (string != null && string.isNotEmpty && !string.isEmail) {
-      return "请输入正确的邮箱地址";
-    }
-
-    return null;
-  }
-
-  String? validatorPassword(String? string) {
-    if (string == null || string.isEmpty) {
-      return "请输入密码";
-    }
-    bool hasMatch = RegExp(r'[0-9a-zA-Z]').hasMatch(string);
-    if (string.length < 6 || string.length > 16 || !hasMatch) {
-      return "请输入长度为6-16个字母或数字的密码";
-    }
-
-    return null;
-  }
-
-  void onGenderChanged(int value) {
-    if (value == 0) {
-      gender = 1;
-    } else if (value == 1) {
-      gender = 2;
-    }
-  }
-
-  void onTapAvatar() async {
-    XFile? file = await imagePicker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 300,
-      maxHeight: 300,
-      imageQuality: 80,
-    );
-    if (file == null) return;
-    fileAvatarName = file.name;
-    userAvatar = await file.readAsBytes();
-    update();
-  }
-
-  void onTapCover() async {
-    XFile? file = await imagePicker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 600,
-      maxHeight: 800,
-      imageQuality: 80,
-    );
-    if (file == null) return;
-    fileCoverName = file.name;
-    userCover = await file.readAsBytes();
-    update();
-  }
-
-  void onTapAreaCode(BuildContext context) async {
-    showCountryPicker(
-      context: context,
-      showPhoneCode: true,
-      countryListTheme: const CountryListThemeData(
-        bottomSheetWidth: kMobileToTable,
-        bottomSheetHeight: 600,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      onSelect: (Country country) {
-        phoneCode = country.phoneCode;
-        update();
-      },
-    );
-  }
-
-  Future<String> getUserAvatar() async {
-    if (userAvatar == null) return "";
-
-    String name =
-        "avatar/${DateTime.now().millisecondsSinceEpoch}/$fileAvatarName";
-    return await upload(userAvatar!, name);
-  }
-
-  Future<String> getUserCover() async {
-    if (userCover == null) return "";
-
-    String name =
-        "cover/${DateTime.now().millisecondsSinceEpoch}/$fileCoverName";
-    return await upload(userCover!, name);
-  }
-
-  void resetData() {
-    inputNick.clear();
+  void onTapReset() {
+    inputName.clear();
     inputPhone.clear();
     inputEmail.clear();
-    inputPassword.clear();
-    inputBrief.clear();
 
-    gender = 0;
-    birth = null;
-    phoneCode = "1";
+    statusVerify = 0;
+    statusAccount = 0;
+    update(["check-status"]);
 
-    fileAvatarName = "";
-    userAvatar = null;
-    fileCoverName = "";
-    userCover = null;
+    checkNick = "";
+    checkPhone = "";
+    checkEmail = "";
+
+    checkStatusA = null;
+    checkStatusV = null;
   }
 
-  void onTapConfirm() async {
-    if (formKey.currentState?.validate() == false) return;
-    BotToast.showLoading();
+  int? getCheckStatusA() {
+    if (statusAccount == 1) return 1;
+    if (statusAccount == 2) return 0;
+    return null;
+  }
 
-    String birthday = "";
-    if (birth != null) {
-      String year = "${birth!.year}".padLeft(4, "0");
-      String month = "${birth!.month}".padLeft(2, "0");
-      String day = "${birth!.day}".padLeft(2, "0");
-      birthday = "$year-$month-$day";
+  int? getCheckStatusV() {
+    if (statusVerify > 0) return statusVerify;
+    return null;
+  }
+
+  void onTapCreate() {
+    Get.toNamed(Routes.accountCreate);
+  }
+
+  void onStatusAChanged(int status) {
+    statusAccount = status;
+  }
+
+  void onStatusVChanged(int status) {
+    statusVerify = status;
+  }
+
+  void onTapPage(int page) {
+    pageNum = page;
+
+    if (beanList.length - pageSize * (pageNum - 1) > 0) {
+      update(["check-table"]);
+    } else {
+      requestAccountList();
+    }
+  }
+
+  void onPageSizeChanged(int size) {
+    pageSize = size;
+    pageNum = 1;
+    if (beanList.length - pageSize * (pageNum - 1) > 0) {
+      update(["check-table"]);
+    } else {
+      requestAccountList();
+    }
+  }
+
+  void onTapSelect(BeanAccountList bean) {
+    if (selectList.contains(bean)) {
+      selectList.remove(bean);
+    } else {
+      selectList.add(bean);
+    }
+    update(["check-table"]);
+  }
+
+  void onTapSelectAll() {
+    int start = (pageNum - 1) * pageSize;
+    int end = start + pageSize;
+    end = end > beanList.length ? beanList.length : end;
+
+    if (selectList.length < end - start) {
+      selectList = beanList.sublist(start, end);
+    } else {
+      selectList.clear();
+    }
+    update(["check-table"]);
+  }
+
+  void onTapCheck(BeanAccountList bean) {
+    Get.toNamed(Routes.ACCOUNT_INFO(bean.userId));
+  }
+
+  void onMultiOperate(int value) {
+    if (selectList.isEmpty) {
+      showToast("请先选择用户");
+      return;
     }
 
-    String avatarPath = await getUserAvatar();
-    String coverPath = await getUserCover();
+    if (value == 0) {
+      // 批量启用
+      requestModify(1);
+    } else {
+      // 批量停用
+      requestModify(0);
+    }
+  }
 
-    String pwd = encryptPassword(inputPassword.text);
-
-    await post(
-      HttpConstants.createAccount,
-      param: {
-        "nickname": inputNick.text,
-        "gender": gender,
-        "areaCode": "+$phoneCode",
-        "birthday": birthday,
-        "phone": "+$phoneCode${inputPhone.text}",
-        "email": inputEmail.text,
-        "password": pwd,
-        "brief": inputBrief.text,
-        "avatar": avatarPath,
-        "bgImg": coverPath,
-      },
-      success: (_) {
-        resetData();
-        showToast("创建成功");
-      },
+  void requestCheckCount({bool all = false}) async {
+    await get(
+      HttpConstants.accountCnt,
+      param: all
+          ? {}
+          : {
+              "nickname": checkNick,
+              "phone": checkPhone,
+              "email": checkEmail,
+              "status": checkStatusA,
+              "authenticationStatus": checkStatusV,
+            },
+      success: (data) => all ? accountCnt = data : checkCnt = data,
     );
 
+    update([all ? "user-count" : "check-page"]);
+  }
+
+  Future<void> requestAccountList() async {
+    BotToast.showLoading();
+    await get(
+      HttpConstants.accountList,
+      param: {
+        "pageNo": pageNum,
+        "limit": pageSize,
+        "nickname": checkNick,
+        "phone": checkPhone,
+        "email": checkEmail,
+        "status": checkStatusA,
+        "authenticationStatus": checkStatusV,
+      },
+      success: onAccountList,
+    );
     BotToast.closeAllLoading();
-    update();
+  }
+
+  void onAccountList(data) {
+    pageNum = data["pageNo"];
+    if (pageNum == 1) {
+      beanList.clear();
+    }
+    List tempList = data["list"] ?? [];
+    beanList.addAll(tempList.map((x) => BeanAccountList.fromJson(x)).toList());
+    update(["check-table"]);
+  }
+
+  Future<void> requestModify(int status) async {
+    BotToast.showLoading();
+    List users = selectList.map((x) => x.userId).toList();
+
+    await post(
+      HttpConstants.modifyStatus,
+      param: {
+        "userIdList": users,
+        "status": status,
+      },
+      success: (data) {
+        for (var user in users) {
+          var bean1 = selectList.firstWhereOrNull((x) => x.userId == user);
+          if (bean1 != null) {
+            bean1.status = status;
+          }
+          var bean2 = beanList.firstWhereOrNull((x) => x.userId == user);
+          if (bean2 != null) {
+            bean2.status = status;
+          }
+        }
+        update(["check-table"]);
+      },
+    );
+    BotToast.closeAllLoading();
   }
 }

@@ -41,4 +41,16 @@ class HttpConstants {
 
   /// 重置用户信息
   static const resetAccount = "/adminsystem/accountManagement/resetInfo";
+
+  /// 查询笔记列表
+  static const noteList = "/adminsystem/contentManagement/getAuditNoteList";
+
+  /// 查询笔记总数
+  static const noteCnt = "/adminsystem/contentManagement/countAuditNote";
+
+  /// 话题列表
+  static const topicList = "/adminsystem/contentManagement/getTopicList";
+
+  /// 话题总数
+  static const topicCnt = "/adminsystem/contentManagement/countTopic";
 }

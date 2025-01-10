@@ -12,7 +12,7 @@ import 'package:top_back/contants/http_constants.dart';
 import 'package:top_back/network/request_mixin.dart';
 
 class AccountInfoController extends GetxController with RequestMixin {
-  String userId = "";
+  int userId = 0;
 
   BeanAccountInfo info = BeanAccountInfo.empty();
   BeanInterCnt cnt = BeanInterCnt.empty();
@@ -43,7 +43,7 @@ class AccountInfoController extends GetxController with RequestMixin {
   @override
   void onInit() {
     super.onInit();
-    userId = Get.parameters["userId"] ?? "";
+    userId = int.parse(Get.parameters["userId"] ?? "0");
   }
 
   @override

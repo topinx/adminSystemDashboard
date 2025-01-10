@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-import '../controller/account_manage_controller.dart';
+import '../controller/account_create_controller.dart';
 
 class AccountCreatePhone extends StatelessWidget {
   const AccountCreatePhone({super.key});
 
   Widget buttonAreaCode(BuildContext context) {
-    return GetBuilder<AccountManageController>(builder: (ctr) {
+    return GetBuilder<AccountCreateController>(builder: (ctr) {
       return GestureDetector(
         onTap: () => ctr.onTapAreaCode(context),
         child: Container(
@@ -30,7 +30,7 @@ class AccountCreatePhone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AccountManageController ctr = Get.find<AccountManageController>();
+    final AccountCreateController ctr = Get.find<AccountCreateController>();
 
     Widget textWidget = const Text.rich(
       TextSpan(children: [

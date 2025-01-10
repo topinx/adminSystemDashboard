@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../controller/account_manage_controller.dart';
+import '../controller/account_create_controller.dart';
 
 class AccountCreateAvatar extends StatelessWidget {
   const AccountCreateAvatar(this.text, {super.key});
@@ -13,7 +13,7 @@ class AccountCreateAvatar extends StatelessWidget {
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
       SizedBox(width: 70, child: Text("$text: ", textAlign: TextAlign.end)),
       const SizedBox(width: 5),
-      GetBuilder<AccountManageController>(builder: (ctr) {
+      GetBuilder<AccountCreateController>(builder: (ctr) {
         return GestureDetector(
           onTap: ctr.onTapAvatar,
           child: Container(
@@ -44,7 +44,7 @@ class AccountCreateCover extends StatelessWidget {
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
       SizedBox(width: 70, child: Text("$text: ", textAlign: TextAlign.end)),
       const SizedBox(width: 5),
-      GetBuilder<AccountManageController>(builder: (ctr) {
+      GetBuilder<AccountCreateController>(builder: (ctr) {
         return GestureDetector(
           onTap: ctr.onTapCover,
           child: Container(

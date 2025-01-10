@@ -32,28 +32,8 @@ class AccountNoteTable extends StatelessWidget {
         const TableCell(child: TableText("100", false)),
         const TableCell(child: TableText("100", false)),
         const TableCell(child: TableText("2020-01-01", false)),
-        TableCell(child: buildOperate()),
+        TableCell(child: TableCheck(() {})),
       ],
-    );
-  }
-
-  Widget buildOperate() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SizedBox(
-          width: 140,
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            TextButton(
-              onPressed: () {},
-              child:
-                  const Text("推荐", style: TextStyle(color: Color(0xFF3871BB))),
-            ),
-            TextButton(
-              onPressed: () {},
-              child:
-                  const Text("违规", style: TextStyle(color: Color(0xFF3871BB))),
-            ),
-          ])),
     );
   }
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class AccountNoteBar extends StatelessWidget {
-  const AccountNoteBar({super.key});
+class BackAppBar extends StatelessWidget {
+  const BackAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

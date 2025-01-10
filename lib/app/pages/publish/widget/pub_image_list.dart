@@ -53,7 +53,7 @@ class ImageAdd extends StatelessWidget {
       width: 120,
       margin: const EdgeInsets.only(right: 20),
       color: const Color(0xFFEBEBEB),
-      child: Icon(Icons.add),
+      child: const Icon(Icons.add),
     );
   }
 }

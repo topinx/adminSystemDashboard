@@ -46,3 +46,19 @@ class TableSelect extends StatelessWidget {
     );
   }
 }
+
+class TableCheck extends StatelessWidget {
+  const TableCheck(this.onTap, {super.key});
+
+  final Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: TextButton(
+        onPressed: onTap,
+        child: const Text("查看详情", style: TextStyle(color: Color(0xFF3871BB))),
+      ),
+    );
+  }
+}

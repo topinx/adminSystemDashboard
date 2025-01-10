@@ -1,7 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:top_back/app/app_delegate.dart';
 import 'package:top_back/app/pages.dart';
 import 'package:top_back/bean/bean_account_list.dart';
 import 'package:top_back/contants/app_storage.dart';
@@ -40,6 +39,7 @@ class AccountOwnerController extends GetxController with RequestMixin {
   void onReady() {
     super.onReady();
     requestCheckCount(all: true);
+    onTapSearch();
   }
 
   @override
@@ -91,7 +91,7 @@ class AccountOwnerController extends GetxController with RequestMixin {
   }
 
   void onTapCreate() {
-    AppDelegate.delegate.offNamed(Routes.accountManage);
+    Get.toNamed(Routes.accountCreate);
   }
 
   void onStatusAChanged(int status) {
@@ -104,7 +104,7 @@ class AccountOwnerController extends GetxController with RequestMixin {
 
   void onTapPage(int page) {
     pageNum = page;
-    if ((pageNum - 1) * pageSize <= beanList.length) {
+    if (beanList.length - pageSize * (pageNum - 1) > 0) {
       update(["check-table"]);
     } else {
       requestAccountList();
@@ -114,7 +114,7 @@ class AccountOwnerController extends GetxController with RequestMixin {
   void onPageSizeChanged(int size) {
     pageSize = size;
     pageNum = 1;
-    if (pageNum * pageSize <= beanList.length) {
+    if (beanList.length - pageSize * (pageNum - 1) > 0) {
       update(["check-table"]);
     } else {
       requestAccountList();
@@ -144,7 +144,7 @@ class AccountOwnerController extends GetxController with RequestMixin {
   }
 
   void onTapCheck(BeanAccountList bean) {
-    Get.toNamed(Routes.ACCOUNT_INFO("${bean.userId}"));
+    Get.toNamed(Routes.ACCOUNT_INFO(bean.userId));
   }
 
   void onMultiOperate(int value) {
