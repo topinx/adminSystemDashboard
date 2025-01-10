@@ -35,6 +35,7 @@ class ManageTopicController extends GetxController with RequestMixin {
     if (inputName.text != checkName) {
       pageNum = 1;
     }
+    checkName = inputName.text;
     requestTopicCount();
     requestTopicList();
   }
