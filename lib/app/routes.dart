@@ -3,17 +3,14 @@
 part of "pages.dart";
 
 abstract class Routes {
-  static const unknown = _Paths.unknown;
   static const login = _Paths.login;
   static String LOGIN_THEN(String after) =>
       '$login?then=${Uri.encodeQueryComponent(after)}';
 
   static const home = _Paths.home;
-  static const homeEmpty = home + _Paths.homeEmpty;
 
-  static const accountManage = home + _Paths.accountManage;
-  static const accountOwner = home + _Paths.accountOwner;
   static const accountCreate = home + _Paths.accountCreate;
+  static String ACCOUNT(bool isManage) => "$home/account/$isManage";
   static String ACCOUNT_INFO(int userId) => '$home/accountInfo/id=$userId';
   static String ACCOUNT_NOTE(int userId) => '$home/accountNote/id=$userId';
 
@@ -37,14 +34,11 @@ abstract class Routes {
 }
 
 abstract class _Paths {
-  static const unknown = '/unknown';
   static const login = '/login';
-
   static const home = '/home';
-  static const homeEmpty = '/homeEmpty';
 
-  static const accountManage = '/accountManage';
-  static const accountOwner = '/accountOwner';
+  static const account = '/account/:isManage';
+
   static const accountCreate = '/accountCreate';
   static const accountInfo = '/accountInfo/id=:userId';
   static const accountNote = '/accountNote/id=:userId';

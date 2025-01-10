@@ -39,9 +39,10 @@ class AccountCreateInput extends StatelessWidget {
 
     textWidget = Align(alignment: Alignment.centerRight, child: textWidget);
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      SizedBox(width: 70, height: 45, child: textWidget),
+      SizedBox(width: 70, height: 36, child: textWidget),
       const SizedBox(width: 5),
-      ConstrainedBox(
+      Container(
+        height: 36,
         constraints: BoxConstraints(maxWidth: maxWidth ?? 240),
         child: TextFormField(
           controller: input,

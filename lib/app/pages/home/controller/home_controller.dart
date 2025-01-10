@@ -16,12 +16,12 @@ class HomeController extends GetxController with RequestMixin {
       ..menuIcon = Icons.add
       ..menuTxt = "账号管理"
       ..menuId = 2
-      ..menuRoute = Routes.accountManage,
+      ..menuRoute = Routes.ACCOUNT(true),
     3: Menu()
       ..menuIcon = Icons.add
       ..menuTxt = "我的账号"
       ..menuId = 3
-      ..menuRoute = Routes.accountOwner,
+      ..menuRoute = Routes.ACCOUNT(false),
     4: Menu()
       ..menuIcon = Icons.edit_note
       ..menuTxt = "内容管理"
@@ -94,23 +94,7 @@ class HomeController extends GetxController with RequestMixin {
       ..menuRoute = Routes.reportNote,
   };
 
-  List<Menu> menuList = [
-    Menu()
-      ..menuIcon = Icons.account_circle
-      ..menuTxt = "账号管理"
-      ..menuId = 1
-      ..menuRoute = ""
-      ..children = [
-        Menu()
-          ..menuTxt = "账号管理"
-          ..menuId = 2
-          ..menuRoute = Routes.accountManage,
-        Menu()
-          ..menuTxt = "我的账号"
-          ..menuId = 3
-          ..menuRoute = Routes.accountOwner,
-      ],
-  ];
+  List<Menu> menuList = [];
 
   bool isLoadingMenu = false;
 

@@ -44,20 +44,18 @@ class ManageRecordTable extends StatelessWidget {
   Widget buildOperate() {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: SizedBox(
-          width: 140,
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            TextButton(
-              onPressed: () {},
-              child:
-                  const Text("通过", style: TextStyle(color: Color(0xFF3871BB))),
-            ),
-            TextButton(
-              onPressed: () {},
-              child:
-                  const Text("驳回", style: TextStyle(color: Color(0xFF3871BB))),
-            ),
-          ])),
+      padding: EdgeInsets.zero,
+      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        TextButton(
+          onPressed: () {},
+          child: const Text("通过", style: TextStyle(color: Color(0xFF3871BB))),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: const Text("驳回", style: TextStyle(color: Color(0xFF3871BB))),
+        ),
+        const SizedBox(width: 20),
+      ]),
     );
   }
 

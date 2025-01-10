@@ -16,6 +16,7 @@ class AccountCreateGender extends StatelessWidget {
         return DropdownBtn(
           menuList: const ["男", "女"],
           width: 100,
+          height: 36,
           init: ctr.gender - 1,
           onChanged: ctr.onGenderChanged,
           selectedItemBuilder: (_) => const [

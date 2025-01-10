@@ -12,7 +12,7 @@ class AccountCreatePhone extends StatelessWidget {
       return GestureDetector(
         onTap: () => ctr.onTapAreaCode(context),
         child: Container(
-          height: 45,
+          height: 36,
           width: 60,
           margin: const EdgeInsets.only(right: 10),
           decoration: const BoxDecoration(
@@ -42,10 +42,11 @@ class AccountCreatePhone extends StatelessWidget {
 
     textWidget = Align(alignment: Alignment.centerRight, child: textWidget);
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      SizedBox(width: 70, height: 45, child: textWidget),
+      SizedBox(width: 70, height: 36, child: textWidget),
       const SizedBox(width: 5),
       SizedBox(
         width: 240,
+        height: 36,
         child: TextFormField(
           controller: ctr.inputPhone,
           validator: ctr.validatorPhone,

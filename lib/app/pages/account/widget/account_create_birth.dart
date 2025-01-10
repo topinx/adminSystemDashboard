@@ -16,7 +16,7 @@ class AccountCreateBirth extends StatelessWidget {
       GetBuilder<AccountCreateController>(builder: (ctr) {
         return SizedBox(
           width: 240,
-          height: 45,
+          height: 36,
           child: BoardDateTimeInputField(
             key: UniqueKey(),
             decoration: const InputDecoration(hintText: "请选择"),

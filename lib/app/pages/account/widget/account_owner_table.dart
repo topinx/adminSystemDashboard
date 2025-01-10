@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 import 'package:top_back/app/widgets/table_title_text.dart';
 import 'package:top_back/bean/bean_account_list.dart';
 
-import '../controller/account_owner_controller.dart';
+import '../controller/account_controller.dart';
 
 class AccountOwnerTable extends StatelessWidget {
   const AccountOwnerTable({super.key});
 
-  TableRow buildTableTitle(AccountOwnerController ctr, int count) {
+  TableRow buildTableTitle(AccountController ctr, int count) {
     bool select = ctr.selectList.isNotEmpty;
     bool selectAll = ctr.selectList.length == count && count > 0;
 
@@ -28,7 +28,7 @@ class AccountOwnerTable extends StatelessWidget {
     );
   }
 
-  TableRow buildTableRow(AccountOwnerController ctr, BeanAccountList bean) {
+  TableRow buildTableRow(AccountController ctr, BeanAccountList bean) {
     String status1 = ["", "普通用户", "认证博主", "认证商户"][bean.authenticationStatus];
     String status2 = ["已停用", "正常使用"][bean.status];
 
@@ -61,7 +61,7 @@ class AccountOwnerTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: EdgeInsets.zero,
-      child: GetBuilder<AccountOwnerController>(
+      child: GetBuilder<AccountController>(
           id: "check-table",
           builder: (ctr) {
             int start = (ctr.pageNum - 1) * ctr.pageSize;

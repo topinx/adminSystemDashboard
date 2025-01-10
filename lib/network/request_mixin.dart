@@ -72,25 +72,6 @@ mixin RequestMixin {
     );
   }
 
-  Future delete(
-    String path, {
-    Object? param,
-    dio.CancelToken? cancelToken,
-    dio.ProgressCallback? progress,
-    DioCallbackS? success,
-    DioCallbackE? error,
-  }) {
-    return DioClient().doRequest(
-      path,
-      "DELETE",
-      data: param,
-      cancelToken: cancelToken,
-      progressR: progress,
-      callbackS: success,
-      callbackE: (code, msg) => _onResponseError(code, msg, error: error),
-    );
-  }
-
   Future<String> upload(Uint8List data, String name) async {
     var source = dio.MultipartFile.fromBytes(data, filename: name);
 

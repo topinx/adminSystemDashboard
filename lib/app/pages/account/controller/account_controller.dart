@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/pages.dart';
 import 'package:top_back/bean/bean_account_list.dart';
+import 'package:top_back/contants/app_storage.dart';
 import 'package:top_back/contants/http_constants.dart';
 import 'package:top_back/network/request_mixin.dart';
 
-class AccountManageController extends GetxController with RequestMixin {
+class AccountController extends GetxController with RequestMixin {
   TextEditingController inputName = TextEditingController();
   TextEditingController inputPhone = TextEditingController();
   TextEditingController inputEmail = TextEditingController();
+
+  bool isManageAccountUI = true;
 
   int accountCnt = 0;
   int checkCnt = 0;
@@ -33,6 +36,13 @@ class AccountManageController extends GetxController with RequestMixin {
   List<BeanAccountList> beanList = [];
 
   List<BeanAccountList> selectList = [];
+
+  @override
+  void onInit() {
+    super.onInit();
+    isManageAccountUI =
+        bool.tryParse(Get.parameters["isManage"] ?? "true") ?? true;
+  }
 
   @override
   void onReady() {
@@ -103,7 +113,6 @@ class AccountManageController extends GetxController with RequestMixin {
 
   void onTapPage(int page) {
     pageNum = page;
-
     if (beanList.length - pageSize * (pageNum - 1) > 0) {
       update(["check-table"]);
     } else {
@@ -163,9 +172,22 @@ class AccountManageController extends GetxController with RequestMixin {
   }
 
   void requestCheckCount({bool all = false}) async {
-    await get(
-      HttpConstants.accountCnt,
-      param: all
+    int user = AppStorage().beanLogin.userId;
+
+    Map<String, dynamic> param = {};
+    if (!isManageAccountUI) {
+      param = all
+          ? {"userId": user}
+          : {
+              "userId": user,
+              "nickname": checkNick,
+              "phone": checkPhone,
+              "email": checkEmail,
+              "status": checkStatusA,
+              "authenticationStatus": checkStatusV,
+            };
+    } else {
+      param = all
           ? {}
           : {
               "nickname": checkNick,
@@ -173,7 +195,12 @@ class AccountManageController extends GetxController with RequestMixin {
               "email": checkEmail,
               "status": checkStatusA,
               "authenticationStatus": checkStatusV,
-            },
+            };
+    }
+
+    await get(
+      HttpConstants.accountCnt,
+      param: param,
       success: (data) => all ? accountCnt = data : checkCnt = data,
     );
 
@@ -182,9 +209,22 @@ class AccountManageController extends GetxController with RequestMixin {
 
   Future<void> requestAccountList() async {
     BotToast.showLoading();
-    await get(
-      HttpConstants.accountList,
-      param: {
+    int user = AppStorage().beanLogin.userId;
+
+    Map<String, dynamic> param = {};
+    if (!isManageAccountUI) {
+      param = {
+        "pageNo": pageNum,
+        "limit": pageSize,
+        "userId": user,
+        "nickname": checkNick,
+        "phone": checkPhone,
+        "email": checkEmail,
+        "status": checkStatusA,
+        "authenticationStatus": checkStatusV,
+      };
+    } else {
+      param = {
         "pageNo": pageNum,
         "limit": pageSize,
         "nickname": checkNick,
@@ -192,7 +232,12 @@ class AccountManageController extends GetxController with RequestMixin {
         "email": checkEmail,
         "status": checkStatusA,
         "authenticationStatus": checkStatusV,
-      },
+      };
+    }
+
+    await get(
+      HttpConstants.accountList,
+      param: param,
       success: onAccountList,
     );
     BotToast.closeAllLoading();

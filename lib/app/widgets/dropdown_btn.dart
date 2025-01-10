@@ -80,7 +80,7 @@ class _DropdownBtnState extends State<DropdownBtn> {
         onChanged: onStatusChanged,
         buttonStyleData: ButtonStyleData(
           padding: EdgeInsets.zero,
-          height: widget.height ?? 45,
+          height: widget.height ?? 36,
           width: widget.width,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),

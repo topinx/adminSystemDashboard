@@ -10,7 +10,8 @@ class AccountInputField extends StatelessWidget {
   Widget buildTextField(BuildContext context) {
     return Align(
       alignment: Alignment.centerLeft,
-      child: ConstrainedBox(
+      child: Container(
+          height: 36,
           constraints: const BoxConstraints(maxWidth: 240),
           child: TextField(
             controller: ctr,
@@ -28,7 +29,7 @@ class AccountInputField extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(width: 60, height: 45, child: textWidget),
+          SizedBox(width: 60, height: 36, child: textWidget),
           const SizedBox(width: 5),
           Expanded(child: buildTextField(context)),
           const SizedBox(width: 20),
