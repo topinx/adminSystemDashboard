@@ -10,7 +10,9 @@ abstract class Routes {
   static const home = _Paths.home;
 
   static const accountCreate = home + _Paths.accountCreate;
-  static String ACCOUNT(bool isManage) => "$home/account/$isManage";
+  static const accountManage = home + _Paths.accountManage;
+  static const accountOwner = home + _Paths.accountOwner;
+
   static String ACCOUNT_INFO(int userId) => '$home/accountInfo/id=$userId';
   static String ACCOUNT_NOTE(int userId) => '$home/accountNote/id=$userId';
 
@@ -37,7 +39,8 @@ abstract class _Paths {
   static const login = '/login';
   static const home = '/home';
 
-  static const account = '/account/:isManage';
+  static const accountManage = '/account/manage';
+  static const accountOwner = '/account/accounts';
 
   static const accountCreate = '/accountCreate';
   static const accountInfo = '/accountInfo/id=:userId';

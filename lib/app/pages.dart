@@ -25,10 +25,17 @@ class AppPages {
       children: [
         GetPage(
           maintainState: false,
-          name: _Paths.account,
+          name: _Paths.accountManage,
           transition: Transition.noTransition,
-          page: () => const AccountView(),
-          binding: AccountBinding(),
+          page: () => const AccountManageView(),
+          binding: AccountManageBinding(),
+        ),
+        GetPage(
+          maintainState: false,
+          name: _Paths.accountOwner,
+          transition: Transition.noTransition,
+          page: () => const AccountOwnerView(),
+          binding: AccountOwnerBinding(),
         ),
         GetPage(
           maintainState: false,

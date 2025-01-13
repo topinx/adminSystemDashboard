@@ -11,9 +11,7 @@ class PubRmdFilter extends StatelessWidget {
 
     Widget content = Row(children: [
       const NoteDropUser(),
-      const NoteDropType(),
-      const NoteDropStatus(),
-      const NoteDropDate(),
+      // const NoteDropDate(),
       DropdownBtn(
           hint: "批量处理",
           width: 100,

@@ -4,20 +4,20 @@ import 'package:top_back/app/widgets/dropdown_btn.dart';
 import 'package:top_back/app/widgets/page_indicator.dart';
 import 'package:top_back/app/widgets/view_container.dart';
 
-import 'controller/account_controller.dart';
+import 'controller/account_owner_controller.dart';
 import 'widget/account_input_field.dart';
 import 'widget/account_status_field.dart';
 import 'widget/account_owner_table.dart';
 
-class AccountView extends StatefulWidget {
-  const AccountView({super.key});
+class AccountOwnerView extends StatefulWidget {
+  const AccountOwnerView({super.key});
 
   @override
-  State<AccountView> createState() => _AccountViewState();
+  State<AccountOwnerView> createState() => _AccountOwnerViewState();
 }
 
-class _AccountViewState extends State<AccountView> {
-  final AccountController ctr = Get.find<AccountController>();
+class _AccountOwnerViewState extends State<AccountOwnerView> {
+  final AccountOwnerController ctr = Get.find<AccountOwnerController>();
 
   Widget buildInputContent() {
     return Row(children: [
@@ -29,7 +29,7 @@ class _AccountViewState extends State<AccountView> {
 
   Widget buildFilterContent() {
     return Row(children: [
-      GetBuilder<AccountController>(
+      GetBuilder<AccountOwnerController>(
           id: "check-status",
           builder: (ctr) => AccountStatusField(
                 ctr.statusAccount,
@@ -37,7 +37,7 @@ class _AccountViewState extends State<AccountView> {
                 const ["全部", "正常使用", "已停用"],
                 onChanged: ctr.onStatusAChanged,
               )),
-      GetBuilder<AccountController>(
+      GetBuilder<AccountOwnerController>(
           id: "check-status",
           builder: (ctr) => AccountStatusField(
                 ctr.statusVerify,
@@ -45,7 +45,7 @@ class _AccountViewState extends State<AccountView> {
                 const ["全部", "普通用户", "认证博主", "认证商户"],
                 onChanged: ctr.onStatusVChanged,
               )),
-      GetBuilder<AccountController>(
+      GetBuilder<AccountOwnerController>(
         id: "user-count",
         builder: (ctr) => StatusText("共${ctr.accountCnt}个用户"),
       ),
@@ -65,13 +65,9 @@ class _AccountViewState extends State<AccountView> {
       OutlinedButton(
           style: style, onPressed: ctr.onTapReset, child: const Text("重置")),
       const SizedBox(width: 30),
-      if (!ctr.isManageAccountUI) ...[
-        OutlinedButton(
-            style: style,
-            onPressed: ctr.onTapCreate,
-            child: const Text("创建账号")),
-        const SizedBox(width: 30),
-      ],
+      OutlinedButton(
+          style: style, onPressed: ctr.onTapCreate, child: const Text("创建账号")),
+      const SizedBox(width: 30),
       DropdownBtn(
           hint: "批量处理",
           width: 100,
@@ -106,7 +102,7 @@ class _AccountViewState extends State<AccountView> {
         buildButtonContent(),
         const SizedBox(height: 20),
         const Expanded(child: AccountOwnerTable()),
-        GetBuilder<AccountController>(
+        GetBuilder<AccountOwnerController>(
           id: "check-page",
           builder: (ctr) => PageIndicator(
             itemCount: ctr.checkCnt,

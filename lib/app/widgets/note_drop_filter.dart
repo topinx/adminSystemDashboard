@@ -3,35 +3,63 @@ import 'package:flutter/material.dart';
 import 'date_drop_btn.dart';
 import 'dropdown_btn.dart';
 
-class NoteDropStatus extends StatelessWidget {
-  const NoteDropStatus({super.key});
+enum NoteDropType { tendency, limit, type, audited, recommend }
+
+extension NoteDropTypeExtension on NoteDropType {
+  String get title => ["笔记偏好", "可见范围", "笔记类型", "审核状态", "推荐状态"][index];
+
+  List<String> get menuList => [
+        ["全部", "男性", "女性", "综合"],
+        ["全部", "私密", "公开", "仅好友"],
+        ["全部", "图文笔记", "视频笔记"],
+        ["全部", "未审核", "通过", "未通过", "违规"],
+        ["全部", "不推荐", "推荐"],
+      ][index];
+
+  List<int?> get tag => [
+        [null, 1, 2, 3],
+        [null, 0, 1, 2],
+        [null, 1, 2],
+        [null, 0, 1, 2, 3],
+        [null, 0, 1],
+      ][index];
+}
+
+class NoteDropFilter extends StatelessWidget {
+  const NoteDropFilter(this.type, {super.key, this.onChange});
+
+  final NoteDropType type;
+
+  final Function(int?)? onChange;
 
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle1 = const TextStyle(fontSize: 14);
 
     return Row(children: [
-      const Text("审核状态："),
+      Text("${type.title}："),
       DropdownBtn(
-          width: 100,
-          height: 36,
-          init: 0,
-          selectedItemBuilder: (_) => [
-                Center(child: Text("全部", style: textStyle1)),
-                Center(child: Text("未审核", style: textStyle1)),
-                Center(child: Text("已审核", style: textStyle1)),
-                Center(child: Text("未推荐", style: textStyle1)),
-                Center(child: Text("已推荐", style: textStyle1)),
-              ],
-          onChanged: (_) {},
-          menuList: const ["全部", "未审核", "已审核", "未推荐", "已推荐"]),
+        width: 100,
+        height: 36,
+        init: 0,
+        selectedItemBuilder: (_) => List.generate(
+          type.menuList.length,
+          (i) => Center(child: Text(type.menuList[i], style: textStyle1)),
+        ),
+        onChanged: (i) {
+          if (onChange != null) onChange!(type.tag[i]);
+        },
+        menuList: type.menuList,
+      ),
       const SizedBox(width: 20),
     ]);
   }
 }
 
 class NoteDropDate extends StatelessWidget {
-  const NoteDropDate({super.key});
+  const NoteDropDate({super.key, required this.onChange});
+
+  final Function(int, String) onChange;
 
   @override
   Widget build(BuildContext context) {
@@ -39,37 +67,12 @@ class NoteDropDate extends StatelessWidget {
 
     return Row(children: [
       const Text("发布时间："),
-      const DateDropBtn("开始日期"),
+      DateDropBtn("开始日期", onChange: (string) => onChange(1, string)),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Text("~", style: textStyle1),
       ),
-      const DateDropBtn("结束日期"),
-      const SizedBox(width: 20),
-    ]);
-  }
-}
-
-class NoteDropType extends StatelessWidget {
-  const NoteDropType({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    TextStyle textStyle1 = const TextStyle(fontSize: 14);
-
-    return Row(children: [
-      const Text("笔记类型："),
-      DropdownBtn(
-          width: 100,
-          height: 36,
-          init: 0,
-          selectedItemBuilder: (_) => [
-                Center(child: Text("全部", style: textStyle1)),
-                Center(child: Text("图文笔记", style: textStyle1)),
-                Center(child: Text("视频笔记", style: textStyle1)),
-              ],
-          onChanged: (_) {},
-          menuList: const ["全部", "图文笔记", "视频笔记"]),
+      DateDropBtn("结束日期", onChange: (string) => onChange(2, string)),
       const SizedBox(width: 20),
     ]);
   }
@@ -95,58 +98,6 @@ class NoteDropUser extends StatelessWidget {
               ],
           onChanged: (_) {},
           menuList: const ["全部", "mm-000", "mm-001"]),
-      const SizedBox(width: 20),
-    ]);
-  }
-}
-
-class NoteDropPreferences extends StatelessWidget {
-  const NoteDropPreferences({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    TextStyle textStyle1 = const TextStyle(fontSize: 14);
-
-    return Row(children: [
-      const Text("笔记偏好："),
-      DropdownBtn(
-          width: 100,
-          height: 36,
-          init: 0,
-          selectedItemBuilder: (_) => [
-                Center(child: Text("全部", style: textStyle1)),
-                Center(child: Text("男性", style: textStyle1)),
-                Center(child: Text("女性", style: textStyle1)),
-                Center(child: Text("综合", style: textStyle1)),
-              ],
-          onChanged: (_) {},
-          menuList: const ["全部", "男性", "女性", "综合"]),
-      const SizedBox(width: 20),
-    ]);
-  }
-}
-
-class NoteDropLimit extends StatelessWidget {
-  const NoteDropLimit({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    TextStyle textStyle1 = const TextStyle(fontSize: 14);
-
-    return Row(children: [
-      const Text("可见范围："),
-      DropdownBtn(
-          width: 100,
-          height: 36,
-          init: 0,
-          selectedItemBuilder: (_) => [
-                Center(child: Text("全部", style: textStyle1)),
-                Center(child: Text("公开", style: textStyle1)),
-                Center(child: Text("私有", style: textStyle1)),
-                Center(child: Text("好友", style: textStyle1)),
-              ],
-          onChanged: (_) {},
-          menuList: const ["全部", "公开", "私有", "好友"]),
       const SizedBox(width: 20),
     ]);
   }

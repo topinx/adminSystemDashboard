@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
       Iterable<GetPage> pageList, String initialRoute) {
     var ret = pageList.toList();
     if (ret.isEmpty && ModalRoute.of(context)!.isCurrent) {
-      ret.add(context.delegate.matchRoute(Routes.ACCOUNT(true)).route!);
+      ret.add(context.delegate.matchRoute(Routes.accountManage).route!);
     }
     final navigator =
         Get.nestedKey(Routes.home)?.navigatorKey.currentState?.widget;

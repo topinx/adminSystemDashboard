@@ -2,9 +2,11 @@ import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
 
 class DateDropBtn extends StatefulWidget {
-  const DateDropBtn(this.hint, {super.key});
+  const DateDropBtn(this.hint, {super.key, required this.onChange});
 
   final String hint;
+
+  final Function(String) onChange;
 
   @override
   State<DateDropBtn> createState() => _DateDropBtnState();
@@ -40,12 +42,14 @@ class _DateDropBtnState extends State<DateDropBtn> {
     if (date == null) return;
     dateTime = date;
     if (mounted) setState(() {});
+    widget.onChange(dateText);
   }
 
   void onTapReset() {
     Navigator.of(context).pop();
     dateTime = null;
     if (mounted) setState(() {});
+    widget.onChange("");
   }
 
   Widget resetButton() {

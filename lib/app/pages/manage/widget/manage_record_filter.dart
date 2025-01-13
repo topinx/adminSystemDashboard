@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:top_back/app/widgets/dropdown_btn.dart';
-import 'package:top_back/app/widgets/note_drop_filter.dart';
 
 class ManageRecordFilter extends StatelessWidget {
   const ManageRecordFilter({super.key});
@@ -22,9 +21,7 @@ class ManageRecordFilter extends StatelessWidget {
         ),
       ),
       const SizedBox(width: 20),
-      const NoteDropType(),
-      const NoteDropStatus(),
-      const NoteDropDate(),
+      // const NoteDropDate(),
       DropdownBtn(
           hint: "批量处理",
           width: 100,

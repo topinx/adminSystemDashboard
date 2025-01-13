@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:top_back/app/widgets/table_title_text.dart';
+import 'package:top_back/contants/app_constants.dart';
 
 class AccountNoteTable extends StatelessWidget {
   const AccountNoteTable({super.key});
@@ -25,7 +27,7 @@ class AccountNoteTable extends StatelessWidget {
     return TableRow(
       children: [
         TableCell(child: TableSelect(() {}, false, false)),
-        TableCell(child: buildNote()),
+        TableCell(child: buildCover("")),
         const TableCell(child: TableText("", false)),
         const TableCell(child: TableText("未推荐", false)),
         const TableCell(child: TableText("100", false)),
@@ -37,13 +39,28 @@ class AccountNoteTable extends StatelessWidget {
     );
   }
 
-  Widget buildNote() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(5),
-        child: Container(color: Colors.black12),
+  Widget buildCover(String cover) {
+    DecorationImage? image;
+    if (cover.isNotEmpty) {
+      image =
+          DecorationImage(image: NetworkImage(AppConstants.imgLink + cover));
+    }
+
+    return GestureDetector(
+      onTap: () => onTapCover(cover),
+      child: Container(
+        margin: const EdgeInsets.all(5),
+        height: 50,
+        decoration: BoxDecoration(image: image),
       ),
     );
+  }
+
+  void onTapCover(String cover) {
+    Widget image = Center(
+      child: Image(image: NetworkImage(AppConstants.imgLink + cover)),
+    );
+    Get.dialog(image);
   }
 
   @override

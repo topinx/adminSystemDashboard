@@ -16,12 +16,12 @@ class HomeController extends GetxController with RequestMixin {
       ..menuIcon = Icons.add
       ..menuTxt = "账号管理"
       ..menuId = 2
-      ..menuRoute = Routes.ACCOUNT(true),
+      ..menuRoute = Routes.accountManage,
     3: Menu()
       ..menuIcon = Icons.add
       ..menuTxt = "我的账号"
       ..menuId = 3
-      ..menuRoute = Routes.ACCOUNT(false),
+      ..menuRoute = Routes.accountOwner,
     4: Menu()
       ..menuIcon = Icons.edit_note
       ..menuTxt = "内容管理"
