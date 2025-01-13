@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:top_back/app/pages.dart';
 import 'package:top_back/app/widgets/note_drop_filter.dart';
 import 'package:top_back/bean/bean_note_list.dart';
 import 'package:top_back/contants/http_constants.dart';
@@ -52,7 +53,9 @@ class ManageNoteController extends GetxController with RequestMixin {
     requestNoteList();
   }
 
-  void onTapCheck(BeanNoteList bean) {}
+  void onTapCheck(BeanNoteList bean) {
+    Get.toNamed(Routes.NOTE_DETAIL(bean.noteId));
+  }
 
   void onFilterChange(NoteDropType type, int? tag) {
     switch (type) {

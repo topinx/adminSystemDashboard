@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:top_back/app/widgets/select_item.dart';
 import 'package:top_back/bean/bean_topic.dart';
 import 'package:top_back/contants/app_constants.dart';
 
@@ -57,47 +58,9 @@ class _ManageTopicEditState extends State<ManageTopicEdit> {
       child: GetBuilder<TopicCreateController>(builder: (ctr) {
         return Row(children: [
           const Text("封禁开关："),
-          ElevatedButton(
-            onPressed: ctr.onTapBan,
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.black,
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              shadowColor: Colors.transparent,
-              padding: EdgeInsets.zero,
-            ),
-            child: Row(children: [
-              Icon(
-                ctr.status == 0
-                    ? Icons.radio_button_checked
-                    : Icons.radio_button_unchecked,
-                size: 14,
-              ),
-              const SizedBox(width: 5),
-              const Text("封禁")
-            ]),
-          ),
+          SelectItem("封禁", ctr.status == 0, onTap: ctr.onTapBan),
           const SizedBox(width: 10),
-          ElevatedButton(
-            onPressed: ctr.onTapUnban,
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.black,
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              shadowColor: Colors.transparent,
-              padding: EdgeInsets.zero,
-            ),
-            child: Row(children: [
-              Icon(
-                ctr.status == 1
-                    ? Icons.radio_button_checked
-                    : Icons.radio_button_unchecked,
-                size: 14,
-              ),
-              const SizedBox(width: 5),
-              const Text("解除封禁")
-            ]),
-          )
+          SelectItem("解除封禁", ctr.status == 1, onTap: ctr.onTapUnban),
         ]);
       }),
     );

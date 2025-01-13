@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:top_back/app/widgets/select_item.dart';
 
 class PubNoteTendency extends StatelessWidget {
   const PubNoteTendency({super.key});
@@ -13,53 +14,11 @@ class PubNoteTendency extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: Text("笔记偏好：", style: textStyle),
       ),
-      ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          shadowColor: Colors.transparent,
-          padding: EdgeInsets.zero,
-        ),
-        child: const Row(children: [
-          Icon(Icons.radio_button_unchecked, size: 14),
-          SizedBox(width: 5),
-          Text("男性")
-        ]),
-      ),
+      const SelectItem("男性", false),
       const SizedBox(width: 20),
-      ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          shadowColor: Colors.transparent,
-          padding: EdgeInsets.zero,
-        ),
-        child: const Row(children: [
-          Icon(Icons.radio_button_unchecked, size: 14),
-          SizedBox(width: 5),
-          Text("女性")
-        ]),
-      ),
+      const SelectItem("女性", false),
       const SizedBox(width: 20),
-      ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          shadowColor: Colors.transparent,
-          padding: EdgeInsets.zero,
-        ),
-        child: const Row(children: [
-          Icon(Icons.radio_button_unchecked, size: 14),
-          SizedBox(width: 5),
-          Text("综合")
-        ]),
-      ),
+      const SelectItem("综合", false),
     ]);
   }
 }
