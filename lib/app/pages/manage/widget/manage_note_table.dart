@@ -18,7 +18,7 @@ class ManageNoteTable extends StatelessWidget {
         TableCell(child: TableText("审核状态", true)),
         TableCell(child: TableText("推荐状态", true)),
         TableCell(child: TableText("笔记类型", true)),
-        TableCell(child: TableText("笔记权限", true)),
+        TableCell(child: TableText("可见范围", true)),
         TableCell(child: TableText("审核人", true)),
         TableCell(child: TableText("发布时间", true)),
         TableCell(child: TableText("操作", true)),
