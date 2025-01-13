@@ -1,31 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:top_back/app/widgets/note_drop_filter.dart';
 
-import '../controller/pub_recommend_controller.dart';
-
 class PubRmdFilter extends StatelessWidget {
-  const PubRmdFilter({super.key});
+  const PubRmdFilter({
+    super.key,
+    required this.onSubmit,
+    required this.onChange,
+    required this.onTimeChange,
+  });
+
+  final Function(String) onSubmit;
+
+  final Function(NoteDropType type, int?) onChange;
+
+  final Function(int, String) onTimeChange;
 
   @override
   Widget build(BuildContext context) {
-    final PubRecommendController ctr = Get.find<PubRecommendController>();
-
     Widget content = Row(children: [
-      const NoteDropUser(),
+      NoteDropUser(onSubmit),
       NoteDropFilter(
         NoteDropType.audited,
-        onChange: (tag) => ctr.onFilterChange(NoteDropType.audited, tag),
+        onChange: (tag) => onChange(NoteDropType.audited, tag),
       ),
       NoteDropFilter(
         NoteDropType.recommend,
-        onChange: (tag) => ctr.onFilterChange(NoteDropType.audited, tag),
+        onChange: (tag) => onChange(NoteDropType.audited, tag),
       ),
       NoteDropFilter(
         NoteDropType.type,
-        onChange: (tag) => ctr.onFilterChange(NoteDropType.type, tag),
+        onChange: (tag) => onChange(NoteDropType.type, tag),
       ),
-      NoteDropDate(onChange: ctr.onTimeChange),
+      NoteDropDate(onChange: onTimeChange),
     ]);
 
     return SizedBox(

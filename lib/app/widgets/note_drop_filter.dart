@@ -79,7 +79,9 @@ class NoteDropDate extends StatelessWidget {
 }
 
 class NoteDropUser extends StatelessWidget {
-  const NoteDropUser({super.key});
+  const NoteDropUser(this.onSubmit, {super.key});
+
+  final Function(String) onSubmit;
 
   @override
   Widget build(BuildContext context) {
@@ -87,17 +89,15 @@ class NoteDropUser extends StatelessWidget {
 
     return Row(children: [
       const Text("发布者："),
-      DropdownBtn(
-          width: 100,
-          height: 36,
-          init: 0,
-          selectedItemBuilder: (_) => [
-                Center(child: Text("全部", style: textStyle1)),
-                Center(child: Text("mm-000", style: textStyle1)),
-                Center(child: Text("mm-001", style: textStyle1)),
-              ],
-          onChanged: (_) {},
-          menuList: const ["全部", "mm-000", "mm-001"]),
+      SizedBox(
+        height: 36,
+        width: 100,
+        child: TextField(
+          style: textStyle1,
+          onSubmitted: onSubmit,
+          decoration: const InputDecoration(hintText: "输入并查找"),
+        ),
+      ),
       const SizedBox(width: 20),
     ]);
   }

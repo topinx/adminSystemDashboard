@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/widgets/table_title_text.dart';
+import 'package:top_back/bean/bean_note_list.dart';
 import 'package:top_back/contants/app_constants.dart';
+
+import '../controller/pub_recommend_controller.dart';
 
 class PubRmdTable extends StatelessWidget {
   const PubRmdTable({super.key});
@@ -23,18 +26,24 @@ class PubRmdTable extends StatelessWidget {
     );
   }
 
-  TableRow buildTableRow() {
+  TableRow buildTableRow(PubRecommendController ctr, BeanNoteList bean) {
+    String audited = ["未审核", "通过", "未通过", "违规"][bean.auditedStatus];
+    String recommended = bean.recommendedStatus == null
+        ? ""
+        : ["不推荐", "推荐"][bean.recommendedStatus!];
+    String noteType = ["", "图文笔记", "视频笔记"][bean.noteType];
+
     return TableRow(
       children: [
-        TableCell(child: buildCover("")),
-        const TableCell(child: TableText("", false)),
-        const TableCell(child: TableText("未推荐", false)),
-        const TableCell(child: TableText("图文笔记", false)),
-        const TableCell(child: TableText("", false)),
-        const TableCell(child: TableText("", false)),
-        const TableCell(child: TableText("", false)),
-        const TableCell(child: TableText("2020-01-01", false)),
-        TableCell(child: TableCheck(() {})),
+        TableCell(child: buildCover(bean.cover)),
+        TableCell(child: TableText(bean.title, false)),
+        TableCell(child: TableText(audited, false)),
+        TableCell(child: TableText(recommended, false)),
+        TableCell(child: TableText(noteType, false)),
+        TableCell(child: TableText("", false)),
+        TableCell(child: TableText(bean.createNickname, false)),
+        TableCell(child: TableText(bean.createTime, false)),
+        TableCell(child: TableCheck(() => ctr.onTapCheck(bean))),
       ],
     );
   }
@@ -67,23 +76,33 @@ class PubRmdTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: EdgeInsets.zero,
-      child: Table(
-        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        columnWidths: const {
-          1: FlexColumnWidth(),
-          2: FlexColumnWidth(1.5),
-          3: FlexColumnWidth(),
-          4: FlexColumnWidth(),
-          5: FlexColumnWidth(),
-          6: FlexColumnWidth(),
-          8: FlexColumnWidth(),
-          9: FlexColumnWidth(),
-        },
-        children: [
-          buildTableTitle(),
-          ...List.generate(10, (i) => buildTableRow()),
-        ],
-      ),
+      child: GetBuilder<PubRecommendController>(
+          id: "check-table",
+          builder: (ctr) {
+            int start = (ctr.pageNum - 1) * ctr.pageSize;
+            int end = start + ctr.pageSize;
+            end = end > ctr.beanList.length ? ctr.beanList.length : end;
+
+            List<BeanNoteList> tempList = ctr.beanList.sublist(start, end);
+            return Table(
+              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+              columnWidths: const {
+                1: FlexColumnWidth(),
+                2: FlexColumnWidth(1.5),
+                3: FlexColumnWidth(),
+                4: FlexColumnWidth(),
+                5: FlexColumnWidth(),
+                6: FlexColumnWidth(),
+                8: FlexColumnWidth(),
+                9: FlexColumnWidth(),
+              },
+              children: [
+                buildTableTitle(),
+                ...List.generate(
+                    tempList.length, (i) => buildTableRow(ctr, tempList[i])),
+              ],
+            );
+          }),
     );
   }
 }

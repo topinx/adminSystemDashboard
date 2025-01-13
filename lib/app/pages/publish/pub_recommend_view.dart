@@ -27,7 +27,11 @@ class _PubRecommendViewState extends State<PubRecommendView> {
         const SizedBox(height: 40),
         NoteDropPub(onTap: ctr.onTapPublish),
         const SizedBox(height: 20),
-        const PubRmdFilter(),
+        PubRmdFilter(
+          onChange: ctr.onFilterChange,
+          onTimeChange: ctr.onTimeChange,
+          onSubmit: ctr.onSubmitUser,
+        ),
         const SizedBox(height: 20),
         const Expanded(child: PubRmdTable()),
         GetBuilder<PubRecommendController>(

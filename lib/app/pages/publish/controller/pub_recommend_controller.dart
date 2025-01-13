@@ -1,8 +1,10 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/pages.dart';
 import 'package:top_back/app/widgets/note_drop_filter.dart';
 import 'package:top_back/bean/bean_note_list.dart';
+import 'package:top_back/contants/http_constants.dart';
 import 'package:top_back/network/request_mixin.dart';
 
 class PubRecommendController extends GetxController with RequestMixin {
@@ -17,6 +19,8 @@ class PubRecommendController extends GetxController with RequestMixin {
 
   /// 笔记类型 1-图文 2-视频
   int? noteType;
+
+  int? userId;
 
   TextEditingController inputSearch = TextEditingController();
 
@@ -45,11 +49,15 @@ class PubRecommendController extends GetxController with RequestMixin {
     requestNoteList();
   }
 
-  void onTapCheck(BeanNoteList bean) {}
+  void onTapCheck(BeanNoteList bean) {
+    Get.toNamed(Routes.NOTE_DETAIL(bean.noteId));
+  }
 
   void onTapPublish(int type) {
     Get.toNamed(Routes.PUBLISH(0, type + 1));
   }
+
+  void onSubmitUser(String string) {}
 
   void onFilterChange(NoteDropType type, int? tag) {
     switch (type) {
@@ -112,9 +120,40 @@ class PubRecommendController extends GetxController with RequestMixin {
     }
   }
 
-  Future<void> requestNoteCnt() async {}
+  Future<void> requestNoteCnt() async {
+    await get(
+      HttpConstants.noteCnt,
+      param: {
+        "userId": userId,
+        "beginTime": timeBegin,
+        "endTime": timeEnd,
+        "auditedStatus": auditedStatus,
+        "recommendedStatus": recommendedStatus,
+        "noteType": noteType,
+      },
+      success: (data) => checkCnt = data,
+    );
+    update(["check-page"]);
+  }
 
-  Future<void> requestNoteList() async {}
+  Future<void> requestNoteList() async {
+    BotToast.showLoading();
+    await get(
+      HttpConstants.noteListBack,
+      param: {
+        "pageNo": pageNum,
+        "limit": pageSize,
+        "userId": userId,
+        "beginTime": timeBegin,
+        "endTime": timeEnd,
+        "auditedStatus": auditedStatus,
+        "recommendedStatus": recommendedStatus,
+        "noteType": noteType,
+      },
+      success: onNoteList,
+    );
+    BotToast.closeAllLoading();
+  }
 
   void onNoteList(data) {
     pageNum = data["pageNo"];

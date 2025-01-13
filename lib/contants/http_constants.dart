@@ -62,4 +62,12 @@ class HttpConstants {
 
   /// 编辑话题状态
   static const topicStatus = "/adminsystem/contentManagement/updateTopicStatus";
+
+  /// 后台账号下的笔记列表
+  static const noteListBack =
+      "/adminsystem/contentManagement/getNoteListByUserId";
+
+  /// 后台账号下的笔记总数
+  static const noteCntBack =
+      "/adminsystem/contentManagement/countAuditNoteByUserId";
 }
