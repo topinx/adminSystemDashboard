@@ -30,8 +30,15 @@ class _PubRecommendViewState extends State<PubRecommendView> {
         const PubRmdFilter(),
         const SizedBox(height: 20),
         const Expanded(child: PubRmdTable()),
-        PageIndicator(
-            itemCount: 200, onTapPage: (_) {}, curPage: 1, onSizeChang: (_) {})
+        GetBuilder<PubRecommendController>(
+          id: "check-page",
+          builder: (ctr) => PageIndicator(
+            itemCount: ctr.checkCnt,
+            onTapPage: ctr.onTapPage,
+            curPage: ctr.pageNum,
+            onSizeChang: ctr.onPageSizeChanged,
+          ),
+        ),
       ]),
     );
   }

@@ -99,6 +99,7 @@ class ManageTopicController extends GetxController with RequestMixin {
 
     if (value == 0) {
       // 批量封禁
+      requestModify(0);
     } else {
       // 批量删除
     }
@@ -136,5 +137,32 @@ class ManageTopicController extends GetxController with RequestMixin {
     );
 
     update(["check-page"]);
+  }
+
+  Future<void> requestModify(int status) async {
+    BotToast.showLoading();
+    List topics = selectList.map((x) => x.id).toList();
+
+    await post(
+      HttpConstants.topicStatus,
+      param: {
+        "ids": topics,
+        "status": status,
+      },
+      success: (data) {
+        for (var topic in topics) {
+          var bean1 = selectList.firstWhereOrNull((x) => x.id == topic);
+          if (bean1 != null) {
+            bean1.status = status;
+          }
+          var bean2 = beanList.firstWhereOrNull((x) => x.id == topic);
+          if (bean2 != null) {
+            bean2.status = status;
+          }
+        }
+        update(["check-table"]);
+      },
+    );
+    BotToast.closeAllLoading();
   }
 }

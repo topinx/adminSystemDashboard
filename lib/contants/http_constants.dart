@@ -56,4 +56,10 @@ class HttpConstants {
 
   /// 创建话题
   static const topicCreate = "/adminsystem/contentManagement/createTopic";
+
+  /// 编辑话题
+  static const topicEdit = "/adminsystem/contentManagement/updateTopic";
+
+  /// 编辑话题状态
+  static const topicStatus = "/adminsystem/contentManagement/updateTopicStatus";
 }

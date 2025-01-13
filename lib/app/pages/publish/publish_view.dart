@@ -7,7 +7,7 @@ import 'controller/publish_controller.dart';
 import 'widget/pub_drop_user.dart';
 import 'widget/pub_image_list.dart';
 import 'widget/pub_input_field.dart';
-import 'widget/pub_note_preference.dart';
+import 'widget/pub_note_tendency.dart';
 
 class PublishView extends StatefulWidget {
   const PublishView({super.key});
@@ -43,7 +43,7 @@ class _PublishViewState extends State<PublishView> {
       const SizedBox(height: 20),
       const PubInputOpen(),
       const SizedBox(height: 20),
-      const PubNotePreference(),
+      const PubNoteTendency(),
       const SizedBox(height: 20),
       buildButtons(),
     ]);

@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 
-class PubNotePreference extends StatefulWidget {
-  const PubNotePreference({super.key});
+class PubNoteTendency extends StatelessWidget {
+  const PubNoteTendency({super.key});
 
-  @override
-  State<PubNotePreference> createState() => _PubNotePreferenceState();
-}
-
-class _PubNotePreferenceState extends State<PubNotePreference> {
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = const TextStyle(fontSize: 14);
@@ -16,7 +11,7 @@ class _PubNotePreferenceState extends State<PubNotePreference> {
         height: 36,
         width: 80,
         alignment: Alignment.centerLeft,
-        child: Text("笔记权限：", style: textStyle),
+        child: Text("笔记偏好：", style: textStyle),
       ),
       ElevatedButton(
         onPressed: () {},

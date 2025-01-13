@@ -51,6 +51,58 @@ class _ManageTopicEditState extends State<ManageTopicEdit> {
     });
   }
 
+  Widget buildEditBan() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 0, 60, 20),
+      child: GetBuilder<TopicCreateController>(builder: (ctr) {
+        return Row(children: [
+          const Text("封禁开关："),
+          ElevatedButton(
+            onPressed: ctr.onTapBan,
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              shadowColor: Colors.transparent,
+              padding: EdgeInsets.zero,
+            ),
+            child: Row(children: [
+              Icon(
+                ctr.status == 0
+                    ? Icons.radio_button_checked
+                    : Icons.radio_button_unchecked,
+                size: 14,
+              ),
+              const SizedBox(width: 5),
+              const Text("封禁")
+            ]),
+          ),
+          const SizedBox(width: 10),
+          ElevatedButton(
+            onPressed: ctr.onTapUnban,
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              shadowColor: Colors.transparent,
+              padding: EdgeInsets.zero,
+            ),
+            child: Row(children: [
+              Icon(
+                ctr.status == 1
+                    ? Icons.radio_button_checked
+                    : Icons.radio_button_unchecked,
+                size: 14,
+              ),
+              const SizedBox(width: 5),
+              const Text("解除封禁")
+            ]),
+          )
+        ]);
+      }),
+    );
+  }
+
   Widget buildEditContent() {
     return Column(children: [
       Row(children: [
@@ -75,24 +127,7 @@ class _ManageTopicEditState extends State<ManageTopicEdit> {
           buildCoverContent(),
         ]),
       ),
-      Visibility(
-        visible: widget.topic != null,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 60, 20),
-          child: Row(children: [
-            const Text("封禁开关："),
-            OutlinedButton(onPressed: ctr.onTapBan, child: const Text("封禁")),
-            const SizedBox(width: 10),
-            OutlinedButton(
-              onPressed: ctr.onTapUnban,
-              style: OutlinedButton.styleFrom(
-                fixedSize: const Size.fromWidth(100),
-              ),
-              child: const Text("解除封禁"),
-            ),
-          ]),
-        ),
-      ),
+      Visibility(visible: widget.topic != null, child: buildEditBan()),
       const Spacer(),
       Row(mainAxisAlignment: MainAxisAlignment.end, children: [
         OutlinedButton(onPressed: onTapCancel, child: const Text("取消")),

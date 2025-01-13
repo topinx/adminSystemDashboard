@@ -18,6 +18,14 @@ class TopicCreateController extends GetxController with RequestMixin {
   String fileCoverName = "";
   Uint8List? dataCover;
 
+  int status = 1;
+
+  @override
+  void onInit() {
+    super.onInit();
+    status = topic?.status ?? 1;
+  }
+
   @override
   void onReady() {
     super.onReady();
@@ -43,9 +51,15 @@ class TopicCreateController extends GetxController with RequestMixin {
     update();
   }
 
-  void onTapBan() {}
+  void onTapBan() {
+    status = 0;
+    update();
+  }
 
-  void onTapUnban() {}
+  void onTapUnban() {
+    status = 1;
+    update();
+  }
 
   Future<bool> onTapConfirm() async {
     if (topic == null) {
@@ -63,7 +77,16 @@ class TopicCreateController extends GetxController with RequestMixin {
       }
       return await requestCreate();
     } else {
-      return false;
+      inputName.text = inputName.text.trimRight();
+      if (!inputName.text.endsWith(" ")) {
+        inputName.text += " ";
+      }
+      if (!checkTopic()) {
+        showToast("请输入正确的话题");
+        return false;
+      }
+
+      return await requestEdit();
     }
   }
 
@@ -96,6 +119,36 @@ class TopicCreateController extends GetxController with RequestMixin {
     BotToast.closeAllLoading();
     if (success) {
       showToast("创建成功");
+    }
+    return success;
+  }
+
+  Future<bool> requestEdit() async {
+    BotToast.showLoading();
+
+    Map<String, dynamic> param = {
+      "id": topic!.id,
+      "name": inputName.text,
+      "status": status,
+    };
+
+    if (dataCover != null && fileCoverName.isNotEmpty) {
+      String name =
+          "topic/${DateTime.now().millisecondsSinceEpoch}/$fileCoverName";
+      String image = await upload(dataCover!, name);
+      if (image.isNotEmpty) param.addEntries({"avatar": image}.entries);
+    }
+
+    bool success = false;
+    await post(
+      HttpConstants.topicEdit,
+      param: param,
+      success: (_) => success = true,
+    );
+
+    BotToast.closeAllLoading();
+    if (success) {
+      showToast("编辑成功");
     }
     return success;
   }
