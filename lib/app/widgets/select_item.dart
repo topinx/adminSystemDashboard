@@ -22,9 +22,13 @@ class SelectItem extends StatelessWidget {
       ),
       child: Row(children: [
         Icon(active ? Icons.radio_button_checked : Icons.radio_button_unchecked,
-            size: 14),
+            size: 14, color: active ? const Color(0xFF3871BB) : Colors.black),
         const SizedBox(width: 5),
-        Text(text)
+        Text(
+          text,
+          style:
+              TextStyle(color: active ? const Color(0xFF3871BB) : Colors.black),
+        ),
       ]),
     );
   }

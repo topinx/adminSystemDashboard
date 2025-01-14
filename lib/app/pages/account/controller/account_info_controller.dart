@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:top_back/app/pages.dart';
 import 'package:top_back/bean/bean_account_info.dart';
 import 'package:top_back/bean/bean_inter_cnt.dart';
+import 'package:top_back/bean/bean_note_list.dart';
 import 'package:top_back/contants/http_constants.dart';
 import 'package:top_back/network/request_mixin.dart';
 
@@ -40,6 +41,9 @@ class AccountInfoController extends GetxController with RequestMixin {
   Uint8List? dataCover;
   String nameCover = "";
 
+  List<BeanNoteList> beanList = [];
+  int checkCnt = 0;
+
   @override
   void onInit() {
     super.onInit();
@@ -51,6 +55,8 @@ class AccountInfoController extends GetxController with RequestMixin {
     super.onReady();
     requestUserInfo();
     requestInteractiveCnt();
+    requestNoteList();
+    requestNoteCnt();
   }
 
   @override
@@ -270,5 +276,35 @@ class AccountInfoController extends GetxController with RequestMixin {
       param: dio.FormData.fromMap({"userId": info.userId}),
       success: (_) => showToast("密码已重置"),
     );
+  }
+
+  Future<void> requestNoteCnt() async {
+    await get(
+      HttpConstants.noteCnt,
+      param: {
+        "createByList": [userId]
+      },
+      success: (data) => checkCnt = data,
+    );
+    update(["note-count"]);
+  }
+
+  Future<void> requestNoteList() async {
+    await get(
+      HttpConstants.noteList,
+      param: {
+        "pageNo": 1,
+        "limit": 2,
+        "createByList": [userId],
+      },
+      success: onNoteList,
+    );
+    BotToast.closeAllLoading();
+  }
+
+  void onNoteList(data) {
+    List tempList = data["list"] ?? [];
+    beanList = tempList.map((x) => BeanNoteList.fromJson(x)).toList();
+    update(["note-list"]);
   }
 }

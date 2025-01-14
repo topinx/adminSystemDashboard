@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:top_back/app/widgets/note_drop_filter.dart';
-import 'package:top_back/app/widgets/page_indicator.dart';
 import 'package:top_back/app/widgets/view_container.dart';
-
-import '../account/widget/account_note_input.dart';
 import 'controller/pub_creative_controller.dart';
 
 class PubCreativeView extends StatefulWidget {
@@ -19,15 +15,6 @@ class _PubCreativeViewState extends State<PubCreativeView> {
 
   @override
   Widget build(BuildContext context) {
-    return ViewContainer(
-      child: Column(children: [
-        const AccountNoteInput(),
-        const SizedBox(height: 40),
-        NoteDropPub(onTap: ctr.onTapPublish),
-        const SizedBox(height: 20),
-        PageIndicator(
-            itemCount: 200, onTapPage: (_) {}, curPage: 1, onSizeChang: (_) {})
-      ]),
-    );
+    return const ViewContainer();
   }
 }

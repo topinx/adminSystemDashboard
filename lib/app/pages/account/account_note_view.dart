@@ -24,13 +24,20 @@ class _AccountNoteViewState extends State<AccountNoteView> {
     return ViewContainer(
       child: Column(children: [
         const BackAppBar(),
-        const AccountNoteInput(),
+        AccountNoteInput(ctr: ctr.inputSearch, onTap: ctr.onTapSearch),
         const SizedBox(height: 40),
         AccountNoteFilter(onChange: ctr.onFilterChange),
         const SizedBox(height: 20),
         const Expanded(child: AccountNoteTable()),
-        PageIndicator(
-            itemCount: 200, onTapPage: (_) {}, curPage: 1, onSizeChang: (_) {})
+        GetBuilder<AccountNoteController>(
+          id: "check-page",
+          builder: (ctr) => PageIndicator(
+            itemCount: ctr.checkCnt,
+            onTapPage: ctr.onTapPage,
+            curPage: ctr.pageNum,
+            onSizeChang: ctr.onPageSizeChanged,
+          ),
+        ),
       ]),
     );
   }

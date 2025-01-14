@@ -93,14 +93,22 @@ class _AccountInfoViewState extends State<AccountInfoView> {
       ),
       const SizedBox(height: 20),
       Row(children: [
-        const Text(
-          "个人作品(0)",
-          style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
+        GetBuilder<AccountInfoController>(
+          id: "note-count",
+          builder: (ctr) => Text(
+            "个人作品(${ctr.checkCnt})",
+            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
+          ),
         ),
         const Spacer(),
         TextButton(onPressed: ctr.onTapNote, child: const Text("查看全部")),
       ]),
-      const AccountInfoNote(),
+      GetBuilder<AccountInfoController>(
+        id: "note-list",
+        builder: (ctr) => ctr.beanList.isEmpty
+            ? const SizedBox()
+            : AccountInfoNote(bean: ctr.beanList.first),
+      ),
     ];
   }
 

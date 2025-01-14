@@ -1,7 +1,10 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:top_back/app/pages.dart';
 import 'package:top_back/app/widgets/note_drop_filter.dart';
 import 'package:top_back/bean/bean_note_list.dart';
+import 'package:top_back/contants/http_constants.dart';
 import 'package:top_back/network/request_mixin.dart';
 
 class AccountNoteController extends GetxController with RequestMixin {
@@ -29,6 +32,14 @@ class AccountNoteController extends GetxController with RequestMixin {
   List<BeanNoteList> beanList = [];
   int checkCnt = 0;
 
+  int userId = 0;
+
+  @override
+  void onInit() {
+    super.onInit();
+    userId = int.parse(Get.parameters["userId"] ?? "0");
+  }
+
   @override
   void onReady() {
     super.onReady();
@@ -47,7 +58,9 @@ class AccountNoteController extends GetxController with RequestMixin {
     requestNoteList();
   }
 
-  void onTapCheck(BeanNoteList bean) {}
+  void onTapCheck(BeanNoteList bean) {
+    Get.toNamed(Routes.NOTE_DETAIL(bean.noteId));
+  }
 
   void onFilterChange(NoteDropType type, int? tag) {
     switch (type) {
@@ -108,9 +121,48 @@ class AccountNoteController extends GetxController with RequestMixin {
     }
   }
 
-  Future<void> requestNoteCnt() async {}
+  Future<void> requestNoteCnt() async {
+    await get(
+      HttpConstants.noteCnt,
+      param: {
+        "createByList": [userId],
+        "auditedStatus": auditedStatus,
+        "tendency": tendency,
+        "recommendedStatus": recommendedStatus,
+        "status": status,
+        "noteType": noteType,
+      },
+      success: (data) => checkCnt = data,
+    );
+    update(["check-page"]);
+  }
 
-  Future<void> requestNoteList() async {}
+  Future<void> requestNoteList() async {
+    BotToast.showLoading();
+    await get(
+      HttpConstants.noteList,
+      param: {
+        "pageNo": pageNum,
+        "limit": pageSize,
+        "createByList": [userId],
+        "auditedStatus": auditedStatus,
+        "tendency": tendency,
+        "recommendedStatus": recommendedStatus,
+        "status": status,
+        "noteType": noteType,
+      },
+      success: onNoteList,
+    );
+    BotToast.closeAllLoading();
+  }
 
-  void onNoteList(data) {}
+  void onNoteList(data) {
+    pageNum = data["pageNo"];
+    if (pageNum == 1) {
+      beanList.clear();
+    }
+    List tempList = data["list"] ?? [];
+    beanList.addAll(tempList.map((x) => BeanNoteList.fromJson(x)).toList());
+    update(["check-table"]);
+  }
 }

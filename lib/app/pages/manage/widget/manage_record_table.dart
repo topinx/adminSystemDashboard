@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:top_back/app/widgets/preview_dialog.dart';
 import 'package:top_back/app/widgets/table_title_text.dart';
 import 'package:top_back/bean/bean_note_list.dart';
 import 'package:top_back/contants/app_constants.dart';
@@ -35,7 +36,7 @@ class ManageRecordTable extends StatelessWidget {
 
     return TableRow(
       children: [
-        TableCell(child: buildCover(bean.cover)),
+        TableCell(child: buildCover(bean.cover, bean.noteType)),
         TableCell(child: TableText(bean.title, false)),
         TableCell(child: TableText(audited, false)),
         TableCell(child: TableText(recommended, false)),
@@ -47,7 +48,7 @@ class ManageRecordTable extends StatelessWidget {
     );
   }
 
-  Widget buildCover(String cover) {
+  Widget buildCover(String cover, int type) {
     DecorationImage? image;
     if (cover.isNotEmpty) {
       image =
@@ -55,7 +56,7 @@ class ManageRecordTable extends StatelessWidget {
     }
 
     return GestureDetector(
-      onTap: () => onTapCover(cover),
+      onTap: () => onTapCover(cover, type),
       child: Container(
         margin: const EdgeInsets.all(5),
         height: 50,
@@ -64,11 +65,8 @@ class ManageRecordTable extends StatelessWidget {
     );
   }
 
-  void onTapCover(String cover) {
-    Widget image = Center(
-      child: Image(image: NetworkImage(AppConstants.imgLink + cover)),
-    );
-    Get.dialog(image);
+  void onTapCover(String cover, int type) {
+    Get.dialog(PreviewDialog(data: cover, type: type));
   }
 
   @override

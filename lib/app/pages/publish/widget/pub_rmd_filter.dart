@@ -7,9 +7,12 @@ class PubRmdFilter extends StatelessWidget {
     required this.onSubmit,
     required this.onChange,
     required this.onTimeChange,
+    required this.onSelect,
   });
 
-  final Function(String) onSubmit;
+  final Future<List<int>> Function(String) onSubmit;
+
+  final Function(int?) onSelect;
 
   final Function(NoteDropType type, int?) onChange;
 
@@ -18,7 +21,7 @@ class PubRmdFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget content = Row(children: [
-      NoteDropUser(onSubmit),
+      NoteDropUser(onSubmit, onSelect: onSelect),
       NoteDropFilter(
         NoteDropType.audited,
         onChange: (tag) => onChange(NoteDropType.audited, tag),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/pages.dart';
 import 'package:top_back/app/widgets/note_drop_filter.dart';
-import 'package:top_back/bean/bean_note_list.dart';
+import 'package:top_back/bean/bean_note_back.dart';
 import 'package:top_back/contants/http_constants.dart';
 import 'package:top_back/network/request_mixin.dart';
 
@@ -28,7 +28,7 @@ class PubRecommendController extends GetxController with RequestMixin {
 
   int pageSize = 10;
 
-  List<BeanNoteList> beanList = [];
+  List<BeanNoteBack> beanList = [];
   int checkCnt = 0;
 
   @override
@@ -49,7 +49,7 @@ class PubRecommendController extends GetxController with RequestMixin {
     requestNoteList();
   }
 
-  void onTapCheck(BeanNoteList bean) {
+  void onTapCheck(BeanNoteBack bean) {
     Get.toNamed(Routes.NOTE_DETAIL(bean.noteId));
   }
 
@@ -57,7 +57,14 @@ class PubRecommendController extends GetxController with RequestMixin {
     Get.toNamed(Routes.PUBLISH(0, type + 1));
   }
 
-  void onSubmitUser(String string) {}
+  Future<List<int>> onSubmitUser(String string) async {
+    return await requestUser(string);
+  }
+
+  void onSelectUser(int? user) {
+    userId = user;
+    onTapSearch();
+  }
 
   void onFilterChange(NoteDropType type, int? tag) {
     switch (type) {
@@ -161,7 +168,21 @@ class PubRecommendController extends GetxController with RequestMixin {
       beanList.clear();
     }
     List tempList = data["list"] ?? [];
-    beanList.addAll(tempList.map((x) => BeanNoteList.fromJson(x)).toList());
+    beanList.addAll(tempList.map((x) => BeanNoteBack.fromJson(x)).toList());
     update(["check-table"]);
+  }
+
+  Future<List<int>> requestUser(String nick) async {
+    BotToast.showLoading();
+    List<int> result = [];
+    await get(
+      HttpConstants.searchUser,
+      param: {"nickname": nick},
+      success: (data) =>
+          result = data.map((x) => x["userId"]).toList().cast<int>(),
+    );
+
+    BotToast.closeAllLoading();
+    return result;
   }
 }

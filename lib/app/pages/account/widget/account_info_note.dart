@@ -1,26 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:top_back/bean/bean_note_list.dart';
+import 'package:top_back/contants/app_constants.dart';
 
 class AccountInfoNote extends StatelessWidget {
-  const AccountInfoNote({super.key});
+  const AccountInfoNote({super.key, required this.bean});
 
-  Widget buildNoteCover(BuildContext context) {
+  final BeanNoteList bean;
+
+  Widget buildNoteCover(BuildContext context, String cover) {
     return Container(
       height: 120,
       width: 180,
-      color: Colors.black12,
+      decoration: BoxDecoration(
+        color: Colors.black12,
+        image: DecorationImage(
+          image: NetworkImage(AppConstants.imgLink + cover),
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 
   Widget buildNoteInfo(BuildContext context) {
-    return const Column(
+    return Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("标题内容：", maxLines: 2, overflow: TextOverflow.ellipsis),
-          Text("阅读量：100"),
-          Text("点赞量：100"),
-          Text("评论量：100"),
-          Text("发布时间：2020-01-01"),
+          Text("标题内容：${bean.title}",
+              maxLines: 2, overflow: TextOverflow.ellipsis),
+          const Text("阅读量：0"),
+          const Text("点赞量：0"),
+          const Text("评论量：0"),
+          Text("发布时间：${bean.createTime}"),
         ]);
   }
 
@@ -36,7 +47,7 @@ class AccountInfoNote extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
       ),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        buildNoteCover(context),
+        buildNoteCover(context, bean.cover),
         const SizedBox(width: 10),
         Expanded(child: buildNoteInfo(context)),
       ]),

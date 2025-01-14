@@ -31,6 +31,7 @@ class _PubRecommendViewState extends State<PubRecommendView> {
           onChange: ctr.onFilterChange,
           onTimeChange: ctr.onTimeChange,
           onSubmit: ctr.onSubmitUser,
+          onSelect: ctr.onSelectUser,
         ),
         const SizedBox(height: 20),
         const Expanded(child: PubRmdTable()),

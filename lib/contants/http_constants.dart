@@ -14,6 +14,9 @@ class HttpConstants {
   /// 上传
   static const upload = "/adminsystem/system/file/upload";
 
+  /// 签名
+  static const sign = "/adminsystem/system/file/getSignUrl";
+
   /// 创建应用账号
   static const createAccount = "/adminsystem/accountManagement/createAccount";
 
@@ -70,4 +73,10 @@ class HttpConstants {
   /// 后台账号下的笔记总数
   static const noteCntBack =
       "/adminsystem/contentManagement/countAuditNoteByUserId";
+
+  /// 笔记详情
+  static const noteDetail = "/adminsystem/contentManagement/getNoteDetail";
+
+  /// 昵称搜索系统用户
+  static const searchUser = "/adminsystem/user/searchSysUser";
 }

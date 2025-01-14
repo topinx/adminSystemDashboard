@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:top_back/app/widgets/preview_dialog.dart';
 import 'package:top_back/app/widgets/table_title_text.dart';
-import 'package:top_back/bean/bean_note_list.dart';
+import 'package:top_back/bean/bean_note_back.dart';
 import 'package:top_back/contants/app_constants.dart';
 
 import '../controller/pub_recommend_controller.dart';
@@ -26,7 +27,7 @@ class PubRmdTable extends StatelessWidget {
     );
   }
 
-  TableRow buildTableRow(PubRecommendController ctr, BeanNoteList bean) {
+  TableRow buildTableRow(PubRecommendController ctr, BeanNoteBack bean) {
     String audited = ["未审核", "通过", "未通过", "违规"][bean.auditedStatus];
     String recommended = bean.recommendedStatus == null
         ? ""
@@ -40,7 +41,7 @@ class PubRmdTable extends StatelessWidget {
         TableCell(child: TableText(audited, false)),
         TableCell(child: TableText(recommended, false)),
         TableCell(child: TableText(noteType, false)),
-        TableCell(child: TableText("", false)),
+        TableCell(child: TableText(bean.sysUserNickname, false)),
         TableCell(child: TableText(bean.createNickname, false)),
         TableCell(child: TableText(bean.createTime, false)),
         TableCell(child: TableCheck(() => ctr.onTapCheck(bean))),
@@ -66,10 +67,7 @@ class PubRmdTable extends StatelessWidget {
   }
 
   void onTapCover(String cover) {
-    Widget image = Center(
-      child: Image(image: NetworkImage(AppConstants.imgLink + cover)),
-    );
-    Get.dialog(image);
+    Get.dialog(PreviewDialog(data: cover));
   }
 
   @override
@@ -83,7 +81,7 @@ class PubRmdTable extends StatelessWidget {
             int end = start + ctr.pageSize;
             end = end > ctr.beanList.length ? ctr.beanList.length : end;
 
-            List<BeanNoteList> tempList = ctr.beanList.sublist(start, end);
+            List<BeanNoteBack> tempList = ctr.beanList.sublist(start, end);
             return Table(
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               columnWidths: const {

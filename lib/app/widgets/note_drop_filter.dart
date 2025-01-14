@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
 import 'date_drop_btn.dart';
@@ -73,15 +74,88 @@ class NoteDropDate extends StatelessWidget {
         child: Text("~", style: textStyle1),
       ),
       DateDropBtn("结束日期", onChange: (string) => onChange(2, string)),
-      const SizedBox(width: 20),
     ]);
   }
 }
 
-class NoteDropUser extends StatelessWidget {
-  const NoteDropUser(this.onSubmit, {super.key});
+class NoteDropUser extends StatefulWidget {
+  const NoteDropUser(this.onSubmit, {super.key, required this.onSelect});
 
-  final Function(String) onSubmit;
+  final Future<List<int>> Function(String) onSubmit;
+
+  final Function(int?) onSelect;
+
+  @override
+  State<NoteDropUser> createState() => _NoteDropUserState();
+}
+
+class _NoteDropUserState extends State<NoteDropUser> {
+  TextEditingController controller = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
+
+  Widget buildOptionsCard(List<int> options, Function() cancel) {
+    return Card(
+      color: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+      child: Container(
+        width: 100,
+        constraints: const BoxConstraints(minHeight: 50, maxHeight: 240),
+        child: SingleChildScrollView(
+            child: Column(children: [
+          ...List.generate(
+            options.length,
+            (i) => buildOptionItem(options[i], cancel),
+          ),
+        ])),
+      ),
+    );
+  }
+
+  Widget buildOptionItem(int option, Function() cancel) {
+    return InkWell(
+      onTap: () {
+        controller.text = "$option";
+        widget.onSelect(option);
+        cancel();
+      },
+      child: Ink(
+        height: 48,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Align(alignment: Alignment.centerLeft, child: Text("$option")),
+      ),
+    );
+  }
+
+  void onShowToast(BuildContext inputContext, String string) async {
+    if (string.trimRight().isEmpty) {
+      widget.onSelect(null);
+      return;
+    }
+
+    List<int> options = await widget.onSubmit(string);
+    if (options.isEmpty) {
+      BotToast.showText(text: "未搜索到结果", align: Alignment.topCenter);
+      return;
+    }
+
+    if (!inputContext.mounted) return;
+    BotToast.showAttachedWidget(
+      attachedBuilder: (cancel) => buildOptionsCard(options, cancel),
+      targetContext: inputContext,
+      onlyOne: true,
+      horizontalOffset: 40.0,
+      preferDirection: PreferDirection.bottomCenter,
+      enableSafeArea: true,
+      allowClick: true,
+      animationDuration: const Duration(milliseconds: 350),
+      animationReverseDuration: const Duration(milliseconds: 350),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,13 +163,16 @@ class NoteDropUser extends StatelessWidget {
 
     return Row(children: [
       const Text("发布者："),
-      SizedBox(
-        height: 36,
-        width: 100,
-        child: TextField(
-          style: textStyle1,
-          onSubmitted: onSubmit,
-          decoration: const InputDecoration(hintText: "输入并查找"),
+      Builder(
+        builder: (inputContext) => SizedBox(
+          height: 36,
+          width: 100,
+          child: TextField(
+            style: textStyle1,
+            controller: controller,
+            onSubmitted: (string) => onShowToast(inputContext, string),
+            decoration: const InputDecoration(hintText: "输入并查找"),
+          ),
         ),
       ),
       const SizedBox(width: 20),

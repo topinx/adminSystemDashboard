@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:top_back/app/widgets/back_app_bar.dart';
 import 'package:top_back/app/widgets/view_container.dart';
 
+import 'controller/note_detail_controller.dart';
 import 'widget/note_detail_buttons.dart';
 import 'widget/note_detail_img.dart';
 import 'widget/note_detail_text.dart';
@@ -14,22 +16,29 @@ class NoteDetailView extends StatefulWidget {
 }
 
 class _NoteDetailViewState extends State<NoteDetailView> {
+  final NoteDetailController ctr = Get.find<NoteDetailController>();
+
   Widget buildViewContent() {
-    return const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          NoteDetailText("笔记图片", ""),
-          NoteDetailImg(),
-          NoteDetailText("笔记标题", ""),
-          NoteDetailText("笔记正文", ""),
-          NoteDetailText("笔记话题", ""),
-          NoteDetailText("发布者", ""),
-          NoteDetailText("审核状态", ""),
-          NoteDetailText("推荐状态", ""),
-          NoteDetailTendency(),
-          SizedBox(height: 80),
-          NoteDetailButtons(),
-        ]);
+    return GetBuilder<NoteDetailController>(builder: (ctr) {
+      String audited = ["未审核", "通过", "未通过", "违规"][ctr.detail.auditedStatus];
+      String recommended = ctr.detail.recommendedStatus == null
+          ? ""
+          : ["不推荐", "推荐"][ctr.detail.recommendedStatus!];
+
+      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const NoteDetailText("笔记图片", "(封面) + 资源列表"),
+        NoteDetailImg(ctr.detail),
+        NoteDetailText("笔记标题", ctr.detail.title),
+        NoteDetailText("笔记正文", ctr.getContent()),
+        NoteDetailText("笔记话题", ctr.getTopicList()),
+        NoteDetailText("审核者", ctr.detail.auditedNickname),
+        NoteDetailText("审核状态", audited),
+        NoteDetailText("推荐状态", recommended),
+        NoteDetailTendency(ctr.detail, onTap: ctr.onTapTendency),
+        const SizedBox(height: 80),
+        NoteDetailButtons(),
+      ]);
+    });
   }
 
   @override
