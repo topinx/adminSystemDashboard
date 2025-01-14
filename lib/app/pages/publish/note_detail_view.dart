@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:top_back/app/widgets/back_app_bar.dart';
 import 'package:top_back/app/widgets/view_container.dart';
 
 import 'controller/note_detail_controller.dart';
 import 'widget/note_detail_buttons.dart';
 import 'widget/note_detail_img.dart';
 import 'widget/note_detail_text.dart';
+import 'widget/pub_detail_bar.dart';
 
 class NoteDetailView extends StatefulWidget {
   const NoteDetailView({super.key});
@@ -36,7 +36,7 @@ class _NoteDetailViewState extends State<NoteDetailView> {
         NoteDetailText("推荐状态", recommended),
         NoteDetailTendency(ctr.detail, onTap: ctr.onTapTendency),
         const SizedBox(height: 80),
-        NoteDetailButtons(),
+        if (ctr.curNote != 0) NoteDetailButtons(ctr),
       ]);
     });
   }
@@ -45,7 +45,7 @@ class _NoteDetailViewState extends State<NoteDetailView> {
   Widget build(BuildContext context) {
     return ViewContainer(
       child: Column(children: [
-        const BackAppBar(),
+        const PubDetailBar(),
         Expanded(
           child: SingleChildScrollView(
             padding: EdgeInsets.zero,

@@ -63,11 +63,11 @@ class BeanNoteDetail {
         materialList: List<BeanNoteMaterial>.from(
             json["materialList"].map((x) => BeanNoteMaterial.fromJson(x))),
         status: json["status"],
-        auditedStatus: json["auditedStatus"],
+        auditedStatus: json["auditedStatus"] ?? 0,
         recommendedStatus: json["recommendedStatus"],
         tendency: json["tendency"],
         auditedBy: json["auditedBy"],
-        auditedNickname: json["auditedNickname"],
+        auditedNickname: json["auditedNickname"] ?? "",
         createTime: json["createTime"],
         topicList: json["topicList"],
       );

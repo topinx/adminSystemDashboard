@@ -79,4 +79,11 @@ class HttpConstants {
 
   /// 昵称搜索系统用户
   static const searchUser = "/adminsystem/user/searchSysUser";
+
+  /// 获取一条待审核的笔记
+  static const nextAuditedNote =
+      "/adminsystem/contentManagement/getNextUnAuditedNote";
+
+  /// 审核笔记
+  static const checkNote = "/adminsystem/contentManagement/auditNote";
 }
