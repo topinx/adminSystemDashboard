@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:top_back/bean/bean_search_user.dart';
 
 import 'date_drop_btn.dart';
 import 'dropdown_btn.dart';
@@ -81,9 +82,9 @@ class NoteDropDate extends StatelessWidget {
 class NoteDropUser extends StatefulWidget {
   const NoteDropUser(this.onSubmit, {super.key, required this.onSelect});
 
-  final Future<List<int>> Function(String) onSubmit;
+  final Future<List<BeanSearchUser>> Function(String) onSubmit;
 
-  final Function(int?) onSelect;
+  final Function(BeanSearchUser?) onSelect;
 
   @override
   State<NoteDropUser> createState() => _NoteDropUserState();
@@ -98,7 +99,7 @@ class _NoteDropUserState extends State<NoteDropUser> {
     controller.dispose();
   }
 
-  Widget buildOptionsCard(List<int> options, Function() cancel) {
+  Widget buildOptionsCard(List<BeanSearchUser> options, Function() cancel) {
     return Card(
       color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
@@ -116,17 +117,18 @@ class _NoteDropUserState extends State<NoteDropUser> {
     );
   }
 
-  Widget buildOptionItem(int option, Function() cancel) {
+  Widget buildOptionItem(BeanSearchUser option, Function() cancel) {
     return InkWell(
       onTap: () {
-        controller.text = "$option";
+        controller.text = option.nickname;
         widget.onSelect(option);
         cancel();
       },
       child: Ink(
         height: 48,
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Align(alignment: Alignment.centerLeft, child: Text("$option")),
+        child: Align(
+            alignment: Alignment.centerLeft, child: Text(option.nickname)),
       ),
     );
   }
@@ -137,7 +139,7 @@ class _NoteDropUserState extends State<NoteDropUser> {
       return;
     }
 
-    List<int> options = await widget.onSubmit(string);
+    List<BeanSearchUser> options = await widget.onSubmit(string);
     if (options.isEmpty) {
       BotToast.showText(text: "未搜索到结果", align: Alignment.topCenter);
       return;

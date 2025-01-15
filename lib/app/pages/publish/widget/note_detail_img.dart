@@ -25,15 +25,16 @@ class NoteDetailImg extends StatelessWidget {
         padding: EdgeInsets.zero,
         scrollDirection: Axis.horizontal,
         child: Row(children: [
-          NoteImage(detail.cover, onTap: onTapCover),
+          NoteImage(detail.cover, type: 1, onTap: onTapCover),
           Container(
             margin: const EdgeInsets.only(right: 20),
-            child: const Icon(Icons.add),
+            child: const Icon(Icons.add, color: Colors.black12),
           ),
           ...List.generate(
               detail.materialList.length,
               (i) => NoteImage(
                     detail.materialList[i].thumb,
+                    type: detail.materialList[i].type,
                     onTap: () => onTapDetail(detail.materialList[i]),
                   )),
         ]),
@@ -43,9 +44,12 @@ class NoteDetailImg extends StatelessWidget {
 }
 
 class NoteImage extends StatelessWidget {
-  const NoteImage(this.image, {super.key, required this.onTap});
+  const NoteImage(this.image,
+      {super.key, required this.onTap, required this.type});
 
   final String image;
+
+  final int type;
 
   final Function() onTap;
 
@@ -68,6 +72,14 @@ class NoteImage extends StatelessWidget {
           color: const Color(0xFFEBEBEB),
           image: decorationImage,
         ),
+        alignment: Alignment.center,
+        child: type == 2
+            ? const CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.black54,
+                child: Icon(Icons.play_arrow, color: Colors.white),
+              )
+            : null,
       ),
     );
   }

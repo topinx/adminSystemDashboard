@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:top_back/app/pages/home/controller/home_controller.dart';
 import 'package:top_back/app/widgets/responsive_widget.dart';
 import 'package:top_back/contants/app_storage.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({super.key});
-
-  void onTapSearch() {}
 
   void onTapNotify() {}
 
@@ -34,16 +34,29 @@ class HomeAppBar extends StatelessWidget {
       height: kToolbarHeight,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       color: Theme.of(context).appBarTheme.backgroundColor,
-      child: Row(children: [
-        const DrawerMenuButton(),
-        const Spacer(),
-        IconButton(onPressed: onTapSearch, icon: const Icon(Icons.search)),
-        const SizedBox(width: 5),
-        IconButton(
-            onPressed: onTapNotify, icon: const Icon(Icons.notifications_none)),
-        const SizedBox(width: 5),
-        buildAppBarContent(context),
-      ]),
+      child: GetBuilder<HomeController>(
+          id: "home-pub",
+          builder: (ctr) {
+            return Row(children: [
+              const DrawerMenuButton(),
+              if (ctr.isPublish) ...[
+                const SizedBox(width: 5),
+                const SizedBox(
+                  width: 10,
+                  height: 10,
+                  child: CircularProgressIndicator(color: Colors.blue),
+                ),
+                const SizedBox(width: 10),
+                const Text("发布笔记中···", style: TextStyle(color: Colors.blue)),
+              ],
+              const Spacer(),
+              IconButton(
+                  onPressed: onTapNotify,
+                  icon: const Icon(Icons.notifications_none)),
+              const SizedBox(width: 5),
+              buildAppBarContent(context),
+            ]);
+          }),
     );
   }
 }

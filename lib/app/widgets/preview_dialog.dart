@@ -35,6 +35,8 @@ class _PreviewDialogState extends State<PreviewDialog> with RequestMixin {
   }
 
   Future<void> initVideoPlayer() async {
+    if (widget.type != 2) return;
+
     String imageLink = await signVideo();
     if (imageLink.isEmpty) return;
 

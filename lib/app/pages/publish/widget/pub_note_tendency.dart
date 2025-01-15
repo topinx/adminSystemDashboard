@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:top_back/app/widgets/select_item.dart';
+import 'package:top_back/bean/bean_draft.dart';
 
 class PubNoteTendency extends StatelessWidget {
-  const PubNoteTendency({super.key});
+  const PubNoteTendency(this.detail, {super.key, required this.onTap});
+
+  final BeanDraft detail;
+
+  final Function(int) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -14,11 +19,11 @@ class PubNoteTendency extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: Text("笔记偏好：", style: textStyle),
       ),
-      const SelectItem("男性", false),
+      SelectItem("男性", detail.tendency == 1, onTap: () => onTap(1)),
       const SizedBox(width: 20),
-      const SelectItem("女性", false),
+      SelectItem("女性", detail.tendency == 2, onTap: () => onTap(2)),
       const SizedBox(width: 20),
-      const SelectItem("综合", false),
+      SelectItem("综合", detail.tendency == 3, onTap: () => onTap(3)),
     ]);
   }
 }

@@ -20,38 +20,40 @@ class _PublishViewState extends State<PublishView> {
   final PublishController ctr = Get.find<PublishController>();
 
   Widget buildPublishContent() {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const Text(
-        "发布信息",
-        style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
-      ),
-      const SizedBox(height: 20),
-      const PubDropUser(),
-      const SizedBox(height: 40),
-      const Text(
-        "笔记信息",
-        style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
-      ),
-      const SizedBox(height: 20),
-      const PubImageList(),
-      const SizedBox(height: 20),
-      const PubInputTitle(),
-      const SizedBox(height: 20),
-      const PubInputContent(),
-      const SizedBox(height: 20),
-      const PubInputTopic(),
-      const SizedBox(height: 20),
-      const PubInputOpen(),
-      const SizedBox(height: 20),
-      const PubNoteTendency(),
-      const SizedBox(height: 20),
-      buildButtons(),
-    ]);
+    return GetBuilder<PublishController>(builder: (ctr) {
+      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const Text(
+          "发布信息",
+          style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
+        ),
+        const SizedBox(height: 20),
+        PubDropUser(ctr),
+        const SizedBox(height: 40),
+        const Text(
+          "笔记信息",
+          style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
+        ),
+        const SizedBox(height: 20),
+        PubImageList(ctr),
+        const SizedBox(height: 20),
+        PubInputTitle(ctr.inputTitle),
+        const SizedBox(height: 20),
+        PubInputContent(ctr.inputContent),
+        const SizedBox(height: 20),
+        PubInputTopic(ctr.inputTopic),
+        const SizedBox(height: 20),
+        const PubInputOpen(),
+        const SizedBox(height: 20),
+        PubNoteTendency(ctr.detail, onTap: ctr.onTapTendency),
+        const SizedBox(height: 20),
+        buildButtons(),
+      ]);
+    });
   }
 
   Widget buildButtons() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      OutlinedButton(onPressed: () {}, child: const Text("确定")),
+      OutlinedButton(onPressed: ctr.onTapPub, child: const Text("发布")),
       const SizedBox(width: 40),
       OutlinedButton(onPressed: Get.back, child: const Text("取消")),
     ]);

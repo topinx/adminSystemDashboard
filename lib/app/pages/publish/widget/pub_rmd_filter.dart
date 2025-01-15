@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:top_back/app/widgets/note_drop_filter.dart';
+import 'package:top_back/bean/bean_search_user.dart';
 
 class PubRmdFilter extends StatelessWidget {
   const PubRmdFilter({
@@ -10,9 +11,9 @@ class PubRmdFilter extends StatelessWidget {
     required this.onSelect,
   });
 
-  final Future<List<int>> Function(String) onSubmit;
+  final Future<List<BeanSearchUser>> Function(String) onSubmit;
 
-  final Function(int?) onSelect;
+  final Function(BeanSearchUser?) onSelect;
 
   final Function(NoteDropType type, int?) onChange;
 

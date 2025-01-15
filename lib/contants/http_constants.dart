@@ -14,6 +14,9 @@ class HttpConstants {
   /// 上传
   static const upload = "/adminsystem/system/file/upload";
 
+  /// 上传视频
+  static const uploadVideo = "/adminsystem/system/file/uploadVideo";
+
   /// 签名
   static const sign = "/adminsystem/system/file/getSignUrl";
 
@@ -66,6 +69,9 @@ class HttpConstants {
   /// 编辑话题状态
   static const topicStatus = "/adminsystem/contentManagement/updateTopicStatus";
 
+  /// 删除话题
+  static const topicDelete = "/adminsystem/contentManagement/deleteTopic";
+
   /// 后台账号下的笔记列表
   static const noteListBack =
       "/adminsystem/contentManagement/getNoteListByUserId";
@@ -86,4 +92,13 @@ class HttpConstants {
 
   /// 审核笔记
   static const checkNote = "/adminsystem/contentManagement/auditNote";
+
+  /// 发布笔记
+  static const publish = "/adminsystem/contentManagement/publishNote";
+
+  /// 更新笔记
+  static const updateNote = "/adminsystem/contentManagement/updateNote";
+
+  /// 昵称搜索app账号
+  static const searchAppUser = "/adminsystem/user/searchAppUser";
 }

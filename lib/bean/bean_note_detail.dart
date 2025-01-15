@@ -18,8 +18,11 @@ class BeanNoteDetail {
   int tendency;
   int? auditedBy;
   String auditedNickname;
+  int createBy;
+  String createByNickname;
   String createTime;
   String topicList;
+  bool isOwner;
 
   BeanNoteDetail({
     required this.noteId,
@@ -34,8 +37,11 @@ class BeanNoteDetail {
     required this.tendency,
     required this.auditedBy,
     required this.auditedNickname,
+    required this.createBy,
+    required this.createByNickname,
     required this.createTime,
     required this.topicList,
+    required this.isOwner,
   });
 
   BeanNoteDetail.empty()
@@ -51,8 +57,11 @@ class BeanNoteDetail {
         tendency = 3,
         auditedBy = 0,
         auditedNickname = "",
+        createBy = 0,
+        createByNickname = "",
         createTime = "",
-        topicList = "";
+        topicList = "",
+        isOwner = false;
 
   factory BeanNoteDetail.fromJson(Map<String, dynamic> json) => BeanNoteDetail(
         noteId: json["noteId"],
@@ -68,8 +77,11 @@ class BeanNoteDetail {
         tendency: json["tendency"],
         auditedBy: json["auditedBy"],
         auditedNickname: json["auditedNickname"] ?? "",
+        createBy: json["createBy"],
+        createByNickname: json["createByNickname"],
         createTime: json["createTime"],
         topicList: json["topicList"],
+        isOwner: json["isOwner"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -85,8 +97,11 @@ class BeanNoteDetail {
         "tendency": tendency,
         "auditedBy": auditedBy,
         "auditedNickname": auditedNickname,
+        "createBy": createBy,
+        "createByNickname": createByNickname,
         "createTime": createTime,
         "topicList": topicList,
+        "isOwner": isOwner,
       };
 }
 

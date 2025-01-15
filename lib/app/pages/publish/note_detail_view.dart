@@ -31,6 +31,8 @@ class _NoteDetailViewState extends State<NoteDetailView> {
         NoteDetailText("笔记标题", ctr.detail.title),
         NoteDetailText("笔记正文", ctr.getContent()),
         NoteDetailText("笔记话题", ctr.getTopicList()),
+        NoteDetailText("发布者ID", "${ctr.detail.createBy}"),
+        NoteDetailText("发布者", ctr.detail.createByNickname),
         NoteDetailText("审核者", ctr.detail.auditedNickname),
         NoteDetailText("审核状态", audited),
         NoteDetailText("推荐状态", recommended),

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:get/get.dart';
+import 'package:top_back/app/pages.dart';
 import 'package:top_back/bean/bean_note_detail.dart';
 import 'package:top_back/contants/app_storage.dart';
 import 'package:top_back/contants/http_constants.dart';
@@ -91,7 +92,10 @@ class NoteDetailController extends GetxController with RequestMixin {
     update();
   }
 
-  void onTapEdit() {}
+  void onTapEdit() {
+    if (detail.noteId == 0) return;
+    Get.toNamed(Routes.PUBLISH(detail.noteId, detail.noteType));
+  }
 
   /// 上一篇
   void onTapPrev() {

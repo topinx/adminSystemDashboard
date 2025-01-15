@@ -85,6 +85,19 @@ mixin RequestMixin {
     return sourceLink;
   }
 
+  Future<String> uploadVideo(Uint8List data, String name) async {
+    var source = dio.MultipartFile.fromBytes(data, filename: name);
+
+    String sourceLink = "";
+    await post(
+      HttpConstants.uploadVideo,
+      param: dio.FormData.fromMap({"file": source}),
+      success: (d) => sourceLink = d,
+    );
+
+    return sourceLink;
+  }
+
   void _onResponseError(int code, String msg, {DioCallbackE? error}) {
     if (code == DioResponse.codeNeedLogin || code == DioResponse.codeExpired) {
       showToast("登录已过期");

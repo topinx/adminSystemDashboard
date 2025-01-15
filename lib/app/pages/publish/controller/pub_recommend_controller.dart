@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:top_back/app/pages.dart';
 import 'package:top_back/app/widgets/note_drop_filter.dart';
 import 'package:top_back/bean/bean_note_back.dart';
+import 'package:top_back/bean/bean_search_user.dart';
 import 'package:top_back/contants/http_constants.dart';
 import 'package:top_back/network/request_mixin.dart';
 
@@ -20,7 +21,7 @@ class PubRecommendController extends GetxController with RequestMixin {
   /// 笔记类型 1-图文 2-视频
   int? noteType;
 
-  int? userId;
+  BeanSearchUser? user;
 
   TextEditingController inputSearch = TextEditingController();
 
@@ -57,12 +58,12 @@ class PubRecommendController extends GetxController with RequestMixin {
     Get.toNamed(Routes.PUBLISH(0, type + 1));
   }
 
-  Future<List<int>> onSubmitUser(String string) async {
+  Future<List<BeanSearchUser>> onSubmitUser(String string) async {
     return await requestUser(string);
   }
 
-  void onSelectUser(int? user) {
-    userId = user;
+  void onSelectUser(BeanSearchUser? user) {
+    user = user;
     onTapSearch();
   }
 
@@ -131,7 +132,7 @@ class PubRecommendController extends GetxController with RequestMixin {
     await get(
       HttpConstants.noteCnt,
       param: {
-        "userId": userId,
+        "userId": user?.userId,
         "beginTime": timeBegin,
         "endTime": timeEnd,
         "auditedStatus": auditedStatus,
@@ -150,7 +151,7 @@ class PubRecommendController extends GetxController with RequestMixin {
       param: {
         "pageNo": pageNum,
         "limit": pageSize,
-        "userId": userId,
+        "userId": user?.userId,
         "beginTime": timeBegin,
         "endTime": timeEnd,
         "auditedStatus": auditedStatus,
@@ -172,14 +173,16 @@ class PubRecommendController extends GetxController with RequestMixin {
     update(["check-table"]);
   }
 
-  Future<List<int>> requestUser(String nick) async {
+  Future<List<BeanSearchUser>> requestUser(String nick) async {
     BotToast.showLoading();
-    List<int> result = [];
+    List<BeanSearchUser> result = [];
     await get(
       HttpConstants.searchUser,
       param: {"nickname": nick},
-      success: (data) =>
-          result = data.map((x) => x["userId"]).toList().cast<int>(),
+      success: (data) => result = data
+          .map((x) => BeanSearchUser.fromJson(x))
+          .toList()
+          .cast<BeanSearchUser>(),
     );
 
     BotToast.closeAllLoading();

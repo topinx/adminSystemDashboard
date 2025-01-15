@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class PubInputTitle extends StatelessWidget {
-  const PubInputTitle({super.key});
+  const PubInputTitle(this.ctr, {super.key});
+
+  final TextEditingController ctr;
 
   @override
   Widget build(BuildContext context) {
@@ -14,17 +16,22 @@ class PubInputTitle extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: Text("笔记标题：", style: textStyle),
       ),
-      const SizedBox(
+      SizedBox(
         height: 36,
         width: 320,
-        child: TextField(decoration: InputDecoration(hintText: "请输入")),
+        child: TextField(
+          controller: ctr,
+          decoration: const InputDecoration(hintText: "请输入"),
+        ),
       ),
     ]);
   }
 }
 
 class PubInputContent extends StatelessWidget {
-  const PubInputContent({super.key});
+  const PubInputContent(this.ctr, {super.key});
+
+  final TextEditingController ctr;
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +44,12 @@ class PubInputContent extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: Text("笔记正文：", style: textStyle),
       ),
-      const SizedBox(
+      SizedBox(
         width: 320,
         child: TextField(
           maxLines: 6,
-          decoration: InputDecoration(
+          controller: ctr,
+          decoration: const InputDecoration(
             hintText: "请输入",
             contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           ),
@@ -52,7 +60,9 @@ class PubInputContent extends StatelessWidget {
 }
 
 class PubInputTopic extends StatelessWidget {
-  const PubInputTopic({super.key});
+  const PubInputTopic(this.ctr, {super.key});
+
+  final TextEditingController ctr;
 
   @override
   Widget build(BuildContext context) {
@@ -65,11 +75,12 @@ class PubInputTopic extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: Text("笔记话题：", style: textStyle),
       ),
-      const SizedBox(
+      SizedBox(
         height: 36,
         width: 320,
         child: TextField(
-          decoration: InputDecoration(
+          controller: ctr,
+          decoration: const InputDecoration(
             hintText: "请输入",
             contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           ),
@@ -99,7 +110,7 @@ class PubInputOpen extends StatelessWidget {
         child: TextFormField(
           initialValue: "公开可见",
           enabled: false,
-          style: const TextStyle(color: Colors.black, fontSize: 14),
+          style: const TextStyle(color: Color(0xFFEBEBEB), fontSize: 14),
           decoration: const InputDecoration(
             contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           ),

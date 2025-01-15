@@ -22,6 +22,7 @@ class _ManageTopicEditState extends State<ManageTopicEdit> {
   void initState() {
     super.initState();
     ctr.topic = widget.topic;
+    ctr.status = widget.topic?.status ?? 1;
   }
 
   void onTapCancel() {

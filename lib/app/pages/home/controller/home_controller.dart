@@ -98,6 +98,13 @@ class HomeController extends GetxController with RequestMixin {
 
   bool isLoadingMenu = false;
 
+  bool isPublish = false;
+
+  void updatePub(bool value) {
+    isPublish = value;
+    update(["home-pub"]);
+  }
+
   @override
   void onReady() {
     super.onReady();

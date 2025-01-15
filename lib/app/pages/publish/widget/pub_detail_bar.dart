@@ -23,9 +23,12 @@ class PubDetailBar extends StatelessWidget {
         ),
         const Spacer(),
         GetBuilder<NoteDetailController>(builder: (ctr) {
-          return IconButton(
-              onPressed: ctr.onTapEdit,
-              icon: const Icon(Icons.edit_note_outlined));
+          return Visibility(
+            visible: ctr.detail.isOwner,
+            child: IconButton(
+                onPressed: ctr.onTapEdit,
+                icon: const Icon(Icons.edit_note_outlined)),
+          );
         })
       ]),
     );

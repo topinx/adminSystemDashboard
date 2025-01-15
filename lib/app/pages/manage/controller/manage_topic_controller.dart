@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:top_back/app/widgets/alert_dialog.dart';
 import 'package:top_back/bean/bean_topic.dart';
 import 'package:top_back/contants/http_constants.dart';
 import 'package:top_back/network/request_mixin.dart';
@@ -89,9 +92,14 @@ class ManageTopicController extends GetxController with RequestMixin {
     Get.dialog(ManageTopicEdit(topic: topic));
   }
 
-  void onTapDelete(BeanTopic topic) {}
+  void onTapDelete(BeanTopic topic) async {
+    bool? accept = await Get.dialog(const Alert(title: "", content: "确认删除话题?"));
+    if (accept != true) return;
 
-  void onMultiOperate(int value) {
+    requestDelete([topic.id]);
+  }
+
+  void onMultiOperate(int value) async {
     if (selectList.isEmpty) {
       showToast("请先选择话题");
       return;
@@ -102,7 +110,26 @@ class ManageTopicController extends GetxController with RequestMixin {
       requestModify(0);
     } else {
       // 批量删除
+      bool? accept =
+          await Get.dialog(const Alert(title: "", content: "确认删除话题?"));
+      if (accept != true) return;
+
+      await requestDelete(selectList.map((x) => x.id).toList());
+      selectList.clear();
     }
+  }
+
+  Future<void> requestDelete(List<int> topics) async {
+    BotToast.showLoading();
+    await post(HttpConstants.topicDelete,
+        param: json.encode(topics), success: onTopicDelete);
+    BotToast.closeAllLoading();
+  }
+
+  void onTopicDelete(data) {
+    showToast("已删除");
+    requestTopicCount();
+    requestTopicList();
   }
 
   Future<void> requestTopicList() async {

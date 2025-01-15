@@ -21,12 +21,6 @@ class TopicCreateController extends GetxController with RequestMixin {
   int status = 1;
 
   @override
-  void onInit() {
-    super.onInit();
-    status = topic?.status ?? 1;
-  }
-
-  @override
   void onReady() {
     super.onReady();
     inputName.text = topic?.name ?? "";
@@ -137,6 +131,8 @@ class TopicCreateController extends GetxController with RequestMixin {
           "topic/${DateTime.now().millisecondsSinceEpoch}/$fileCoverName";
       String image = await upload(dataCover!, name);
       if (image.isNotEmpty) param.addEntries({"avatar": image}.entries);
+    } else {
+      param.addEntries({"avatar": topic!.avatar}.entries);
     }
 
     bool success = false;
