@@ -42,7 +42,7 @@ ThemeData themeData = ThemeData.light().copyWith(
     floatingLabelBehavior: FloatingLabelBehavior.auto,
     constraints: const BoxConstraints(minHeight: 25),
     contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-    hintStyle: const TextStyle(color: Color(0xFFEBEBEB)),
+    hintStyle: const TextStyle(color: Color(0xFFEBEBEB), fontSize: 14),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(4),
       borderSide: const BorderSide(color: Color(0xFFEBEBEB), width: 1),

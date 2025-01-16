@@ -97,8 +97,8 @@ class AppPages {
           maintainState: false,
           name: _Paths.searchManage,
           transition: Transition.noTransition,
-          page: () => const SearchManageView(),
-          binding: SearchManageBinding(),
+          page: () => const SearchTopicView(),
+          binding: SearchTopicBinding(),
         ),
         GetPage(
           maintainState: false,

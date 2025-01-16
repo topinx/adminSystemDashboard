@@ -1,2 +1,2 @@
-export 'binding/search_manage_binding.dart';
-export 'search_manage_view.dart';
+export 'binding/search_topic_binding.dart';
+export 'search_topic_view.dart';
