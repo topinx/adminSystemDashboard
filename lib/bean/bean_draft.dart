@@ -26,6 +26,10 @@ class BeanDraft {
 
   List<String> topicList = [];
 
+  bool updateMaterial = false;
+
+  bool updateTopic = false;
+
   BeanDraft();
 
   factory BeanDraft.fromNoteDetail(BeanNoteDetail detail) {
@@ -59,7 +63,9 @@ class BeanDraft {
       ..tendency = detail.tendency
       ..createBy = detail.createBy
       ..createByNickname = detail.createByNickname
-      ..topicList = topics;
+      ..topicList = topics
+      ..updateMaterial = false
+      ..updateTopic = false;
   }
 }
 

@@ -30,15 +30,15 @@ class NoteManage with RequestMixin {
     if (draftList.isEmpty) return;
 
     isLoading = true;
-    homeCtr.updatePub(true);
-
     BeanDraft draft = draftList.removeLast();
+    homeCtr.updatePub(true, draft.noteId == 0);
+
     for (var material in draft.materialList) {
       if (material.imgLink.isNotEmpty) continue;
       if (material.imgData == null) {
         showToast("资源不能为空");
         isLoading = false;
-        homeCtr.updatePub(false);
+        homeCtr.updatePub(false, draft.noteId == 0);
         startPublish();
         return;
       }
@@ -74,7 +74,7 @@ class NoteManage with RequestMixin {
         if (url.isEmpty) {
           showToast("上传资源失败");
           isLoading = false;
-          homeCtr.updatePub(false);
+          homeCtr.updatePub(false, draft.noteId == 0);
           startPublish();
           return;
         }
@@ -93,7 +93,7 @@ class NoteManage with RequestMixin {
       await requestModify(draft);
     }
     isLoading = false;
-    homeCtr.updatePub(false);
+    homeCtr.updatePub(false, draft.noteId == 0);
     startPublish();
   }
 
@@ -124,5 +124,26 @@ class NoteManage with RequestMixin {
     );
   }
 
-  Future<void> requestModify(BeanDraft draft) async {}
+  Future<void> requestModify(BeanDraft draft) async {
+    await post(
+      HttpConstants.updateNote,
+      param: {
+        "noteId": draft.noteId,
+        "cover": draft.cover.imgLink,
+        "title": draft.title,
+        "textContent": draft.textContent,
+        "extra": "",
+        "materialList": draft.materialList
+            .map((x) => {"thumb": x.imgThumb, "url": x.imgLink, "type": x.type})
+            .toList(),
+        "noteType": draft.noteType,
+        "tendency": draft.tendency,
+        "status": draft.status,
+        "updateMaterial": draft.updateMaterial,
+        "updateTopic": draft.updateTopic,
+        "topicList": draft.topicList
+      },
+      success: (_) => showToast("修改成功"),
+    );
+  }
 }

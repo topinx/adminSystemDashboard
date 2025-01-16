@@ -89,10 +89,13 @@ class PublishController extends GetxController with RequestMixin {
 
     String topics = inputTopic.text;
     if (topics.isNotEmpty) {
-      detail.topicList = RegExp(r'#([\w\u4e00-\u9fa5_-]+)')
+      List<String> topicList = RegExp(r'#([\w\u4e00-\u9fa5_-]+)')
           .allMatches(topics)
           .map((x) => "${x.group(0)} ")
           .toList();
+
+      detail.updateTopic = topicList.join(" ") != detail.topicList.join(" ");
+      detail.topicList = topicList;
       String topicStr = detail.topicList.map((x) => "$x^").toList().join(" ");
       detail.textContent += " $topicStr";
     }
@@ -103,7 +106,6 @@ class PublishController extends GetxController with RequestMixin {
       resetPubView();
     } else {
       showToast("开始修改");
-      Get.back();
     }
   }
 
@@ -114,10 +116,13 @@ class PublishController extends GetxController with RequestMixin {
 
       for (var file in files) {
         DraftMaterial material = DraftMaterial();
+        material.imgLink = "";
         material.imgName = file.name;
         material.imgData = await file.readAsBytes();
         detail.materialList.add(material);
       }
+
+      detail.updateMaterial = true;
       update();
     } else {
       XFile? file = await imagePicker.pickVideo(
@@ -125,6 +130,7 @@ class PublishController extends GetxController with RequestMixin {
       if (file == null) return;
 
       DraftMaterial material = DraftMaterial();
+      material.imgLink = "";
       material.imgName = file.name;
       material.imgData = await file.readAsBytes();
       detail.materialList.add(material);
@@ -134,11 +140,13 @@ class PublishController extends GetxController with RequestMixin {
         quality: 80,
       );
       if (thumb != null) {
+        detail.cover.imgLink = "";
         detail.cover.imgName =
             "${DateTime.now().millisecondsSinceEpoch}cover.jpg";
         detail.cover.imgData = thumb;
       }
 
+      detail.updateMaterial = true;
       update();
     }
   }
@@ -147,6 +155,7 @@ class PublishController extends GetxController with RequestMixin {
     XFile? file = await imagePicker.pickImage(
         source: ImageSource.gallery, imageQuality: 80);
     if (file == null) return;
+    material.imgLink = "";
     material.imgName = file.name;
     material.imgData = await file.readAsBytes();
     update();
@@ -157,13 +166,17 @@ class PublishController extends GetxController with RequestMixin {
       XFile? file = await imagePicker.pickImage(
           source: ImageSource.gallery, imageQuality: 80);
       if (file == null) return;
+      material.imgLink = "";
       material.imgName = file.name;
       material.imgData = await file.readAsBytes();
+
+      detail.updateMaterial = true;
       update();
     } else {
       XFile? file = await imagePicker.pickVideo(
           source: ImageSource.gallery, maxDuration: const Duration(minutes: 3));
       if (file == null) return;
+      material.imgLink = "";
       material.imgName = file.name;
       material.imgData = await file.readAsBytes();
 
@@ -172,11 +185,13 @@ class PublishController extends GetxController with RequestMixin {
         quality: 80,
       );
       if (thumb != null) {
+        detail.cover.imgLink = "";
         detail.cover.imgName =
             "${DateTime.now().millisecondsSinceEpoch}cover.jpg";
         detail.cover.imgData = thumb;
       }
 
+      detail.updateMaterial = true;
       update();
     }
   }

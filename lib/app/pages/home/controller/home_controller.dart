@@ -98,10 +98,11 @@ class HomeController extends GetxController with RequestMixin {
 
   bool isLoadingMenu = false;
 
-  bool isPublish = false;
+  bool isNoteUpload = false, isPub = true;
 
-  void updatePub(bool value) {
-    isPublish = value;
+  void updatePub(bool value1, bool value2) {
+    isNoteUpload = value1;
+    isPub = value2;
     update(["home-pub"]);
   }
 

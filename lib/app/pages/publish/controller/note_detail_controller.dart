@@ -87,6 +87,23 @@ class NoteDetailController extends GetxController with RequestMixin {
     BotToast.closeAllLoading();
   }
 
+  Future<void> requestDelete() async {
+    BotToast.showLoading();
+
+    await post(
+      HttpConstants.deleteNote,
+      param: {
+        "noteIds": [detail.noteId]
+      },
+      success: (_) {
+        showToast("已删除");
+        Get.back();
+      },
+    );
+
+    BotToast.closeAllLoading();
+  }
+
   void onTapTendency(int tendency) {
     detail.tendency = tendency;
     update();
@@ -95,6 +112,10 @@ class NoteDetailController extends GetxController with RequestMixin {
   void onTapEdit() {
     if (detail.noteId == 0) return;
     Get.toNamed(Routes.PUBLISH(detail.noteId, detail.noteType));
+  }
+
+  void onTapDelete() {
+    requestDelete();
   }
 
   /// 上一篇

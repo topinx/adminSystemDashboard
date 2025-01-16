@@ -53,7 +53,8 @@ class _PublishViewState extends State<PublishView> {
 
   Widget buildButtons() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      OutlinedButton(onPressed: ctr.onTapPub, child: const Text("发布")),
+      OutlinedButton(
+          onPressed: ctr.onTapPub, child: Text(ctr.noteId == 0 ? "发布" : "修改")),
       const SizedBox(width: 40),
       OutlinedButton(onPressed: Get.back, child: const Text("取消")),
     ]);

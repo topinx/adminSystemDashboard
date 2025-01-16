@@ -101,4 +101,7 @@ class HttpConstants {
 
   /// 昵称搜索app账号
   static const searchAppUser = "/adminsystem/user/searchAppUser";
+
+  /// 删除笔记
+  static const deleteNote = "/adminsystem/contentManagement/deleteNote";
 }

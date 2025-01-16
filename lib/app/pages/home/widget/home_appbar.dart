@@ -39,7 +39,7 @@ class HomeAppBar extends StatelessWidget {
           builder: (ctr) {
             return Row(children: [
               const DrawerMenuButton(),
-              if (ctr.isPublish) ...[
+              if (ctr.isNoteUpload) ...[
                 const SizedBox(width: 5),
                 const SizedBox(
                   width: 10,
@@ -47,7 +47,8 @@ class HomeAppBar extends StatelessWidget {
                   child: CircularProgressIndicator(color: Colors.blue),
                 ),
                 const SizedBox(width: 10),
-                const Text("发布笔记中···", style: TextStyle(color: Colors.blue)),
+                Text(ctr.isPub ? "笔记发布中···" : "笔记修改中···",
+                    style: const TextStyle(color: Colors.blue)),
               ],
               const Spacer(),
               IconButton(
