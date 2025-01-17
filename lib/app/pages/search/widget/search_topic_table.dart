@@ -17,9 +17,9 @@ class SearchTopicTable extends StatelessWidget {
       TableListText("${bean.clickCnt}"),
       TableListText(bean.createTime),
       TableListBtn({
-        "置顶": () {},
-        "编辑": () {},
-        "删除": () {},
+        "置顶": () => ctr.onTapPinned(bean),
+        "编辑": () => ctr.onTapEdit(bean),
+        "删除": () => ctr.onTapDelete(bean),
       }),
     ][index];
   }
@@ -34,6 +34,7 @@ class SearchTopicTable extends StatelessWidget {
           itemCount: ctr.beanList.length,
           flexList: const [1, 2, 2, 1, 1, 2],
           onSelect: ctr.onSelectChanged,
+          enableOrder: ctr.isEditSort,
           onReorder: (o, n) {
             var temp = ctr.beanList.removeAt(o);
             ctr.beanList.insert(n, temp);

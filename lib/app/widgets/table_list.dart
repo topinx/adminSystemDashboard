@@ -49,6 +49,10 @@ class _TableListState extends State<TableList> {
   void didUpdateWidget(covariant TableList oldWidget) {
     super.didUpdateWidget(oldWidget);
     flexList = widget.flexList ?? List.filled(widget.titleList.length, 1);
+    if (widget.enableOrder != oldWidget.enableOrder) {
+      selectList.clear();
+      if (widget.onSelect != null) widget.onSelect!(selectList);
+    }
   }
 
   void onTapSelectAll() {

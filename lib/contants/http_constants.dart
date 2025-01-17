@@ -104,4 +104,10 @@ class HttpConstants {
 
   /// 删除笔记
   static const deleteNote = "/adminsystem/contentManagement/deleteNote";
+
+  /// 查询热搜列表
+  static const hotSearchList = "/adminsystem/searchManagement/getHotSearchList";
+
+  /// 新增热搜
+  static const createHotSearch = "/adminsystem/searchManagement/addHotSearch";
 }

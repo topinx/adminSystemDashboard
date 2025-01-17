@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:top_back/bean/bean_topic.dart';
 
 import '../controller/search_topic_create_controller.dart';
 
@@ -16,7 +17,7 @@ class _SearchTopicCreateState extends State<SearchTopicCreate> {
   final SearchTopicCreateController ctr =
       Get.put(SearchTopicCreateController());
 
-  Widget buildOptionsCard(List options, Function() cancel) {
+  Widget buildOptionsCard(List<BeanTopic> options, Function() cancel) {
     return Card(
       color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
@@ -34,17 +35,17 @@ class _SearchTopicCreateState extends State<SearchTopicCreate> {
     );
   }
 
-  Widget buildOptionItem(option, Function() cancel) {
+  Widget buildOptionItem(BeanTopic option, Function() cancel) {
     return InkWell(
       onTap: () {
-        ctr.controller.text = option;
+        ctr.inputTopic.text = option.name;
         ctr.onSelectTopic(option);
         cancel();
       },
       child: Ink(
         height: 48,
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Align(alignment: Alignment.centerLeft, child: Text(option)),
+        child: Align(alignment: Alignment.centerLeft, child: Text(option.name)),
       ),
     );
   }
@@ -55,7 +56,7 @@ class _SearchTopicCreateState extends State<SearchTopicCreate> {
       return;
     }
 
-    List options = await ctr.onSubmitSearch(string);
+    List<BeanTopic> options = await ctr.onSubmitSearch(string);
     if (options.isEmpty) {
       BotToast.showText(text: "未搜索到结果", align: Alignment.topCenter);
       return;
@@ -84,6 +85,7 @@ class _SearchTopicCreateState extends State<SearchTopicCreate> {
         const Text("热搜标题："),
         Expanded(
           child: TextField(
+            controller: ctr.inputTitle,
             decoration: InputDecoration(hintText: "请输入内容", hintStyle: style),
           ),
         ),
@@ -102,7 +104,7 @@ class _SearchTopicCreateState extends State<SearchTopicCreate> {
         Expanded(
           child: Builder(
             builder: (inputContext) => TextField(
-              controller: ctr.controller,
+              controller: ctr.inputTopic,
               onSubmitted: (string) => onShowToast(inputContext, string),
               decoration:
                   InputDecoration(hintText: "输入并查找已创建的话题", hintStyle: style),
@@ -124,8 +126,9 @@ class _SearchTopicCreateState extends State<SearchTopicCreate> {
         Expanded(
           child: TextField(
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            controller: ctr.inputOrder,
             decoration:
-                InputDecoration(hintText: "可输入整数设置热搜排序", hintStyle: style),
+                InputDecoration(hintText: "可输入大于0的整数设置热搜排序", hintStyle: style),
           ),
         ),
       ]),
@@ -146,13 +149,22 @@ class _SearchTopicCreateState extends State<SearchTopicCreate> {
       buildSortContent(),
       const Spacer(),
       Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-        OutlinedButton(onPressed: () {}, child: const Text("取消")),
+        OutlinedButton(onPressed: onTapCancel, child: const Text("取消")),
         const SizedBox(width: 10),
-        OutlinedButton(onPressed: () {}, child: const Text("确定")),
+        OutlinedButton(
+            onPressed: () async {
+              bool success = await ctr.onTapConfirm();
+              if (success) onTapCancel();
+            },
+            child: const Text("确定")),
         const SizedBox(width: 20)
       ]),
       const SizedBox(height: 20),
     ]);
+  }
+
+  void onTapCancel() {
+    Navigator.of(context).pop();
   }
 
   @override
