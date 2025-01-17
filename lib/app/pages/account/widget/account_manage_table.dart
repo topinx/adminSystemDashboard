@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:top_back/app/widgets/table_title_text.dart';
+import 'package:top_back/app/widgets/table_list.dart';
 import 'package:top_back/bean/bean_account_list.dart';
 
 import '../controller/account_manage_controller.dart';
@@ -8,75 +8,43 @@ import '../controller/account_manage_controller.dart';
 class AccountManageTable extends StatelessWidget {
   const AccountManageTable({super.key});
 
-  TableRow buildTableTitle(AccountManageController ctr, int count) {
-    bool select = ctr.selectList.isNotEmpty;
-    bool selectAll = ctr.selectList.length == count && count > 0;
-
-    return TableRow(
-      decoration: const BoxDecoration(color: Colors.black12),
-      children: [
-        TableCell(
-          child: TableSelect(ctr.onTapSelectAll, select, selectAll),
-        ),
-        const TableCell(child: TableText("账号名称", true)),
-        const TableCell(child: TableText("手机号", true)),
-        const TableCell(child: TableText("邮箱", true)),
-        const TableCell(child: TableText("认证状态", true)),
-        const TableCell(child: TableText("状态", true)),
-        const TableCell(child: TableText("操作", true)),
-      ],
-    );
-  }
-
-  TableRow buildTableRow(AccountManageController ctr, BeanAccountList bean) {
+  Widget tableListBuilder(
+      AccountManageController ctr, BeanAccountList bean, int index) {
     String status1 = ["", "普通用户", "认证博主", "认证商户"][bean.authenticationStatus];
     String status2 = ["已停用", "正常使用"][bean.status];
 
-    bool contain = ctr.selectList.contains(bean);
-
-    return TableRow(
-      children: [
-        TableCell(
-            child: TableSelect(() => ctr.onTapSelect(bean), false, contain)),
-        TableCell(child: TableText(bean.nickname, false)),
-        TableCell(child: TableText(bean.phone, false)),
-        TableCell(child: TableText(bean.email, false)),
-        TableCell(child: TableText(status1, false)),
-        TableCell(child: TableText(status2, false)),
-        TableCell(child: TableCheck(() => ctr.onTapCheck(bean))),
-      ],
-    );
+    return [
+      TableListText(bean.nickname),
+      TableListText(bean.phone),
+      TableListText(bean.email),
+      TableListText(status1),
+      TableListText(status2),
+      TableListCheck(onTap: () => ctr.onTapCheck(bean)),
+    ][index];
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.zero,
-      child: GetBuilder<AccountManageController>(
-          id: "check-table",
-          builder: (ctr) {
-            int start = (ctr.pageNum - 1) * ctr.pageSize;
-            int end = start + ctr.pageSize;
-            end = end > ctr.beanList.length ? ctr.beanList.length : end;
+    return GetBuilder<AccountManageController>(
+      id: "check-table",
+      builder: (ctr) {
+        int start = (ctr.pageNum - 1) * ctr.pageSize;
+        int end = start + ctr.pageSize;
+        end = end > ctr.beanList.length ? ctr.beanList.length : end;
 
-            List<BeanAccountList> tempList = ctr.beanList.sublist(start, end);
-            return Table(
-              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              columnWidths: const {
-                1: FlexColumnWidth(),
-                2: FlexColumnWidth(),
-                3: FlexColumnWidth(),
-                4: FlexColumnWidth(),
-                5: FlexColumnWidth(),
-                6: FlexColumnWidth(),
-              },
-              children: [
-                buildTableTitle(ctr, tempList.length),
-                ...List.generate(
-                    tempList.length, (i) => buildTableRow(ctr, tempList[i]))
-              ],
-            );
-          }),
+        List<BeanAccountList> tempList = ctr.beanList.sublist(start, end);
+
+        return TableList(
+          titleList: const ["账号名称", "手机号", "邮箱", "认证状态", "状态", "操作"],
+          itemCount: tempList.length,
+          onSelect: (selectList) {
+            List<BeanAccountList> select =
+                selectList.map((i) => tempList[i]).toList();
+            ctr.onSelectChanged(select);
+          },
+          builder: (i, index) => tableListBuilder(ctr, tempList[i], index),
+        );
+      },
     );
   }
 }

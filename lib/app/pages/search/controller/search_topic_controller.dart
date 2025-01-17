@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:top_back/bean/bean_hot_search.dart';
 import 'package:top_back/network/request_mixin.dart';
 
 import '../widget/search_topic_create.dart';
@@ -9,6 +10,8 @@ class SearchTopicController extends GetxController with RequestMixin {
 
   bool isAutoSort = true;
   bool isEditSort = false;
+
+  List<BeanHotSearch> beanList = [];
 
   @override
   void onClose() {
@@ -47,4 +50,6 @@ class SearchTopicController extends GetxController with RequestMixin {
     isEditSort = false;
     update(["search-filter"]);
   }
+
+  void onSelectChanged(List<int> temp) {}
 }

@@ -120,26 +120,8 @@ class AccountManageController extends GetxController with RequestMixin {
     }
   }
 
-  void onTapSelect(BeanAccountList bean) {
-    if (selectList.contains(bean)) {
-      selectList.remove(bean);
-    } else {
-      selectList.add(bean);
-    }
-    update(["check-table"]);
-  }
-
-  void onTapSelectAll() {
-    int start = (pageNum - 1) * pageSize;
-    int end = start + pageSize;
-    end = end > beanList.length ? beanList.length : end;
-
-    if (selectList.length < end - start) {
-      selectList = beanList.sublist(start, end);
-    } else {
-      selectList.clear();
-    }
-    update(["check-table"]);
+  void onSelectChanged(List<BeanAccountList> temp) {
+    selectList = temp;
   }
 
   void onTapCheck(BeanAccountList bean) {

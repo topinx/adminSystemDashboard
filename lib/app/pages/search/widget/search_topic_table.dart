@@ -1,64 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:top_back/app/widgets/table_title_text.dart';
+import 'package:top_back/app/widgets/table_list.dart';
+import 'package:top_back/bean/bean_hot_search.dart';
 
 import '../controller/search_topic_controller.dart';
 
 class SearchTopicTable extends StatelessWidget {
   const SearchTopicTable({super.key});
 
-  TableRow buildTableTitle() {
-    return TableRow(
-      decoration: const BoxDecoration(color: Colors.black12),
-      children: [
-        TableCell(child: TableSelect(() {}, false, false)),
-        const TableCell(child: TableText("排序", true)),
-        const TableCell(child: TableText("标题", true)),
-        const TableCell(child: TableText("关联话题", true)),
-        const TableCell(child: TableText("点击量", true)),
-        const TableCell(child: TableText("创建时间", true)),
-        const TableCell(child: TableText("操作", true)),
-      ],
-    );
-  }
-
-  TableRow buildTableRow() {
-    return TableRow(
-      children: [
-        TableCell(child: TableSelect(() {}, false, false)),
-        const TableCell(child: TableText("1", false)),
-        const TableCell(child: TableText("", false)),
-        const TableCell(child: TableText("", false)),
-        const TableCell(child: TableText("", false)),
-        const TableCell(child: TableText("", false)),
-        TableCell(child: TableCheck(() {})),
-      ],
-    );
+  Widget tableListBuilder(
+      SearchTopicController ctr, BeanHotSearch bean, int index) {
+    return [
+      TableListText("${bean.orderId}"),
+      TableListText(bean.title),
+      TableListText(bean.topicName),
+      TableListText("${bean.clickCnt}"),
+      TableListText(bean.createTime),
+      TableListBtn({
+        "置顶": () {},
+        "编辑": () {},
+        "删除": () {},
+      }),
+    ][index];
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.zero,
-      child: GetBuilder<SearchTopicController>(
-          id: "check-table",
-          builder: (ctr) {
-            return Table(
-              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              columnWidths: const {
-                1: FlexColumnWidth(),
-                2: FlexColumnWidth(1.5),
-                3: FlexColumnWidth(1.5),
-                4: FlexColumnWidth(),
-                5: FlexColumnWidth(),
-                6: FlexColumnWidth(1.5),
-              },
-              children: [
-                buildTableTitle(),
-                ...List.generate(50, (i) => buildTableRow()),
-              ],
-            );
-          }),
+    return GetBuilder<SearchTopicController>(
+      id: "check-table",
+      builder: (ctr) {
+        return TableList(
+          titleList: const ["排序", "标题", "关联话题", "点击量", "创建时间", "操作"],
+          itemCount: ctr.beanList.length,
+          flexList: const [1, 2, 2, 1, 1, 2],
+          onSelect: ctr.onSelectChanged,
+          onReorder: (o, n) {
+            var temp = ctr.beanList.removeAt(o);
+            ctr.beanList.insert(n, temp);
+          },
+          builder: (i, index) => tableListBuilder(ctr, ctr.beanList[i], index),
+        );
+      },
     );
   }
 }

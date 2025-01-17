@@ -62,26 +62,8 @@ class ManageTopicController extends GetxController with RequestMixin {
     }
   }
 
-  void onTapSelect(BeanTopic bean) {
-    if (selectList.contains(bean)) {
-      selectList.remove(bean);
-    } else {
-      selectList.add(bean);
-    }
-    update(["check-table"]);
-  }
-
-  void onTapSelectAll() {
-    int start = (pageNum - 1) * pageSize;
-    int end = start + pageSize;
-    end = end > beanList.length ? beanList.length : end;
-
-    if (selectList.length < end - start) {
-      selectList = beanList.sublist(start, end);
-    } else {
-      selectList.clear();
-    }
-    update(["check-table"]);
+  void onSelectChanged(List<BeanTopic> temp) {
+    selectList = temp;
   }
 
   void onTapCreate() {
