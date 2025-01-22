@@ -20,8 +20,8 @@ class DioClient {
   DioClient._() {
     request.options.baseUrl = AppConstants.httpLink;
 
-    request.options.connectTimeout = const Duration(seconds: 10);
-    request.options.receiveTimeout = const Duration(seconds: 10);
+    request.options.connectTimeout = const Duration(seconds: 50);
+    request.options.receiveTimeout = const Duration(seconds: 50);
 
     request.interceptors.addAll([TokenInterceptor(request)]);
   }

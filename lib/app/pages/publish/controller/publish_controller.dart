@@ -108,6 +108,8 @@ class PublishController extends GetxController with RequestMixin {
   }
 
   void onTapAdd() async {
+    BotToast.showLoading();
+
     if (detail.noteType == 1) {
       List<XFile> files = await imagePicker.pickMultiImage(
           limit: 18 - detail.materialList.length);
@@ -142,6 +144,8 @@ class PublishController extends GetxController with RequestMixin {
       detail.updateMaterial = true;
       update();
     }
+
+    BotToast.closeAllLoading();
   }
 
   void onTapCover(DraftMaterial material) async {
@@ -156,6 +160,8 @@ class PublishController extends GetxController with RequestMixin {
   }
 
   void onTapMaterial(DraftMaterial material) async {
+    BotToast.showLoading();
+
     if (material.type == 1) {
       XFile? file = await imagePicker.pickImage(
           source: ImageSource.gallery, imageQuality: 80);
@@ -182,6 +188,8 @@ class PublishController extends GetxController with RequestMixin {
       detail.updateMaterial = true;
       update();
     }
+
+    BotToast.closeAllLoading();
   }
 
   bool canAddMaterial() {
