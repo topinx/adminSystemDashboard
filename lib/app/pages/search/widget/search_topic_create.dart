@@ -7,7 +7,9 @@ import 'package:top_back/bean/bean_topic.dart';
 import '../controller/search_topic_create_controller.dart';
 
 class SearchTopicCreate extends StatefulWidget {
-  const SearchTopicCreate({super.key});
+  const SearchTopicCreate({super.key, this.id});
+
+  final int? id;
 
   @override
   State<SearchTopicCreate> createState() => _SearchTopicCreateState();
@@ -16,6 +18,12 @@ class SearchTopicCreate extends StatefulWidget {
 class _SearchTopicCreateState extends State<SearchTopicCreate> {
   final SearchTopicCreateController ctr =
       Get.put(SearchTopicCreateController());
+
+  @override
+  void initState() {
+    super.initState();
+    ctr.searchId = widget.id ?? 0;
+  }
 
   Widget buildOptionsCard(List<BeanTopic> options, Function() cancel) {
     return Card(

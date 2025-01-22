@@ -31,7 +31,7 @@ class BeanHotSearch {
         topicName: json["topicName"],
         orderId: json["orderId"],
         createTime: json["createTime"],
-        clickCnt: json["clickCnt"],
+        clickCnt: json["clickCnt"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {

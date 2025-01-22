@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_video_thumbnail_plus/flutter_video_thumbnail_plus.dart';
@@ -116,6 +114,7 @@ class PublishController extends GetxController with RequestMixin {
 
       for (var file in files) {
         DraftMaterial material = DraftMaterial();
+        material.type = 1;
         material.imgLink = "";
         material.imgName = file.name;
         material.imgData = await file.readAsBytes();
@@ -125,26 +124,20 @@ class PublishController extends GetxController with RequestMixin {
       detail.updateMaterial = true;
       update();
     } else {
-      XFile? file = await imagePicker.pickVideo(
-          source: ImageSource.gallery, maxDuration: const Duration(minutes: 3));
+      XFile? file = await imagePicker.pickVideo(source: ImageSource.gallery);
       if (file == null) return;
 
       DraftMaterial material = DraftMaterial();
+      material.type = 2;
       material.imgLink = "";
       material.imgName = file.name;
       material.imgData = await file.readAsBytes();
-      detail.materialList.add(material);
 
-      Uint8List? thumb = await FlutterVideoThumbnailPlus.thumbnailDataWeb(
+      material.thumbData = await FlutterVideoThumbnailPlus.thumbnailDataWeb(
         videoBytes: material.imgData!,
         quality: 80,
       );
-      if (thumb != null) {
-        detail.cover.imgLink = "";
-        detail.cover.imgName =
-            "${DateTime.now().millisecondsSinceEpoch}cover.jpg";
-        detail.cover.imgData = thumb;
-      }
+      detail.materialList.add(material);
 
       detail.updateMaterial = true;
       update();
@@ -155,6 +148,7 @@ class PublishController extends GetxController with RequestMixin {
     XFile? file = await imagePicker.pickImage(
         source: ImageSource.gallery, imageQuality: 80);
     if (file == null) return;
+    material.type = 1;
     material.imgLink = "";
     material.imgName = file.name;
     material.imgData = await file.readAsBytes();
@@ -180,16 +174,10 @@ class PublishController extends GetxController with RequestMixin {
       material.imgName = file.name;
       material.imgData = await file.readAsBytes();
 
-      Uint8List? thumb = await FlutterVideoThumbnailPlus.thumbnailDataWeb(
+      material.thumbData = await FlutterVideoThumbnailPlus.thumbnailDataWeb(
         videoBytes: material.imgData!,
         quality: 80,
       );
-      if (thumb != null) {
-        detail.cover.imgLink = "";
-        detail.cover.imgName =
-            "${DateTime.now().millisecondsSinceEpoch}cover.jpg";
-        detail.cover.imgData = thumb;
-      }
 
       detail.updateMaterial = true;
       update();

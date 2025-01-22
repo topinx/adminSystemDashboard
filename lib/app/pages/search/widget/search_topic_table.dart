@@ -8,10 +8,10 @@ import '../controller/search_topic_controller.dart';
 class SearchTopicTable extends StatelessWidget {
   const SearchTopicTable({super.key});
 
-  Widget tableListBuilder(
-      SearchTopicController ctr, BeanHotSearch bean, int index) {
+  Widget tableListBuilder(SearchTopicController ctr, int i, int index) {
+    BeanHotSearch bean = ctr.beanList[i];
     return [
-      TableListText("${bean.orderId}"),
+      TableListText("${i + 1}"),
       TableListText(bean.title),
       TableListText(bean.topicName),
       TableListText("${bean.clickCnt}"),
@@ -39,7 +39,7 @@ class SearchTopicTable extends StatelessWidget {
             var temp = ctr.beanList.removeAt(o);
             ctr.beanList.insert(n, temp);
           },
-          builder: (i, index) => tableListBuilder(ctr, ctr.beanList[i], index),
+          builder: (i, index) => tableListBuilder(ctr, i, index),
         );
       },
     );

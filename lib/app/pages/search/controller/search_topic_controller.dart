@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:top_back/app/widgets/alert_dialog.dart';
 import 'package:top_back/bean/bean_hot_search.dart';
 import 'package:top_back/contants/http_constants.dart';
 import 'package:top_back/network/request_mixin.dart';
@@ -15,6 +18,8 @@ class SearchTopicController extends GetxController with RequestMixin {
 
   List<BeanHotSearch> beanList = [];
   List<BeanHotSearch> selectList = [];
+
+  int checkCnt = 0;
 
   @override
   void onReady() {
@@ -32,9 +37,12 @@ class SearchTopicController extends GetxController with RequestMixin {
     requestHotSearchList();
   }
 
-  void onChangeAutoSort(bool value) {
+  void onChangeAutoSort(bool value) async {
     isAutoSort = value;
     update(["search-filter"]);
+
+    await setSortType();
+    requestHotSearchList();
   }
 
   void onTapCreate() {
@@ -50,42 +58,97 @@ class SearchTopicController extends GetxController with RequestMixin {
     update(["search-filter", "check-table"]);
   }
 
-  void onTapMultiDelete() {
+  void onTapMultiDelete() async {
     if (selectList.isEmpty) {
       showToast("请先选择话题");
       return;
     }
+
+    bool? accept =
+        await Get.dialog(const Alert(title: "", content: "确认删除热搜话题?"));
+    if (accept != true) return;
+
+    List<int> ids = selectList.map((x) => x.id).toList();
+    requestDelete(ids);
+    selectList.clear();
   }
 
   void onTapSaveEdit() {
     isEditSort = false;
     update(["search-filter", "check-table"]);
+    requestSortList();
   }
 
   void onTapCancelEdit() {
     isEditSort = false;
-    update(["search-filter", "check-table"]);
+    update(["search-filter"]);
+    requestHotSearchList();
   }
 
   void onSelectChanged(List<int> temp) {
     selectList = temp.map((x) => beanList[x]).toList();
   }
 
-  void onTapPinned(BeanHotSearch bean) {}
+  void onTapPinned(BeanHotSearch bean) {
+    beanList.remove(bean);
+    beanList.insert(0, bean);
+    requestSortList();
+    requestHotSearchList();
+  }
 
-  void onTapEdit(BeanHotSearch bean) {}
+  void onTapEdit(BeanHotSearch bean) {
+    Get.dialog(SearchTopicCreate(id: bean.id));
+  }
 
-  void onTapDelete(BeanHotSearch bean) {}
+  void onTapDelete(BeanHotSearch bean) async {
+    bool? accept =
+        await Get.dialog(const Alert(title: "", content: "确认删除热搜话题?"));
+    if (accept != true) return;
+
+    requestDelete([bean.id]);
+  }
+
+  Future<void> requestDelete(List<int> topics) async {
+    BotToast.showLoading();
+    await post(HttpConstants.hotSearchDelete,
+        param: json.encode(topics), success: onTopicDelete);
+    BotToast.closeAllLoading();
+  }
+
+  void onTopicDelete(data) {
+    showToast("已删除");
+    requestHotSearchList();
+  }
 
   Future<void> requestHotSearchList() async {
     BotToast.showLoading();
-    await get(HttpConstants.hotSearchList, param: {}, success: onHotSearchList);
+    await get(
+      HttpConstants.hotSearchList,
+      param: {},
+      success: onHotSearchList,
+    );
     BotToast.closeAllLoading();
   }
 
   void onHotSearchList(data) {
-    List tempList = data ?? [];
+    List tempList = data["list"] ?? [];
     beanList = tempList.map((x) => BeanHotSearch.fromJson(x)).toList();
-    update(["check-table"]);
+    checkCnt = beanList.length;
+    isAutoSort = data["autoOrder"];
+    update(["search-filter", "check-page", "check-table"]);
+  }
+
+  Future<void> requestSortList() async {
+    List<int> topics = beanList.map((x) => x.id).toList();
+    BotToast.showLoading();
+    await post(HttpConstants.hotSearchSort, param: json.encode(topics));
+    BotToast.closeAllLoading();
+  }
+
+  Future<void> setSortType() async {
+    BotToast.showLoading();
+    await post(HttpConstants.setHotSearchSort,
+        param: {"autoOrder": isAutoSort});
+    BotToast.closeAllLoading();
   }
 }

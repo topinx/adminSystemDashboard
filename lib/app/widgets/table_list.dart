@@ -31,10 +31,10 @@ class TableList extends StatefulWidget {
   final Function(List<int>)? onSelect;
 
   @override
-  State<TableList> createState() => _TableListState();
+  State<TableList> createState() => TableListState();
 }
 
-class _TableListState extends State<TableList> {
+class TableListState extends State<TableList> {
   List<int> flexList = [];
 
   List<int> selectList = [];
@@ -49,13 +49,11 @@ class _TableListState extends State<TableList> {
   void didUpdateWidget(covariant TableList oldWidget) {
     super.didUpdateWidget(oldWidget);
     flexList = widget.flexList ?? List.filled(widget.titleList.length, 1);
-    if (widget.enableOrder != oldWidget.enableOrder) {
-      selectList.clear();
-      if (widget.onSelect != null) widget.onSelect!(selectList);
-    }
+    selectList.clear();
+    if (widget.onSelect != null) widget.onSelect!(selectList);
   }
 
-  void onTapSelectAll() {
+  void _onTapSelectAll() {
     if (selectList.length == widget.itemCount) {
       selectList.clear();
     } else {
@@ -66,7 +64,7 @@ class _TableListState extends State<TableList> {
     if (mounted) setState(() {});
   }
 
-  void onTapSelectItem(int i) {
+  void _onTapSelectItem(int i) {
     if (selectList.contains(i)) {
       selectList.remove(i);
     } else {
@@ -77,14 +75,14 @@ class _TableListState extends State<TableList> {
     if (mounted) setState(() {});
   }
 
-  void onTableListReorder(int oldIndex, int newIndex) {
+  void _onTableListReorder(int oldIndex, int newIndex) {
     if (widget.onReorder == null) return;
     if (newIndex > oldIndex) newIndex -= 1;
     widget.onReorder!(oldIndex, newIndex);
     if (mounted) setState(() {});
   }
 
-  Widget buildTableTitle(BuildContext context) {
+  Widget _buildTableTitle(BuildContext context) {
     List<Widget> titleContent = List.generate(
       widget.titleList.length,
       (i) => Expanded(
@@ -101,7 +99,7 @@ class _TableListState extends State<TableList> {
           selectList.length == widget.itemCount && selectList.isNotEmpty;
       bool contain = selectList.isNotEmpty;
 
-      prefix = PrefixCheck(active, contain, onTap: onTapSelectAll);
+      prefix = PrefixCheck(active, contain, onTap: _onTapSelectAll);
     }
 
     return Container(
@@ -111,7 +109,7 @@ class _TableListState extends State<TableList> {
     );
   }
 
-  Widget buildContentItem(int i) {
+  Widget _buildContentItem(int i) {
     List<Widget> itemContent = List.generate(
       widget.titleList.length,
       (index) =>
@@ -123,7 +121,7 @@ class _TableListState extends State<TableList> {
       prefix = PrefixDrag(index: i);
     } else if (widget.onSelect != null) {
       bool active = selectList.contains(i);
-      prefix = PrefixCheck(active, false, onTap: () => onTapSelectItem(i));
+      prefix = PrefixCheck(active, false, onTap: () => _onTapSelectItem(i));
     }
 
     return Container(
@@ -137,14 +135,14 @@ class _TableListState extends State<TableList> {
   @override
   Widget build(BuildContext context) {
     Widget tableList = ReorderableList(
-      itemBuilder: (_, i) => buildContentItem(i),
+      itemBuilder: (_, i) => _buildContentItem(i),
       itemCount: widget.itemCount,
       itemExtent: 50,
-      onReorder: onTableListReorder,
+      onReorder: _onTableListReorder,
     );
 
     Widget tableContent = Column(
-        children: [buildTableTitle(context), Expanded(child: tableList)]);
+        children: [_buildTableTitle(context), Expanded(child: tableList)]);
 
     return LayoutBuilder(builder: (_, constraints) {
       return SingleChildScrollView(

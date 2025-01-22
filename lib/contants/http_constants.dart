@@ -110,4 +110,22 @@ class HttpConstants {
 
   /// 新增热搜
   static const createHotSearch = "/adminsystem/searchManagement/addHotSearch";
+
+  /// 编辑热搜
+  static const updateHotSearch =
+      "/adminsystem/searchManagement/updateHotSearch";
+
+  /// 删除热搜
+  static const hotSearchDelete =
+      "/adminsystem/searchManagement/deleteHotSearch";
+
+  /// 获取热搜详情
+  static const hotSearchInfo = "/adminsystem/searchManagement/getById";
+
+  /// 热搜排序
+  static const hotSearchSort = "/adminsystem/searchManagement/resetOrderId";
+
+  /// 设置排序开关
+  static const setHotSearchSort =
+      "/adminsystem/searchManagement/hotSearchOrderSetting";
 }

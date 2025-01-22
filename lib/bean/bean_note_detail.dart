@@ -22,6 +22,7 @@ class BeanNoteDetail {
   String createByNickname;
   String createTime;
   String topicList;
+  String extra;
   bool isOwner;
 
   BeanNoteDetail({
@@ -41,6 +42,7 @@ class BeanNoteDetail {
     required this.createByNickname,
     required this.createTime,
     required this.topicList,
+    required this.extra,
     required this.isOwner,
   });
 
@@ -61,6 +63,7 @@ class BeanNoteDetail {
         createByNickname = "",
         createTime = "",
         topicList = "",
+        extra = "",
         isOwner = false;
 
   factory BeanNoteDetail.fromJson(Map<String, dynamic> json) => BeanNoteDetail(
@@ -81,6 +84,7 @@ class BeanNoteDetail {
         createByNickname: json["createByNickname"],
         createTime: json["createTime"],
         topicList: json["topicList"],
+        extra: json["extra"],
         isOwner: json["isOwner"],
       );
 
@@ -101,6 +105,7 @@ class BeanNoteDetail {
         "createByNickname": createByNickname,
         "createTime": createTime,
         "topicList": topicList,
+        "extra": extra,
         "isOwner": isOwner,
       };
 }

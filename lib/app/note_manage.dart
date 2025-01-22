@@ -1,7 +1,5 @@
-import 'dart:typed_data';
-
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
+import 'package:image_size_getter/image_size_getter.dart';
 import 'package:top_back/app/pages/home/controller/home_controller.dart';
 import 'package:top_back/bean/bean_draft.dart';
 import 'package:top_back/contants/http_constants.dart';
@@ -47,22 +45,31 @@ class NoteManage with RequestMixin {
         String name = getName(draft.createBy, material.imgName);
         String url = await upload(material.imgData!, name);
         material.imgLink = url;
-
-        if (material.imgData!.lengthInBytes > sizeLimit) {
-          Uint8List data = await FlutterImageCompress.compressWithList(
-              material.imgData!,
-              quality: 80);
-
-          name = getName(draft.createBy, material.imgName);
-          material.imgThumb = await upload(data, name);
-        } else {
-          material.imgThumb = url;
+        if (url.isEmpty) {
+          showToast("上传资源失败");
+          isLoading = false;
+          homeCtr.updatePub(false, draft.noteId == 0);
+          startPublish();
+          return;
         }
       } else {
         String name = getName(draft.createBy, material.imgName);
         String url = await uploadVideo(material.imgData!, name);
         material.imgLink = url;
-        material.imgThumb = url;
+        if (url.isEmpty) {
+          showToast("上传资源失败");
+          isLoading = false;
+          homeCtr.updatePub(false, draft.noteId == 0);
+          startPublish();
+          return;
+        }
+
+        if (material.thumbData != null) {
+          String thumbName =
+              getName(draft.createBy, material.imgName, s: ".jpg");
+          String thumbUrl = await upload(material.thumbData!, thumbName);
+          material.imgThumb = thumbUrl;
+        }
       }
     }
 
@@ -80,11 +87,37 @@ class NoteManage with RequestMixin {
         }
 
         draft.cover.imgLink = url;
-        draft.cover.imgThumb = url;
       } else {
         draft.cover.imgLink = draft.materialList.first.imgThumb;
-        draft.cover.imgThumb = draft.materialList.first.imgThumb;
       }
+    }
+
+    Map<String, dynamic> extra = {};
+    if (draft.materialList.first.type == 1) {
+      if (draft.materialList.first.imgData != null) {
+        var input = MemoryInput(draft.materialList.first.imgData!);
+        final result = ImageSizeGetter.getSizeResult(input);
+        extra["first_w"] = result.size.width;
+        extra["first_h"] = result.size.height;
+      }
+    } else {
+      if (draft.materialList.first.thumbData != null) {
+        var input = MemoryInput(draft.materialList.first.thumbData!);
+        final result = ImageSizeGetter.getSizeResult(input);
+        extra["first_w"] = result.size.width;
+        extra["first_h"] = result.size.height;
+        extra["first_s"] = 0;
+      }
+    }
+
+    if (draft.cover.imgData != null) {
+      var input = MemoryInput(draft.cover.imgData!);
+      final result = ImageSizeGetter.getSizeResult(input);
+      extra["cover_w"] = result.size.width;
+      extra["cover_h"] = result.size.height;
+    } else if (draft.extra.isEmpty) {
+      extra["cover_w"] = extra["first_w"];
+      extra["cover_h"] = extra["first_h"];
     }
 
     if (draft.noteId == 0) {
@@ -97,9 +130,9 @@ class NoteManage with RequestMixin {
     startPublish();
   }
 
-  String getName(int user, String path) {
+  String getName(int user, String path, {String? s}) {
     int dot = path.lastIndexOf(".");
-    String suffix = path.substring(dot);
+    String suffix = s ?? path.substring(dot);
     return "note/$user/${DateTime.now().microsecondsSinceEpoch}$suffix";
   }
 
@@ -110,7 +143,7 @@ class NoteManage with RequestMixin {
         "cover": draft.cover.imgLink,
         "title": draft.title,
         "textContent": draft.textContent,
-        "extra": "",
+        "extra": draft.extra,
         "materialList": draft.materialList
             .map((x) => {"thumb": x.imgThumb, "url": x.imgLink, "type": x.type})
             .toList(),
@@ -132,7 +165,7 @@ class NoteManage with RequestMixin {
         "cover": draft.cover.imgLink,
         "title": draft.title,
         "textContent": draft.textContent,
-        "extra": "",
+        "extra": draft.extra,
         "materialList": draft.materialList
             .map((x) => {"thumb": x.imgThumb, "url": x.imgLink, "type": x.type})
             .toList(),

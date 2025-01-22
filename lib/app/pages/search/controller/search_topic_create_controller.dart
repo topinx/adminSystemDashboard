@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:top_back/bean/bean_hot_search.dart';
 import 'package:top_back/bean/bean_topic.dart';
 import 'package:top_back/contants/http_constants.dart';
 import 'package:top_back/network/request_mixin.dart';
@@ -11,6 +12,14 @@ class SearchTopicCreateController extends GetxController with RequestMixin {
   TextEditingController inputOrder = TextEditingController();
 
   BeanTopic? beanTopic;
+
+  int searchId = 0;
+
+  @override
+  void onReady() {
+    super.onReady();
+    requestInfo();
+  }
 
   @override
   void onClose() {
@@ -39,7 +48,15 @@ class SearchTopicCreateController extends GetxController with RequestMixin {
       return false;
     }
 
-    bool success = await requestCreate();
+    bool success = false;
+    if (searchId == 0) {
+      success = await requestCreate();
+      if (success) showToast("创建成功");
+    } else {
+      success = await requestUpdate();
+      if (success) showToast("更新成功");
+    }
+
     return success;
   }
 
@@ -72,6 +89,57 @@ class SearchTopicCreateController extends GetxController with RequestMixin {
     await post(
       HttpConstants.createHotSearch,
       param: {
+        "title": inputTitle.text,
+        "topicId": beanTopic!.id,
+        "topicName": beanTopic!.name,
+        "orderId": order,
+      },
+      success: (_) => success = true,
+    );
+
+    BotToast.closeAllLoading();
+    return success;
+  }
+
+  Future<void> requestInfo() async {
+    if (searchId == 0) return;
+
+    BotToast.showLoading();
+    await get(HttpConstants.hotSearchInfo,
+        param: {"id": searchId}, success: onHotSearchInfo);
+    BotToast.closeAllLoading();
+  }
+
+  void onHotSearchInfo(data) {
+    BeanHotSearch hotSearch = BeanHotSearch.fromJson(data);
+    inputTitle.text = hotSearch.title;
+    inputTopic.text = hotSearch.topicName;
+    inputOrder.text = "${hotSearch.orderId}";
+
+    beanTopic = BeanTopic(
+      id: hotSearch.topicId,
+      name: hotSearch.topicName,
+      avatar: "",
+      noteCnt: 0,
+      status: 0,
+      createTime: "",
+      topSearch: null,
+    );
+  }
+
+  Future<bool> requestUpdate() async {
+    bool success = false;
+    BotToast.showLoading();
+
+    int? order = int.tryParse(inputOrder.text);
+    if (order != null && order < 1) {
+      order = null;
+    }
+
+    await post(
+      HttpConstants.updateHotSearch,
+      param: {
+        "id": searchId,
         "title": inputTitle.text,
         "topicId": beanTopic!.id,
         "topicName": beanTopic!.name,

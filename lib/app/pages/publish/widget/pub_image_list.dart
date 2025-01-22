@@ -58,11 +58,20 @@ class ImageCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DecorationImage? decorationImage;
-    if (data.imgData != null) {
-      decorationImage = DecorationImage(image: MemoryImage(data.imgData!));
-    } else if (data.imgLink.isNotEmpty) {
-      decorationImage = DecorationImage(
-          image: NetworkImage(AppConstants.imgLink + data.imgLink));
+    if (data.type == 1) {
+      if (data.imgData != null) {
+        decorationImage = DecorationImage(image: MemoryImage(data.imgData!));
+      } else if (data.imgLink.isNotEmpty) {
+        decorationImage = DecorationImage(
+            image: NetworkImage(AppConstants.imgLink + data.imgLink));
+      }
+    } else {
+      if (data.thumbData != null) {
+        decorationImage = DecorationImage(image: MemoryImage(data.thumbData!));
+      } else if (data.imgThumb.isNotEmpty) {
+        decorationImage = DecorationImage(
+            image: NetworkImage(AppConstants.imgLink + data.imgThumb));
+      }
     }
 
     return GestureDetector(

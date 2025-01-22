@@ -26,6 +26,8 @@ class BeanDraft {
 
   List<String> topicList = [];
 
+  String extra = "";
+
   bool updateMaterial = false;
 
   bool updateTopic = false;
@@ -64,6 +66,7 @@ class BeanDraft {
       ..createBy = detail.createBy
       ..createByNickname = detail.createByNickname
       ..topicList = topics
+      ..extra = detail.extra
       ..updateMaterial = false
       ..updateTopic = false;
   }
@@ -79,6 +82,8 @@ class DraftMaterial {
   String imgName = "";
 
   Uint8List? imgData;
+
+  Uint8List? thumbData;
 
   int type = 1;
 

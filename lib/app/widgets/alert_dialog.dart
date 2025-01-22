@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class Alert extends StatelessWidget {
   const Alert({super.key, required this.title, required this.content});
@@ -42,15 +41,18 @@ class Alert extends StatelessWidget {
         blurRadius: 5,
         spreadRadius: 1);
     return Center(
-      child: Container(
-        height: 132,
-        width: 248,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [shadow],
-          borderRadius: BorderRadius.circular(16),
+      child: Material(
+        color: Colors.transparent,
+        child: Container(
+          height: 132,
+          width: 248,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [shadow],
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: buildContent(context),
         ),
-        child: buildContent(context),
       ),
     );
   }
@@ -75,7 +77,11 @@ class AlertButton extends StatelessWidget {
     );
 
     return Expanded(
-      child: GestureDetector(onTap: () => Get.back(result: on), child: child),
+      child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop(on);
+          },
+          child: child),
     );
   }
 }
