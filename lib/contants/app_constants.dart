@@ -9,7 +9,7 @@ class AppConstants {
   /// http请求的host
   static final Map<AppEnv, String> _httpLink = {
     AppEnv.onLocal: "http://192.168.101.25:8090",
-    AppEnv.onTest: "",
+    AppEnv.onTest: "http://34.60.28.188:8090",
     AppEnv.onLine: "",
   };
   static get httpLink => _httpLink[appEnv];
