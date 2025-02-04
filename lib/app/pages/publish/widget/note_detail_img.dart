@@ -30,13 +30,16 @@ class NoteDetailImg extends StatelessWidget {
             margin: const EdgeInsets.only(right: 20),
             child: const Icon(Icons.add, color: Colors.black12),
           ),
-          ...List.generate(
-              detail.materialList.length,
-              (i) => NoteImage(
-                    detail.materialList[i].thumb,
-                    type: detail.materialList[i].type,
-                    onTap: () => onTapDetail(detail.materialList[i]),
-                  )),
+          ...List.generate(detail.materialList.length, (i) {
+            int type = detail.materialList[i].type;
+            return NoteImage(
+              type == 1
+                  ? detail.materialList[i].url
+                  : detail.materialList[i].thumb,
+              type: type,
+              onTap: () => onTapDetail(detail.materialList[i]),
+            );
+          }),
         ]),
       ),
     );

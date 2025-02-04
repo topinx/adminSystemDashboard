@@ -81,11 +81,11 @@ class BeanNoteDetail {
         auditedBy: json["auditedBy"],
         auditedNickname: json["auditedNickname"] ?? "",
         createBy: json["createBy"],
-        createByNickname: json["createByNickname"],
+        createByNickname: json["createByNickname"] ?? "",
         createTime: json["createTime"],
         topicList: json["topicList"],
-        extra: json["extra"],
-        isOwner: json["isOwner"],
+        extra: json["extra"] ?? "",
+        isOwner: json["isOwner"] ?? false,
       );
 
   Map<String, dynamic> toJson() => {

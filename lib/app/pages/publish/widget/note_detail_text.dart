@@ -11,16 +11,26 @@ class NoteDetailText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      alignment: Alignment.centerLeft,
-      color: Colors.transparent,
-      child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        SizedBox(width: 60, child: Text(text1)),
-        const Text(":  "),
-        Expanded(child: Text(text2)),
-      ]),
-    );
+    return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Container(
+        height: 50,
+        width: 60,
+        alignment: Alignment.centerLeft,
+        child: Text(text1),
+      ),
+      Container(
+        height: 50,
+        alignment: Alignment.centerLeft,
+        child: const Text(":  "),
+      ),
+      Expanded(
+          child: Container(
+        constraints: const BoxConstraints(minHeight: 50),
+        alignment: Alignment.centerLeft,
+        color: Colors.transparent,
+        child: Text(text2),
+      )),
+    ]);
   }
 }
 

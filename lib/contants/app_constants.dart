@@ -4,7 +4,7 @@ class AppConstants {
   /// 环境配置
   ///
   /// 分别为本地 测试 线上
-  static const AppEnv appEnv = AppEnv.onLocal;
+  static const AppEnv appEnv = AppEnv.onTest;
 
   /// http请求的host
   static final Map<AppEnv, String> _httpLink = {
