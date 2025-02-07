@@ -100,7 +100,7 @@ class SearchTopicCreateController extends GetxController with RequestMixin {
         "topicId": beanTopic!.id,
         "topicName": beanTopic!.name,
         "orderId": order,
-        "inputDescr": inputDescr.text,
+        "introduction": inputDescr.text,
       },
       success: (_) => success = true,
     );
@@ -153,7 +153,7 @@ class SearchTopicCreateController extends GetxController with RequestMixin {
         "topicId": beanTopic!.id,
         "topicName": beanTopic!.name,
         "orderId": order,
-        "inputDescr": inputDescr.text,
+        "introduction": inputDescr.text,
       },
       success: (_) => success = true,
     );
