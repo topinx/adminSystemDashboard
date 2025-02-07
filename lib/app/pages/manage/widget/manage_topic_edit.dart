@@ -115,7 +115,7 @@ class _ManageTopicEditState extends State<ManageTopicEdit> {
         borderRadius: BorderRadius.circular(4),
         child: Container(
           height: 320,
-          width: 400,
+          width: 430,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(4),

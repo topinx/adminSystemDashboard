@@ -10,6 +10,7 @@ class SearchTopicCreateController extends GetxController with RequestMixin {
   TextEditingController inputTitle = TextEditingController();
   TextEditingController inputTopic = TextEditingController();
   TextEditingController inputOrder = TextEditingController();
+  TextEditingController inputDescr = TextEditingController();
 
   BeanTopic? beanTopic;
 
@@ -27,6 +28,7 @@ class SearchTopicCreateController extends GetxController with RequestMixin {
     inputTitle.dispose();
     inputTopic.dispose();
     inputOrder.dispose();
+    inputDescr.dispose();
   }
 
   Future<List<BeanTopic>> onSubmitSearch(String string) async {
@@ -45,6 +47,11 @@ class SearchTopicCreateController extends GetxController with RequestMixin {
 
     if (beanTopic == null) {
       showToast("请选择关联话题");
+      return false;
+    }
+
+    if (inputDescr.text.trim().isEmpty) {
+      showToast("请输入热搜导语");
       return false;
     }
 
@@ -93,6 +100,7 @@ class SearchTopicCreateController extends GetxController with RequestMixin {
         "topicId": beanTopic!.id,
         "topicName": beanTopic!.name,
         "orderId": order,
+        "inputDescr": inputDescr.text,
       },
       success: (_) => success = true,
     );
@@ -115,6 +123,7 @@ class SearchTopicCreateController extends GetxController with RequestMixin {
     inputTitle.text = hotSearch.title;
     inputTopic.text = hotSearch.topicName;
     inputOrder.text = "${hotSearch.orderId}";
+    inputDescr.text = hotSearch.introduction;
 
     beanTopic = BeanTopic(
       id: hotSearch.topicId,
@@ -144,6 +153,7 @@ class SearchTopicCreateController extends GetxController with RequestMixin {
         "topicId": beanTopic!.id,
         "topicName": beanTopic!.name,
         "orderId": order,
+        "inputDescr": inputDescr.text,
       },
       success: (_) => success = true,
     );

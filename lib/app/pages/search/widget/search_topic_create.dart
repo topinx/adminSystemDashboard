@@ -30,7 +30,7 @@ class _SearchTopicCreateState extends State<SearchTopicCreate> {
       color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
       child: Container(
-        width: 245,
+        width: 275,
         constraints: const BoxConstraints(minHeight: 50, maxHeight: 240),
         child: SingleChildScrollView(
             child: Column(children: [
@@ -94,7 +94,7 @@ class _SearchTopicCreateState extends State<SearchTopicCreate> {
         Expanded(
           child: TextField(
             controller: ctr.inputTitle,
-            decoration: InputDecoration(hintText: "请输入内容", hintStyle: style),
+            decoration: InputDecoration(hintText: "请输入热搜标题", hintStyle: style),
           ),
         ),
       ]),
@@ -143,18 +143,48 @@ class _SearchTopicCreateState extends State<SearchTopicCreate> {
     );
   }
 
+  Widget buildDescribeContent() {
+    TextStyle style = const TextStyle(fontSize: 14, color: Color(0xFFEBEBEB));
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 0, 60, 20),
+      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Container(
+          height: 35,
+          alignment: Alignment.centerLeft,
+          child: const Text("热搜导语："),
+        ),
+        Expanded(
+          child: TextField(
+            controller: ctr.inputDescr,
+            maxLines: 3,
+            minLines: 3,
+            maxLength: 500,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(10),
+              hintText: "请输入热搜导语",
+              hintStyle: style,
+              counterText: "",
+            ),
+          ),
+        ),
+      ]),
+    );
+  }
+
   Widget buildCreateContent() {
     return Column(children: [
-      const Row(children: [
-        SizedBox(width: 15),
-        Text("新建热搜",
-            style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
-        Spacer(),
-        CloseButton(),
+      Row(children: [
+        const SizedBox(width: 15),
+        Text(ctr.searchId == 0 ? "新建热搜" : "编辑话题",
+            style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
+        const Spacer(),
+        const CloseButton(),
       ]),
       buildTitleContent(),
       buildTopicContent(),
       buildSortContent(),
+      buildDescribeContent(),
       const Spacer(),
       Row(mainAxisAlignment: MainAxisAlignment.end, children: [
         OutlinedButton(onPressed: onTapCancel, child: const Text("取消")),
@@ -181,8 +211,8 @@ class _SearchTopicCreateState extends State<SearchTopicCreate> {
       child: Material(
         borderRadius: BorderRadius.circular(4),
         child: Container(
-          height: 280,
-          width: 400,
+          height: 390,
+          width: 430,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(4),

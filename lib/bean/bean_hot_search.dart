@@ -13,6 +13,7 @@ class BeanHotSearch {
   int orderId;
   String createTime;
   int clickCnt;
+  String introduction;
 
   BeanHotSearch({
     required this.id,
@@ -22,6 +23,7 @@ class BeanHotSearch {
     required this.orderId,
     required this.createTime,
     required this.clickCnt,
+    required this.introduction,
   });
 
   factory BeanHotSearch.fromJson(Map<String, dynamic> json) => BeanHotSearch(
@@ -32,6 +34,7 @@ class BeanHotSearch {
         orderId: json["orderId"],
         createTime: json["createTime"],
         clickCnt: json["clickCnt"] ?? 0,
+        introduction: json["introduction"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
@@ -42,5 +45,6 @@ class BeanHotSearch {
         "orderId": orderId,
         "createTime": createTime,
         "clickCnt": clickCnt,
+        "introduction": introduction,
       };
 }
