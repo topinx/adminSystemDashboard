@@ -24,6 +24,7 @@ class BeanNoteDetail {
   String topicList;
   String extra;
   bool isOwner;
+  int? classifyId;
 
   BeanNoteDetail({
     required this.noteId,
@@ -44,6 +45,7 @@ class BeanNoteDetail {
     required this.topicList,
     required this.extra,
     required this.isOwner,
+    required this.classifyId,
   });
 
   BeanNoteDetail.empty()
@@ -64,7 +66,8 @@ class BeanNoteDetail {
         createTime = "",
         topicList = "",
         extra = "",
-        isOwner = false;
+        isOwner = false,
+        classifyId = null;
 
   factory BeanNoteDetail.fromJson(Map<String, dynamic> json) => BeanNoteDetail(
         noteId: json["noteId"],
@@ -86,6 +89,7 @@ class BeanNoteDetail {
         topicList: json["topicList"],
         extra: json["extra"] ?? "",
         isOwner: json["isOwner"] ?? false,
+        classifyId: json["classifyId"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -107,6 +111,7 @@ class BeanNoteDetail {
         "topicList": topicList,
         "extra": extra,
         "isOwner": isOwner,
+        "classifyId": classifyId,
       };
 }
 

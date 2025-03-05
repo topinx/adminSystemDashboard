@@ -24,7 +24,7 @@ class PubDetailBar extends StatelessWidget {
         const Spacer(),
         GetBuilder<NoteDetailController>(builder: (ctr) {
           return Visibility(
-            visible: ctr.detail.isOwner,
+            visible: true, // ctr.detail.isOwner
             child: IconButton(
                 onPressed: ctr.onTapDelete, icon: const Icon(Icons.delete)),
           );

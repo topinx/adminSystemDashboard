@@ -4,6 +4,7 @@ import 'package:top_back/app/widgets/back_app_bar.dart';
 import 'package:top_back/app/widgets/view_container.dart';
 
 import 'controller/publish_controller.dart';
+import 'widget/pub_create_type.dart';
 import 'widget/pub_drop_user.dart';
 import 'widget/pub_image_list.dart';
 import 'widget/pub_input_field.dart';
@@ -46,6 +47,11 @@ class _PublishViewState extends State<PublishView> {
         const SizedBox(height: 20),
         PubNoteTendency(ctr.detail, onTap: ctr.onTapTendency),
         const SizedBox(height: 20),
+        if (ctr.noteId == 0) ...[
+          PubCreateType(ctr.createList, ctr.classifyId,
+              onTap: ctr.onTapCreateType),
+          const SizedBox(height: 20),
+        ],
         buildButtons(),
       ]);
     });

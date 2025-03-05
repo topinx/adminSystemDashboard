@@ -4,6 +4,7 @@ import 'package:flutter_video_thumbnail_plus/flutter_video_thumbnail_plus.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:top_back/app/note_manage.dart';
+import 'package:top_back/app/pages/publish/widget/pub_create_sheet.dart';
 import 'package:top_back/bean/bean_draft.dart';
 import 'package:top_back/bean/bean_note_detail.dart';
 import 'package:top_back/bean/bean_search_user.dart';
@@ -22,6 +23,12 @@ class PublishController extends GetxController with RequestMixin {
 
   BeanSearchUser? pubUser;
 
+  /// 创意中心分类
+  int? classifyId;
+
+  /// 创意中心分类列表
+  List<String> createList = [];
+
   @override
   void onInit() {
     super.onInit();
@@ -30,7 +37,10 @@ class PublishController extends GetxController with RequestMixin {
     detail.noteType = noteType;
 
     if (noteId != 0) {
+      // 修改信息
       requestNoteDetail();
+    } else {
+      requestCreateList();
     }
   }
 
@@ -80,6 +90,7 @@ class PublishController extends GetxController with RequestMixin {
         showToast("请选择资源");
         return;
       }
+      detail.classifyId = classifyId;
     }
 
     detail.title = inputTitle.text;
@@ -105,6 +116,14 @@ class PublishController extends GetxController with RequestMixin {
     } else {
       showToast("开始修改");
     }
+  }
+
+  void onTapCreateType() async {
+    var current = await Get.bottomSheet(
+        PubCreateSheet(createList: createList, classifyId: classifyId));
+    if (current == null) return;
+    classifyId = current == -1 ? null : current;
+    update();
   }
 
   void onTapAdd() async {
@@ -212,6 +231,15 @@ class PublishController extends GetxController with RequestMixin {
     );
 
     BotToast.closeAllLoading();
+  }
+
+  Future<void> requestCreateList() async {
+    await get(HttpConstants.createCenterList, success: onCreateCenterList);
+  }
+
+  void onCreateCenterList(data) {
+    createList = List<String>.from(data ?? []);
+    update();
   }
 
   void onNoteDetail(data) {

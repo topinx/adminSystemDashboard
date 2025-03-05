@@ -18,7 +18,7 @@ class SelectItem extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         shadowColor: Colors.transparent,
-        padding: EdgeInsets.zero,
+        padding: const EdgeInsets.symmetric(horizontal: 5),
       ),
       child: Row(children: [
         Icon(active ? Icons.radio_button_checked : Icons.radio_button_unchecked,

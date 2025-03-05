@@ -128,4 +128,7 @@ class HttpConstants {
   /// 设置排序开关
   static const setHotSearchSort =
       "/adminsystem/searchManagement/hotSearchOrderSetting";
+
+  /// 创意中心分类
+  static const createCenterList = "/adminsystem/system/getClassifyList";
 }

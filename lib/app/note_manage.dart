@@ -14,8 +14,6 @@ class NoteManage with RequestMixin {
 
   List<BeanDraft> draftList = [];
 
-  final sizeLimit = 3 * 1024 * 1024;
-
   final HomeController homeCtr = Get.find<HomeController>();
 
   Future<void> publishNote(BeanDraft draft) async {
@@ -97,27 +95,17 @@ class NoteManage with RequestMixin {
       if (draft.materialList.first.imgData != null) {
         var input = MemoryInput(draft.materialList.first.imgData!);
         final result = ImageSizeGetter.getSizeResult(input);
-        extra["first_w"] = result.size.width;
-        extra["first_h"] = result.size.height;
+        extra["frame_w"] = result.size.width;
+        extra["frame_h"] = result.size.height;
       }
     } else {
       if (draft.materialList.first.thumbData != null) {
         var input = MemoryInput(draft.materialList.first.thumbData!);
         final result = ImageSizeGetter.getSizeResult(input);
-        extra["first_w"] = result.size.width;
-        extra["first_h"] = result.size.height;
-        extra["first_s"] = 0;
+        extra["frame_w"] = result.size.width;
+        extra["frame_h"] = result.size.height;
+        extra["frame_s"] = 0;
       }
-    }
-
-    if (draft.cover.imgData != null) {
-      var input = MemoryInput(draft.cover.imgData!);
-      final result = ImageSizeGetter.getSizeResult(input);
-      extra["cover_w"] = result.size.width;
-      extra["cover_h"] = result.size.height;
-    } else if (draft.extra.isEmpty) {
-      extra["cover_w"] = extra["first_w"];
-      extra["cover_h"] = extra["first_h"];
     }
 
     if (draft.noteId == 0) {

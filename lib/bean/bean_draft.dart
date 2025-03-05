@@ -32,6 +32,8 @@ class BeanDraft {
 
   bool updateTopic = false;
 
+  int? classifyId;
+
   BeanDraft();
 
   factory BeanDraft.fromNoteDetail(BeanNoteDetail detail) {
@@ -68,7 +70,8 @@ class BeanDraft {
       ..topicList = topics
       ..extra = detail.extra
       ..updateMaterial = false
-      ..updateTopic = false;
+      ..updateTopic = false
+      ..classifyId = detail.classifyId;
   }
 }
 
