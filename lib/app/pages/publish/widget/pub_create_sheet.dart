@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class PubCreateSheet extends StatefulWidget {
   const PubCreateSheet({super.key, this.classifyId, required this.createList});

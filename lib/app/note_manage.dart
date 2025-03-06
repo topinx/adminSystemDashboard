@@ -86,7 +86,11 @@ class NoteManage with RequestMixin {
 
         draft.cover.imgLink = url;
       } else {
-        draft.cover.imgLink = draft.materialList.first.imgThumb;
+        if (draft.materialList.first.type == 1) {
+          draft.cover.imgLink = draft.materialList.first.imgLink;
+        } else {
+          draft.cover.imgLink = draft.materialList.first.imgThumb;
+        }
       }
     }
 

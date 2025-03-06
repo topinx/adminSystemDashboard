@@ -38,7 +38,7 @@ class PubImageList extends StatelessWidget {
         height: 36,
         width: 80,
         alignment: Alignment.centerLeft,
-        child: Text("发布用户：", style: textStyle),
+        child: Text("笔记素材：", style: textStyle),
       ),
       Expanded(
         child: SizedBox(height: 120, child: imageGroup),
