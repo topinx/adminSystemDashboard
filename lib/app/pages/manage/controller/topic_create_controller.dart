@@ -34,11 +34,7 @@ class TopicCreateController extends GetxController with RequestMixin {
 
   void onTapCover() async {
     XFile? file = await imagePicker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 600,
-      maxHeight: 800,
-      imageQuality: 80,
-    );
+        source: ImageSource.camera, imageQuality: 80);
     if (file == null) return;
     fileCoverName = file.name;
     dataCover = await file.readAsBytes();

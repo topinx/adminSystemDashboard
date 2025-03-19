@@ -20,8 +20,8 @@ class DioClient {
   DioClient._() {
     request.options.baseUrl = AppConstants.httpLink;
 
-    request.options.connectTimeout = const Duration(minutes: 10);
-    request.options.receiveTimeout = const Duration(minutes: 10);
+    request.options.connectTimeout = const Duration(hours: 1);
+    request.options.receiveTimeout = const Duration(hours: 1);
 
     request.interceptors.addAll([TokenInterceptor(request)]);
   }
@@ -45,8 +45,8 @@ class DioClient {
     DioCallbackS? callbackS,
     DioCallbackE? callbackE,
   }) async {
-    request.options.method = method;
     try {
+      request.options.method = method;
       Response result = await request.request(
         path,
         queryParameters: query,

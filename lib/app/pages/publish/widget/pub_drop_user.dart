@@ -5,43 +5,17 @@ import 'package:top_back/bean/bean_search_user.dart';
 import '../controller/publish_controller.dart';
 
 class PubDropUser extends StatefulWidget {
-  const PubDropUser(this.ctr, {super.key});
+  const PubDropUser(this.ctr, this.controller, {super.key});
 
   final PublishController ctr;
+
+  final TextEditingController controller;
 
   @override
   State<PubDropUser> createState() => _PubDropUserState();
 }
 
 class _PubDropUserState extends State<PubDropUser> {
-  TextEditingController controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.ctr.noteId == 0) {
-      controller.text = widget.ctr.pubUser?.nickname ?? "";
-    } else {
-      controller.text = widget.ctr.detail.createByNickname;
-    }
-  }
-
-  @override
-  void didUpdateWidget(covariant PubDropUser oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.ctr.noteId == 0) {
-      controller.text = widget.ctr.pubUser?.nickname ?? "";
-    } else {
-      controller.text = widget.ctr.detail.createByNickname;
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    controller.dispose();
-  }
-
   Widget buildOptionsCard(List<BeanSearchUser> options, Function() cancel) {
     return Card(
       color: Colors.white,
@@ -63,7 +37,7 @@ class _PubDropUserState extends State<PubDropUser> {
   Widget buildOptionItem(BeanSearchUser option, Function() cancel) {
     return InkWell(
       onTap: () {
-        controller.text = option.nickname;
+        widget.controller.text = option.nickname;
         widget.ctr.onSelectUser(option);
         cancel();
       },
@@ -120,7 +94,7 @@ class _PubDropUserState extends State<PubDropUser> {
           child: TextField(
             style: textStyle,
             enabled: widget.ctr.noteId == 0,
-            controller: controller,
+            controller: widget.controller,
             onSubmitted: (string) => onShowToast(inputContext, string),
             decoration: const InputDecoration(hintText: "输入并查找"),
           ),

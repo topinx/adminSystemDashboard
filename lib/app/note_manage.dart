@@ -96,7 +96,12 @@ class NoteManage with RequestMixin {
 
     Map<String, dynamic> extra = {};
     if (draft.materialList.first.type == 1) {
-      if (draft.materialList.first.imgData != null) {
+      if (draft.cover.imgData != null) {
+        var input = MemoryInput(draft.cover.imgData!);
+        final result = ImageSizeGetter.getSizeResult(input);
+        extra["frame_w"] = result.size.width;
+        extra["frame_h"] = result.size.height;
+      } else if (draft.materialList.first.imgData != null) {
         var input = MemoryInput(draft.materialList.first.imgData!);
         final result = ImageSizeGetter.getSizeResult(input);
         extra["frame_w"] = result.size.width;
@@ -143,7 +148,8 @@ class NoteManage with RequestMixin {
         "tendency": draft.tendency,
         "status": draft.status,
         "topicList": draft.topicList,
-        "createBy": draft.createBy
+        "createBy": draft.createBy,
+        "classifyId": draft.classifyId
       },
       success: (_) => showToast("发布成功"),
     );

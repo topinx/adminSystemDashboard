@@ -20,6 +20,21 @@ class PublishView extends StatefulWidget {
 class _PublishViewState extends State<PublishView> {
   final PublishController ctr = Get.find<PublishController>();
 
+  @override
+  void initState() {
+    super.initState();
+    ctr.noteId = int.parse(Get.parameters["id"] ?? "0");
+    ctr.noteType = int.parse(Get.parameters["type"] ?? "1");
+    ctr.detail.noteType = ctr.noteType;
+
+    if (ctr.noteId != 0) {
+      // 修改信息
+      ctr.requestNoteDetail();
+    } else {
+      ctr.requestCreateList();
+    }
+  }
+
   Widget buildPublishContent() {
     return GetBuilder<PublishController>(builder: (ctr) {
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -28,7 +43,7 @@ class _PublishViewState extends State<PublishView> {
           style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
         ),
         const SizedBox(height: 20),
-        PubDropUser(ctr),
+        PubDropUser(ctr, ctr.inputNick),
         const SizedBox(height: 40),
         const Text(
           "笔记信息",

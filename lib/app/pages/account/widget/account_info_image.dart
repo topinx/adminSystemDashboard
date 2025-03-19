@@ -39,11 +39,7 @@ class _AccountInfoImageState extends State<AccountInfoImage> {
     if (widget.enable != true) return;
 
     XFile? file = await imagePicker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: widget.imgType == 1 ? 300 : 600,
-      maxHeight: widget.imgType == 1 ? 300 : 800,
-      imageQuality: 80,
-    );
+        source: ImageSource.camera, imageQuality: 80);
     if (file == null) return;
     imageName = file.name;
     imageData = await file.readAsBytes();

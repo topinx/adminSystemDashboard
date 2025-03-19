@@ -18,6 +18,7 @@ class PublishController extends GetxController with RequestMixin {
   TextEditingController inputTitle = TextEditingController();
   TextEditingController inputContent = TextEditingController();
   TextEditingController inputTopic = TextEditingController();
+  TextEditingController inputNick = TextEditingController();
 
   ImagePicker imagePicker = ImagePicker();
 
@@ -30,31 +31,15 @@ class PublishController extends GetxController with RequestMixin {
   List<String> createList = [];
 
   @override
-  void onInit() {
-    super.onInit();
-    noteId = int.parse(Get.parameters["id"] ?? "0");
-    noteType = int.parse(Get.parameters["type"] ?? "1");
-    detail.noteType = noteType;
-
-    if (noteId != 0) {
-      // 修改信息
-      requestNoteDetail();
-    } else {
-      requestCreateList();
-    }
-  }
-
-  @override
   void onClose() {
     super.onClose();
     inputTitle.dispose();
     inputContent.dispose();
     inputTopic.dispose();
+    inputNick.dispose();
   }
 
   void resetPubView() {
-    pubUser = null;
-
     detail = BeanDraft();
     detail.noteType = noteType;
     update();
@@ -86,11 +71,14 @@ class PublishController extends GetxController with RequestMixin {
       detail.createBy = pubUser!.userId;
       detail.createByNickname = pubUser!.nickname;
 
-      if (detail.materialList.isEmpty) {
-        showToast("请选择资源");
-        return;
-      }
       detail.classifyId = classifyId;
+    }
+
+    if (detail.materialList.isEmpty &&
+        detail.cover.imgData == null &&
+        detail.cover.imgLink.isEmpty) {
+      showToast("请选择资源");
+      return;
     }
 
     detail.title = inputTitle.text;
@@ -108,6 +96,7 @@ class PublishController extends GetxController with RequestMixin {
       String topicStr = detail.topicList.map((x) => "$x^").toList().join(" ");
       detail.textContent += " $topicStr";
     }
+
     NoteManage().publishNote(detail);
 
     if (noteId == 0) {
@@ -130,8 +119,11 @@ class PublishController extends GetxController with RequestMixin {
     BotToast.showLoading();
 
     if (detail.noteType == 1) {
-      List<XFile> files = await imagePicker.pickMultiImage(
-          limit: 18 - detail.materialList.length);
+      List<XFile> files = await imagePicker.pickMultiImage();
+      int limit = 17 - detail.materialList.length;
+      if (files.length > limit) {
+        files = files.sublist(0, limit);
+      }
 
       for (var file in files) {
         DraftMaterial material = DraftMaterial();
@@ -146,7 +138,7 @@ class PublishController extends GetxController with RequestMixin {
       update();
     } else {
       XFile? file = await imagePicker.pickVideo(source: ImageSource.gallery);
-      if (file == null) return;
+      if (file == null) return BotToast.closeAllLoading();
 
       DraftMaterial material = DraftMaterial();
       material.type = 2;
@@ -178,13 +170,29 @@ class PublishController extends GetxController with RequestMixin {
     update();
   }
 
+  void onDeleteCover(DraftMaterial material) {
+    material.imgLink = "";
+    material.imgName = "";
+    material.imgData = null;
+
+    detail.updateMaterial = true;
+    update();
+  }
+
+  void onDeleteMaterial(DraftMaterial material) {
+    detail.materialList.remove(material);
+
+    detail.updateMaterial = true;
+    update();
+  }
+
   void onTapMaterial(DraftMaterial material) async {
     BotToast.showLoading();
 
     if (material.type == 1) {
       XFile? file = await imagePicker.pickImage(
           source: ImageSource.gallery, imageQuality: 80);
-      if (file == null) return;
+      if (file == null) return BotToast.closeAllLoading();
       material.imgLink = "";
       material.imgName = file.name;
       material.imgData = await file.readAsBytes();
@@ -192,9 +200,8 @@ class PublishController extends GetxController with RequestMixin {
       detail.updateMaterial = true;
       update();
     } else {
-      XFile? file = await imagePicker.pickVideo(
-          source: ImageSource.gallery, maxDuration: const Duration(minutes: 3));
-      if (file == null) return;
+      XFile? file = await imagePicker.pickVideo(source: ImageSource.gallery);
+      if (file == null) return BotToast.closeAllLoading();
       material.imgLink = "";
       material.imgName = file.name;
       material.imgData = await file.readAsBytes();
@@ -216,7 +223,7 @@ class PublishController extends GetxController with RequestMixin {
       if (detail.materialList.length == 1) return false;
     }
     if (detail.noteType == 1) {
-      if (detail.materialList.length == 18) return false;
+      if (detail.materialList.length == 17) return false;
     }
     return true;
   }
@@ -231,6 +238,12 @@ class PublishController extends GetxController with RequestMixin {
     );
 
     BotToast.closeAllLoading();
+
+    if (noteId == 0) {
+      inputNick.text = pubUser?.nickname ?? "";
+    } else {
+      inputNick.text = detail.createByNickname;
+    }
   }
 
   Future<void> requestCreateList() async {

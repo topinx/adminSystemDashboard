@@ -91,11 +91,7 @@ class AccountCreateController extends GetxController with RequestMixin {
 
   void onTapAvatar() async {
     XFile? file = await imagePicker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 300,
-      maxHeight: 300,
-      imageQuality: 80,
-    );
+        source: ImageSource.camera, imageQuality: 80);
     if (file == null) return;
     fileAvatarName = file.name;
     userAvatar = await file.readAsBytes();
@@ -104,11 +100,7 @@ class AccountCreateController extends GetxController with RequestMixin {
 
   void onTapCover() async {
     XFile? file = await imagePicker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 600,
-      maxHeight: 800,
-      imageQuality: 80,
-    );
+        source: ImageSource.camera, imageQuality: 80);
     if (file == null) return;
     fileCoverName = file.name;
     userCover = await file.readAsBytes();

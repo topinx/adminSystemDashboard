@@ -14,7 +14,11 @@ class PubImageList extends StatelessWidget {
     TextStyle textStyle = const TextStyle(fontSize: 14);
 
     List<Widget> imageList = [
-      ImageCell(ctr.detail.cover, onTap: ctr.onTapCover),
+      ImageCell(
+        ctr.detail.cover,
+        onTapChange: ctr.onTapCover,
+        onTapDelete: ctr.onDeleteCover,
+      ),
       Container(
         margin: const EdgeInsets.only(right: 20),
         child: const Icon(Icons.add),
@@ -23,7 +27,8 @@ class PubImageList extends StatelessWidget {
           ctr.detail.materialList.length,
           (i) => ImageCell(
                 ctr.detail.materialList[i],
-                onTap: ctr.onTapMaterial,
+                onTapChange: ctr.onTapMaterial,
+                onTapDelete: ctr.onDeleteMaterial,
               )),
       if (ctr.canAddMaterial()) ImageAdd(ctr.onTapAdd),
     ];
@@ -49,11 +54,14 @@ class PubImageList extends StatelessWidget {
 }
 
 class ImageCell extends StatelessWidget {
-  const ImageCell(this.data, {super.key, required this.onTap});
+  const ImageCell(this.data,
+      {super.key, required this.onTapChange, required this.onTapDelete});
 
   final DraftMaterial data;
 
-  final Function(DraftMaterial) onTap;
+  final Function(DraftMaterial) onTapChange;
+
+  final Function(DraftMaterial) onTapDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +83,7 @@ class ImageCell extends StatelessWidget {
     }
 
     return GestureDetector(
-      onTap: () => onTap(data),
+      onTap: () => onTapChange(data),
       child: Container(
         height: 120,
         width: 120,
@@ -85,13 +93,29 @@ class ImageCell extends StatelessWidget {
           image: decorationImage,
         ),
         alignment: Alignment.center,
-        child: data.type == 2
-            ? const CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.black54,
-                child: Icon(Icons.play_arrow, color: Colors.white),
-              )
-            : null,
+        child: Stack(children: [
+          Positioned(
+            top: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap: () => onTapDelete(data),
+              child: Container(
+                height: 30,
+                width: 30,
+                alignment: Alignment.center,
+                color: Colors.black12,
+                child: const Icon(Icons.delete_forever_outlined,
+                    color: Colors.redAccent),
+              ),
+            ),
+          ),
+          if (data.type == 2)
+            const CircleAvatar(
+              radius: 20,
+              backgroundColor: Colors.black54,
+              child: Icon(Icons.play_arrow, color: Colors.white),
+            ),
+        ]),
       ),
     );
   }
