@@ -231,8 +231,11 @@ class TableListCover extends StatelessWidget {
   Widget build(BuildContext context) {
     DecorationImage? image;
     if (cover.isNotEmpty) {
-      image =
-          DecorationImage(image: NetworkImage(AppConstants.imgLink + cover));
+      image = DecorationImage(
+          image: NetworkImage(
+        AppConstants.assetsLink + cover,
+        headers: {"Authorization": AppConstants.signToken()},
+      ));
     }
 
     return GestureDetector(

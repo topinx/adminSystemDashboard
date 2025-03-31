@@ -2,7 +2,6 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:top_back/contants/app_constants.dart';
-import 'package:top_back/contants/http_constants.dart';
 import 'package:top_back/network/request_mixin.dart';
 import 'package:video_player/video_player.dart';
 
@@ -37,10 +36,10 @@ class _PreviewDialogState extends State<PreviewDialog> with RequestMixin {
   Future<void> initVideoPlayer() async {
     if (widget.type != 2) return;
 
-    String imageLink = await signVideo();
-    if (imageLink.isEmpty) return;
-
-    player = VideoPlayerController.networkUrl(Uri.parse(imageLink));
+    player = VideoPlayerController.networkUrl(
+      Uri.parse(AppConstants.assetsLink + widget.data),
+      httpHeaders: {"Authorization": AppConstants.signToken()},
+    );
     await player!.initialize();
     player!.addListener(onVideoListener);
     chewieController = ChewieController(
@@ -51,22 +50,17 @@ class _PreviewDialogState extends State<PreviewDialog> with RequestMixin {
     if (mounted) setState(() {});
   }
 
-  Future<String> signVideo() async {
-    String imageLink = "";
-    await get(
-      HttpConstants.sign,
-      param: {"objectName": widget.data},
-      success: (data) => imageLink = data,
-    );
-    return imageLink;
-  }
-
   @override
   Widget build(BuildContext context) {
     Widget? source;
     if (widget.type == 1) {
       source = Center(
-        child: Image(image: NetworkImage(AppConstants.imgLink + widget.data)),
+        child: Image(
+          image: NetworkImage(
+            AppConstants.assetsLink + widget.data,
+            headers: {"Authorization": AppConstants.signToken()},
+          ),
+        ),
       );
     } else if (widget.type == 2) {
       bool isInitialized = player?.value.isInitialized ?? false;

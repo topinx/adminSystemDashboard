@@ -36,7 +36,10 @@ class _ManageTopicEditState extends State<ManageTopicEdit> {
         image = DecorationImage(image: MemoryImage(ctr.dataCover!));
       } else if (ctr.topic != null && ctr.topic!.avatar.isNotEmpty) {
         image = DecorationImage(
-            image: NetworkImage(AppConstants.imgLink + ctr.topic!.avatar));
+            image: NetworkImage(
+          AppConstants.assetsLink + ctr.topic!.avatar,
+          headers: {"Authorization": AppConstants.signToken()},
+        ));
       }
 
       return GestureDetector(

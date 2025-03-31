@@ -11,14 +11,8 @@ class HttpConstants {
   /// token刷新
   static const refreshToken = "/adminsystem/user/refreshToken";
 
-  /// 上传
-  static const upload = "/adminsystem/system/file/upload";
-
-  /// 上传视频
-  static const uploadVideo = "/adminsystem/system/file/uploadVideo";
-
-  /// 签名
-  static const sign = "/adminsystem/system/file/getSignUrl";
+  /// 预签名
+  static const signMedia = "/adminsystem/system/file/presigner";
 
   /// 创建应用账号
   static const createAccount = "/adminsystem/accountManagement/createAccount";

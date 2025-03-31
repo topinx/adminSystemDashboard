@@ -14,7 +14,10 @@ class AccountInfoNote extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.black12,
         image: DecorationImage(
-          image: NetworkImage(AppConstants.imgLink + cover),
+          image: NetworkImage(
+            AppConstants.assetsLink + cover,
+            headers: {"Authorization": AppConstants.signToken()},
+          ),
           fit: BoxFit.cover,
         ),
       ),

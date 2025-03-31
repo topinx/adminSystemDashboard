@@ -121,10 +121,10 @@ class AccountInfoController extends GetxController with RequestMixin {
     onTapEdit(removeImg: false);
 
     if (dataAvatar != null) {
-      bean.avatar = await upload(dataAvatar!, nameAvatar);
+      bean.avatar = await upload(dataAvatar!,"avatar", nameAvatar);
     }
     if (dataCover != null) {
-      bean.bgImg = await upload(dataCover!, nameCover);
+      bean.bgImg = await upload(dataCover!,"cover" ,nameCover);
     }
     dataAvatar = null;
     dataCover = null;

@@ -91,9 +91,7 @@ class TopicCreateController extends GetxController with RequestMixin {
   Future<bool> requestCreate() async {
     BotToast.showLoading();
 
-    String name =
-        "topic/${DateTime.now().millisecondsSinceEpoch}/$fileCoverName";
-    String image = await upload(dataCover!, name);
+    String image = await upload(dataCover!, "topic", fileCoverName);
     if (image.isEmpty) {
       BotToast.closeAllLoading();
       return false;
@@ -123,9 +121,7 @@ class TopicCreateController extends GetxController with RequestMixin {
     };
 
     if (dataCover != null && fileCoverName.isNotEmpty) {
-      String name =
-          "topic/${DateTime.now().millisecondsSinceEpoch}/$fileCoverName";
-      String image = await upload(dataCover!, name);
+      String image = await upload(dataCover!, "topic", fileCoverName);
       if (image.isNotEmpty) param.addEntries({"avatar": image}.entries);
     } else {
       param.addEntries({"avatar": topic!.avatar}.entries);

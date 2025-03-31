@@ -53,7 +53,10 @@ class _AccountInfoImageState extends State<AccountInfoImage> {
       decImage = DecorationImage(image: MemoryImage(imageData!));
     } else if (widget.img.isNotEmpty) {
       decImage = DecorationImage(
-          image: NetworkImage(AppConstants.imgLink + widget.img));
+          image: NetworkImage(
+        AppConstants.assetsLink + widget.img,
+        headers: {"Authorization": AppConstants.signToken()},
+      ));
     }
 
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [

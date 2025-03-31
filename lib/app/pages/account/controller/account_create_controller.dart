@@ -125,18 +125,12 @@ class AccountCreateController extends GetxController with RequestMixin {
 
   Future<String> getUserAvatar() async {
     if (userAvatar == null) return "";
-
-    String name =
-        "avatar/${DateTime.now().millisecondsSinceEpoch}/$fileAvatarName";
-    return await upload(userAvatar!, name);
+    return await upload(userAvatar!, "avatar", fileAvatarName);
   }
 
   Future<String> getUserCover() async {
     if (userCover == null) return "";
-
-    String name =
-        "cover/${DateTime.now().millisecondsSinceEpoch}/$fileCoverName";
-    return await upload(userCover!, name);
+    return await upload(userCover!, "cover", fileCoverName);
   }
 
   void resetData() {

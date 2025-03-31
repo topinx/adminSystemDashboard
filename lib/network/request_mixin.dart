@@ -1,13 +1,11 @@
 import 'dart:typed_data';
 
 import 'package:bot_toast/bot_toast.dart';
-import 'package:dio/dio.dart' as dio;
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/pages.dart';
 import 'package:top_back/contants/app_storage.dart';
-import 'package:top_back/contants/http_constants.dart';
 
 import 'dio_client.dart';
 import 'dio_response.dart';
@@ -16,8 +14,6 @@ mixin RequestMixin {
   Future get(
     String path, {
     Map<String, dynamic>? param,
-    dio.CancelToken? cancelToken,
-    dio.ProgressCallback? progress,
     DioCallbackS? success,
     DioCallbackE? error,
   }) {
@@ -25,8 +21,6 @@ mixin RequestMixin {
       path,
       "GET",
       query: param,
-      cancelToken: cancelToken,
-      progressR: progress,
       callbackS: success,
       callbackE: (code, msg) => _onResponseError(code, msg, error: error),
     );
@@ -35,9 +29,6 @@ mixin RequestMixin {
   Future post(
     String path, {
     Object? param,
-    dio.CancelToken? cancelToken,
-    dio.ProgressCallback? progressS,
-    dio.ProgressCallback? progressR,
     DioCallbackS? success,
     DioCallbackE? error,
   }) {
@@ -45,57 +36,9 @@ mixin RequestMixin {
       path,
       "POST",
       data: param,
-      cancelToken: cancelToken,
-      progressS: progressS,
-      progressR: progressR,
       callbackS: success,
       callbackE: (code, msg) => _onResponseError(code, msg, error: error),
     );
-  }
-
-  Future put(
-    String path, {
-    Map<String, dynamic>? param,
-    dio.CancelToken? cancelToken,
-    dio.ProgressCallback? progress,
-    DioCallbackS? success,
-    DioCallbackE? error,
-  }) {
-    return DioClient().doRequest(
-      path,
-      "PUT",
-      query: param,
-      cancelToken: cancelToken,
-      progressR: progress,
-      callbackS: success,
-      callbackE: (code, msg) => _onResponseError(code, msg, error: error),
-    );
-  }
-
-  Future<String> upload(Uint8List data, String name) async {
-    var source = dio.MultipartFile.fromBytes(data, filename: name);
-
-    String sourceLink = "";
-    await post(
-      HttpConstants.upload,
-      param: dio.FormData.fromMap({"file": source}),
-      success: (d) => sourceLink = d,
-    );
-
-    return sourceLink;
-  }
-
-  Future<String> uploadVideo(Uint8List data, String name) async {
-    var source = dio.MultipartFile.fromBytes(data, filename: name);
-
-    String sourceLink = "";
-    await post(
-      HttpConstants.uploadVideo,
-      param: dio.FormData.fromMap({"file": source}),
-      success: (d) => sourceLink = d,
-    );
-
-    return sourceLink;
   }
 
   void _onResponseError(int code, String msg, {DioCallbackE? error}) {
@@ -109,6 +52,17 @@ mixin RequestMixin {
       showToast(msg);
       if (error != null) error(code, msg);
     }
+  }
+
+  Future<String> upload(Uint8List bytes, String folder, String name,
+      [int? user, String? forceSuffix]) async {
+    int time = DateTime.now().microsecondsSinceEpoch;
+    int userId = user ?? AppStorage().beanLogin.userId;
+    int dot = name.lastIndexOf(".");
+    String suffix = forceSuffix ?? (name.substring(dot));
+    String objectName = "$folder/$userId/$time$suffix";
+
+    return DioClient().upload(bytes, objectName);
   }
 
   void showToast(String msg) {

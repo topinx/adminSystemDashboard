@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:image_size_getter/image_size_getter.dart';
 import 'package:top_back/app/pages/home/controller/home_controller.dart';
@@ -17,120 +19,98 @@ class NoteManage with RequestMixin {
   final HomeController homeCtr = Get.find<HomeController>();
 
   Future<void> publishNote(BeanDraft draft) async {
-    draftList.insert(0, draft);
-    if (isLoading) return;
+    draftList.add(draft);
+    startPublish();
+  }
+
+  void breakAndStartNext(BeanDraft draft) {
+    showToast(draft.noteId == 0 ? "发布失败" : "修改失败");
+    isLoading = false;
+    homeCtr.updatePub(false, draft.noteId == 0);
+    startPublish();
+  }
+
+  void startNext(BeanDraft draft) {
+    showToast(draft.noteId == 0 ? "发布成功" : "修改成功");
+    isLoading = false;
+    homeCtr.updatePub(false, draft.noteId == 0);
     startPublish();
   }
 
   Future<void> startPublish() async {
-    if (draftList.isEmpty) return;
+    if (draftList.isEmpty || isLoading) return;
 
     isLoading = true;
-    BeanDraft draft = draftList.removeLast();
+    BeanDraft draft = draftList.removeAt(0);
+
     homeCtr.updatePub(true, draft.noteId == 0);
 
     for (var material in draft.materialList) {
       if (material.imgLink.isNotEmpty) continue;
-      if (material.imgData == null) {
-        showToast("资源不能为空");
-        isLoading = false;
-        homeCtr.updatePub(false, draft.noteId == 0);
-        startPublish();
-        return;
-      }
+      if (material.imgData == null) return breakAndStartNext(draft);
 
-      if (material.type == 1) {
-        String name = getName(draft.createBy, material.imgName);
-        String url = await upload(material.imgData!, name);
-        material.imgLink = url;
-        if (url.isEmpty) {
-          showToast("上传资源失败");
-          isLoading = false;
-          homeCtr.updatePub(false, draft.noteId == 0);
-          startPublish();
-          return;
-        }
-      } else {
-        String name = getName(draft.createBy, material.imgName);
-        String url = await uploadVideo(material.imgData!, name);
-        material.imgLink = url;
-        if (url.isEmpty) {
-          showToast("上传资源失败");
-          isLoading = false;
-          homeCtr.updatePub(false, draft.noteId == 0);
-          startPublish();
-          return;
-        }
+      String imgLink = await upload(
+          material.imgData!, "note", material.imgName, draft.createBy);
+      if (imgLink.isEmpty) return breakAndStartNext(draft);
+      material.imgLink = imgLink;
 
-        if (material.thumbData != null) {
-          String thumbName =
-              getName(draft.createBy, material.imgName, s: ".jpg");
-          String thumbUrl = await upload(material.thumbData!, thumbName);
-          material.imgThumb = thumbUrl;
-        }
+      if (material.thumbData != null) {
+        String thumbLink = await upload(material.thumbData!, "note",
+            material.imgName, draft.createBy, ".jpg");
+        if (thumbLink.isEmpty) return breakAndStartNext(draft);
+        material.imgThumb = thumbLink;
       }
+    }
+
+    if (draft.cover.imgData != null) {
+      String imgLink = await upload(
+          draft.cover.imgData!, "note", draft.cover.imgName, draft.createBy);
+      if (imgLink.isEmpty) return breakAndStartNext(draft);
+      draft.cover.imgLink = imgLink;
     }
 
     if (draft.cover.imgLink.isEmpty) {
-      if (draft.cover.imgData != null) {
-        String name = getName(draft.createBy, draft.cover.imgName);
-        String url = await upload(draft.cover.imgData!, name);
-
-        if (url.isEmpty) {
-          showToast("上传资源失败");
-          isLoading = false;
-          homeCtr.updatePub(false, draft.noteId == 0);
-          startPublish();
-          return;
-        }
-
-        draft.cover.imgLink = url;
+      if (draft.noteType == 1) {
+        draft.cover.imgLink = draft.materialList.first.imgLink;
       } else {
-        if (draft.materialList.first.type == 1) {
-          draft.cover.imgLink = draft.materialList.first.imgLink;
-        } else {
-          draft.cover.imgLink = draft.materialList.first.imgThumb;
-        }
+        draft.cover.imgLink = draft.materialList.first.imgThumb;
       }
     }
 
-    Map<String, dynamic> extra = {};
-    if (draft.materialList.first.type == 1) {
-      if (draft.cover.imgData != null) {
-        var input = MemoryInput(draft.cover.imgData!);
-        final result = ImageSizeGetter.getSizeResult(input);
-        extra["frame_w"] = result.size.width;
-        extra["frame_h"] = result.size.height;
-      } else if (draft.materialList.first.imgData != null) {
-        var input = MemoryInput(draft.materialList.first.imgData!);
-        final result = ImageSizeGetter.getSizeResult(input);
-        extra["frame_w"] = result.size.width;
-        extra["frame_h"] = result.size.height;
-      }
-    } else {
-      if (draft.materialList.first.thumbData != null) {
-        var input = MemoryInput(draft.materialList.first.thumbData!);
-        final result = ImageSizeGetter.getSizeResult(input);
-        extra["frame_w"] = result.size.width;
-        extra["frame_h"] = result.size.height;
-        extra["frame_s"] = 0;
-      }
+    if (draft.noteType == 1 &&
+        draft.cover.imgLink != draft.materialList.first.imgLink) {
+      draft.materialList.insert(0, draft.cover);
     }
+
+    setDraftExtra(draft);
 
     if (draft.noteId == 0) {
       await requestPub(draft);
     } else {
       await requestModify(draft);
     }
-    isLoading = false;
-    homeCtr.updatePub(false, draft.noteId == 0);
-    startPublish();
   }
 
-  String getName(int user, String path, {String? s}) {
-    int dot = path.lastIndexOf(".");
-    String suffix = s ?? path.substring(dot);
-    return "note/$user/${DateTime.now().microsecondsSinceEpoch}$suffix";
+  void setDraftExtra(BeanDraft draft) {
+    var material = draft.materialList.first;
+
+    if (material.type == 1 && material.imgData != null) {
+      var input = MemoryInput(material.imgData!);
+      final result = ImageSizeGetter.getSizeResult(input);
+
+      Map<String, dynamic> extra = {};
+      extra["frame_w"] = result.size.width;
+      extra["frame_h"] = result.size.height;
+      draft.extra = jsonEncode(extra);
+    } else if (material.type == 2 && material.thumbData != null) {
+      var input = MemoryInput(material.thumbData!);
+      final result = ImageSizeGetter.getSizeResult(input);
+
+      Map<String, dynamic> extra = {};
+      extra["frame_w"] = result.size.width;
+      extra["frame_h"] = result.size.height;
+      draft.extra = jsonEncode(extra);
+    }
   }
 
   Future<void> requestPub(BeanDraft draft) async {
@@ -151,7 +131,8 @@ class NoteManage with RequestMixin {
         "createBy": draft.createBy,
         "classifyId": draft.classifyId
       },
-      success: (_) => showToast("发布成功"),
+      success: (_) => startNext(draft),
+      error: (_, __) => breakAndStartNext(draft),
     );
   }
 
@@ -174,7 +155,8 @@ class NoteManage with RequestMixin {
         "updateTopic": draft.updateTopic,
         "topicList": draft.topicList
       },
-      success: (_) => showToast("修改成功"),
+      success: (_) => startNext(draft),
+      error: (_, __) => breakAndStartNext(draft),
     );
   }
 }

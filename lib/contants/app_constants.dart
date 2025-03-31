@@ -1,3 +1,5 @@
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+
 enum AppEnv { onLocal, onTest, onLine }
 
 class AppConstants {
@@ -10,18 +12,27 @@ class AppConstants {
   static final Map<AppEnv, String> _httpLink = {
     AppEnv.onLocal: "http://192.168.101.25:8090",
     AppEnv.onTest: "http://34.170.118.91:18090",
-    AppEnv.onLine: "",
+    AppEnv.onLine: "http://64.181.205.24:8090",
   };
   static get httpLink => _httpLink[appEnv];
 
-  /// socket长连接的host
-  static final Map<AppEnv, String> _socketLink = {
-    AppEnv.onLocal: "",
-    AppEnv.onTest: "",
-    AppEnv.onLine: "",
+  /// 资源地址
+  static final Map<AppEnv, String> _assetsLink = {
+    AppEnv.onLocal: "https://my-worker.iosdevelope.workers.dev/",
+    AppEnv.onTest: "https://my-worker.iosdevelope.workers.dev/",
+    AppEnv.onLine: "https://my-worker.iosdevelope.workers.dev/",
   };
-  static get socketLink => _socketLink[appEnv];
+  static get assetsLink => _assetsLink[appEnv];
 
-  static get imgLink =>
-      httpLink + "/adminsystem/system/file/download?objectName=";
+  static final jwt = JWT({'app': "com.hotspot.client.topinx"});
+
+  static String signToken() {
+    String token = jwt.sign(
+      SecretKey('secretKey'),
+      algorithm: JWTAlgorithm.HS256,
+      expiresIn: const Duration(seconds: 30),
+    );
+
+    return "Bearer $token";
+  }
 }

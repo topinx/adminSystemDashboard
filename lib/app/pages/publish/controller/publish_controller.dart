@@ -74,9 +74,7 @@ class PublishController extends GetxController with RequestMixin {
       detail.classifyId = classifyId;
     }
 
-    if (detail.materialList.isEmpty &&
-        detail.cover.imgData == null &&
-        detail.cover.imgLink.isEmpty) {
+    if (detail.materialList.isEmpty) {
       showToast("请选择资源");
       return;
     }
@@ -120,7 +118,7 @@ class PublishController extends GetxController with RequestMixin {
 
     if (detail.noteType == 1) {
       List<XFile> files = await imagePicker.pickMultiImage();
-      int limit = 17 - detail.materialList.length;
+      int limit = 18 - detail.materialList.length;
       if (files.length > limit) {
         files = files.sublist(0, limit);
       }
@@ -170,15 +168,6 @@ class PublishController extends GetxController with RequestMixin {
     update();
   }
 
-  void onDeleteCover(DraftMaterial material) {
-    material.imgLink = "";
-    material.imgName = "";
-    material.imgData = null;
-
-    detail.updateMaterial = true;
-    update();
-  }
-
   void onDeleteMaterial(DraftMaterial material) {
     detail.materialList.remove(material);
 
@@ -218,16 +207,6 @@ class PublishController extends GetxController with RequestMixin {
     BotToast.closeAllLoading();
   }
 
-  bool canAddMaterial() {
-    if (detail.noteType == 2) {
-      if (detail.materialList.length == 1) return false;
-    }
-    if (detail.noteType == 1) {
-      if (detail.materialList.length == 17) return false;
-    }
-    return true;
-  }
-
   Future<void> requestNoteDetail() async {
     BotToast.showLoading();
 
@@ -259,6 +238,10 @@ class PublishController extends GetxController with RequestMixin {
     if (data == null) return;
     BeanNoteDetail noteDetail = BeanNoteDetail.fromJson(data);
     detail = BeanDraft.fromNoteDetail(noteDetail);
+    if (noteDetail.cover.isNotEmpty && noteDetail.noteType == 2) {
+      var draftCover = DraftMaterial()..imgLink = noteDetail.cover;
+      detail.cover = draftCover;
+    }
 
     inputTitle.text = detail.title;
     inputContent.text = detail.textContent;

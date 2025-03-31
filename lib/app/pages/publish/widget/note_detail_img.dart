@@ -61,7 +61,10 @@ class NoteImage extends StatelessWidget {
     DecorationImage? decorationImage;
     if (image.isNotEmpty) {
       decorationImage = DecorationImage(
-        image: NetworkImage(AppConstants.imgLink + image),
+        image: NetworkImage(
+          AppConstants.assetsLink + image,
+          headers: {"Authorization": AppConstants.signToken()},
+        ),
       );
     }
 

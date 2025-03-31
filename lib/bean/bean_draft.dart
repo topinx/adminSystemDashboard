@@ -37,10 +37,6 @@ class BeanDraft {
   BeanDraft();
 
   factory BeanDraft.fromNoteDetail(BeanNoteDetail detail) {
-    var draftCover = DraftMaterial()
-      ..imgThumb = detail.cover
-      ..imgLink = detail.cover;
-
     List<String> topics = detail.topicList.isEmpty
         ? []
         : json.decode(detail.topicList).toList().cast<String>();
@@ -55,7 +51,6 @@ class BeanDraft {
       ..noteType = detail.noteType
       ..title = detail.title
       ..textContent = content
-      ..cover = draftCover
       ..materialList = detail.materialList
           .map((x) => DraftMaterial()
             ..imgThumb = x.thumb
