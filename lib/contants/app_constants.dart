@@ -11,8 +11,8 @@ class AppConstants {
   /// http请求的host
   static final Map<AppEnv, String> _httpLink = {
     AppEnv.onLocal: "http://192.168.101.25:8090",
-    AppEnv.onTest: "http://34.170.118.91:18090",
-    AppEnv.onLine: "http://64.181.205.24:8090",
+    AppEnv.onTest: "http://64.181.205.24:8090",
+    AppEnv.onLine: "",
   };
   static get httpLink => _httpLink[appEnv];
 
@@ -20,7 +20,7 @@ class AppConstants {
   static final Map<AppEnv, String> _assetsLink = {
     AppEnv.onLocal: "https://my-worker.iosdevelope.workers.dev/",
     AppEnv.onTest: "https://my-worker.iosdevelope.workers.dev/",
-    AppEnv.onLine: "https://my-worker.iosdevelope.workers.dev/",
+    AppEnv.onLine: "",
   };
   static get assetsLink => _assetsLink[appEnv];
 
