@@ -14,6 +14,9 @@ class HttpConstants {
   /// 预签名
   static const signMedia = "/adminsystem/system/file/presigner";
 
+  /// 签名链接
+  static const sign = "/adminsystem/system/file/getSignUrl";
+
   /// 创建应用账号
   static const createAccount = "/adminsystem/accountManagement/createAccount";
 

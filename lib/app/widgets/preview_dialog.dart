@@ -2,6 +2,7 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:top_back/contants/app_constants.dart';
+import 'package:top_back/network/dio_client.dart';
 import 'package:top_back/network/request_mixin.dart';
 import 'package:video_player/video_player.dart';
 
@@ -36,10 +37,10 @@ class _PreviewDialogState extends State<PreviewDialog> with RequestMixin {
   Future<void> initVideoPlayer() async {
     if (widget.type != 2) return;
 
-    player = VideoPlayerController.networkUrl(
-      Uri.parse(AppConstants.assetsLink + widget.data),
-      httpHeaders: {"Authorization": AppConstants.signToken()},
-    );
+    String mediaLink = await DioClient().sign(widget.data);
+    if (mediaLink.isEmpty) return;
+
+    player = VideoPlayerController.networkUrl(Uri.parse(mediaLink));
     await player!.initialize();
     player!.addListener(onVideoListener);
     chewieController = ChewieController(

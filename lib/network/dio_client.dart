@@ -29,6 +29,18 @@ class DioClient {
     request.interceptors.addAll([TokenInterceptor(request)]);
   }
 
+  Future<String> sign(String objectName) async {
+    String mediaLink = "";
+
+    await doRequest(
+      HttpConstants.sign,
+      "GET",
+      query: {"objectName": objectName},
+      callbackS: (data) => mediaLink = data,
+    );
+    return mediaLink;
+  }
+
   Future<(List<String>, String, String)> signMedia(
       String objectName, int partNumber) async {
     List<String> partList = [];
@@ -73,16 +85,25 @@ class DioClient {
       }
 
       List<Future<Map<String, dynamic>>> uploadTasks = [];
+      List<Map<String, dynamic>> completed = [];
+      int maxParts = 5;
+
       for (int index = 0; index < chunkLen; index++) {
         int start = index * sizeC;
         int end = (start + sizeC < sizeT) ? start + sizeC : sizeT;
         Uint8List chunk = bytes.sublist(start, end);
 
+        if (uploadTasks.length >= maxParts) {
+          completed.addAll(await Future.wait(uploadTasks));
+          uploadTasks.clear();
+        }
         uploadTasks
             .add(uploadChunk(upDio, signData.$1[index], chunk, index + 1));
       }
 
-      List<Map<String, dynamic>> completed = await Future.wait(uploadTasks);
+      if (uploadTasks.isNotEmpty) {
+        completed.addAll(await Future.wait(uploadTasks));
+      }
       final xmlParts = completed
           .map((part) =>
               '<Part><PartNumber>${part['part_number']}</PartNumber><ETag>${part['etag']}</ETag></Part>')
@@ -93,6 +114,7 @@ class DioClient {
           '$xmlParts'
           '</CompleteMultipartUpload>';
 
+      print("----------------合并分段");
       await upDio.post(signData.$2,
           data: xmlBody,
           options: Options(headers: {"Content-Type": "application/xml"}));
@@ -104,6 +126,7 @@ class DioClient {
 
   Future<Map<String, dynamic>> uploadChunk(
       Dio upDio, String url, Uint8List chunk, int index) async {
+    print("----------------上传分段: $index");
     Response response = await upDio.put(
       url,
       data: chunk,
