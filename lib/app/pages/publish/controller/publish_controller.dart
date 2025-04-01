@@ -12,7 +12,8 @@ import 'package:top_back/contants/http_constants.dart';
 import 'package:top_back/network/request_mixin.dart';
 
 class PublishController extends GetxController with RequestMixin {
-  int noteId = 0, noteType = 1;
+  BigInt noteId = BigInt.zero;
+  int noteType = 1;
   BeanDraft detail = BeanDraft();
 
   TextEditingController inputTitle = TextEditingController();
@@ -63,7 +64,7 @@ class PublishController extends GetxController with RequestMixin {
   }
 
   void onTapPub() {
-    if (noteId == 0) {
+    if (noteId == BigInt.zero) {
       if (pubUser == null) {
         showToast("请输入发布用户");
         return;
@@ -97,7 +98,7 @@ class PublishController extends GetxController with RequestMixin {
 
     NoteManage().publishNote(detail);
 
-    if (noteId == 0) {
+    if (noteId == BigInt.zero) {
       showToast("开始发布");
       resetPubView();
     } else {
@@ -218,7 +219,7 @@ class PublishController extends GetxController with RequestMixin {
 
     BotToast.closeAllLoading();
 
-    if (noteId == 0) {
+    if (noteId == BigInt.zero) {
       inputNick.text = pubUser?.nickname ?? "";
     } else {
       inputNick.text = detail.createByNickname;

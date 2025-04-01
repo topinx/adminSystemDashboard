@@ -429,6 +429,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.7.1"
+  json_bigint:
+    dependency: "direct main"
+    description:
+      name: json_bigint
+      sha256: "9e613e731847ab2154d67160682adf104cbd9863741ec2f7abfcf6e77c70592f"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.1.0"
   leak_tracker:
     dependency: transitive
     description:

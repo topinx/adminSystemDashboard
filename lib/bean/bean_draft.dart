@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:top_back/bean/bean_note_detail.dart';
 
 class BeanDraft {
-  int noteId = 0;
+  BigInt noteId = BigInt.zero;
 
   int noteType = 1;
 

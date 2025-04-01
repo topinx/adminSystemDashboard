@@ -9,24 +9,24 @@ import 'package:top_back/contants/http_constants.dart';
 import 'package:top_back/network/request_mixin.dart';
 
 class NoteDetailController extends GetxController with RequestMixin {
-  int noteId = 0;
+  BigInt noteId = BigInt.zero;
 
   BeanNoteDetail detail = BeanNoteDetail.empty();
 
-  int curNote = 0;
+  BigInt curNote = BigInt.zero;
 
-  List<int> recordNote = [];
+  List<BigInt> recordNote = [];
 
   @override
   void onInit() {
     super.onInit();
-    noteId = int.tryParse(Get.parameters["id"] ?? "0") ?? 0;
+    noteId = BigInt.tryParse(Get.parameters["id"] ?? "0") ?? BigInt.zero;
   }
 
   @override
   void onReady() {
     super.onReady();
-    if (noteId == 0) {
+    if (noteId == BigInt.zero) {
       // 从审核进入 可以连续审核
       requestNextNote();
     } else {
@@ -73,7 +73,7 @@ class NoteDetailController extends GetxController with RequestMixin {
     await post(
       HttpConstants.checkNote,
       param: {
-        "noteId": curNote,
+        "noteId": "$curNote",
         "auditedStatus": detail.auditedStatus,
         "recommendedType": detail.recommendedStatus,
         "tendency": detail.tendency,
@@ -93,7 +93,7 @@ class NoteDetailController extends GetxController with RequestMixin {
     await post(
       HttpConstants.deleteNote,
       param: {
-        "noteIds": [detail.noteId]
+        "noteIds": ["${detail.noteId}"]
       },
       success: (_) {
         showToast("已删除");
@@ -110,7 +110,7 @@ class NoteDetailController extends GetxController with RequestMixin {
   }
 
   void onTapEdit() {
-    if (detail.noteId == 0) return;
+    if (detail.noteId == BigInt.zero) return;
     Get.toNamed(Routes.PUBLISH(detail.noteId, detail.noteType));
   }
 

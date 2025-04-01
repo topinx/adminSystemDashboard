@@ -12,7 +12,7 @@ class PubImageList extends StatelessWidget {
   List<Widget> buildImageList() {
     List<Widget> imageList = [];
     if (ctr.detail.noteType == 1) {
-      if (ctr.noteId == 0) {
+      if (ctr.noteId == BigInt.zero) {
         List<DraftMaterial> tempList = ctr.detail.materialList;
 
         imageList = List.generate(

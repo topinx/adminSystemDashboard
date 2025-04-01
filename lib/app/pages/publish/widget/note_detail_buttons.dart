@@ -20,7 +20,7 @@ class NoteDetailButtons extends StatelessWidget {
     );
 
     return Row(children: [
-      if (ctr.noteId == 0)
+      if (ctr.noteId == BigInt.zero)
         OutlinedButton(
           onPressed: ctr.onTapPrev,
           style: style1,
@@ -54,7 +54,7 @@ class NoteDetailButtons extends StatelessWidget {
         child: const Text("违规"),
       ),
       const Spacer(),
-      if (ctr.noteId == 0)
+      if (ctr.noteId == BigInt.zero)
         OutlinedButton(
           onPressed: ctr.onTapNext,
           style: style1,

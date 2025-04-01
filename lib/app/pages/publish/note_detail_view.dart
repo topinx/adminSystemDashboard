@@ -38,7 +38,7 @@ class _NoteDetailViewState extends State<NoteDetailView> {
         NoteDetailText("推荐状态", recommended),
         NoteDetailTendency(ctr.detail, onTap: ctr.onTapTendency),
         const SizedBox(height: 80),
-        if (ctr.curNote != 0) NoteDetailButtons(ctr),
+        if (ctr.curNote != BigInt.zero) NoteDetailButtons(ctr),
       ]);
     });
   }

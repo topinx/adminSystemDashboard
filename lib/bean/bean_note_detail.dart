@@ -6,7 +6,7 @@ BeanNoteDetail beanNoteDetailFromJson(String str) =>
 String beanNoteDetailToJson(BeanNoteDetail data) => json.encode(data.toJson());
 
 class BeanNoteDetail {
-  int noteId;
+  BigInt noteId;
   int noteType;
   String title;
   String textContent;
@@ -49,7 +49,7 @@ class BeanNoteDetail {
   });
 
   BeanNoteDetail.empty()
-      : noteId = 0,
+      : noteId = BigInt.zero,
         noteType = 1,
         title = "",
         textContent = "",
@@ -116,7 +116,7 @@ class BeanNoteDetail {
 }
 
 class BeanNoteMaterial {
-  int noteId;
+  BigInt noteId;
   String thumb;
   String url;
   int type;

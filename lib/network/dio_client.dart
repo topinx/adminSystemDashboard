@@ -156,6 +156,7 @@ class DioClient {
   }) async {
     try {
       request.options.method = method;
+      request.options.responseType = ResponseType.plain;
       Response result = await request.request(
         path,
         queryParameters: query,

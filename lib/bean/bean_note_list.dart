@@ -6,7 +6,7 @@ BeanNoteList beanNoteListFromJson(String str) =>
 String beanNoteListToJson(BeanNoteList data) => json.encode(data.toJson());
 
 class BeanNoteList {
-  int noteId;
+  BigInt noteId;
   String title;
   String cover;
   int noteType;

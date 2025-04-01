@@ -55,7 +55,7 @@ class PubRecommendController extends GetxController with RequestMixin {
   }
 
   void onTapPublish(int type) {
-    Get.toNamed(Routes.PUBLISH(0, type + 1));
+    Get.toNamed(Routes.PUBLISH(BigInt.zero, type + 1));
   }
 
   Future<List<BeanSearchUser>> onSubmitUser(String string) async {

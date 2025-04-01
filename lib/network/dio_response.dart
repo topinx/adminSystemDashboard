@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:json_bigint/json_bigint.dart';
 import 'package:logger/logger.dart';
 
 class DioResponse {
@@ -66,8 +67,13 @@ class DioResponse {
       }
     } else if (response is Response) {
       try {
-        return DioResponse(response.data["code"], response.data["errMsg"],
-            data: response.data["data"], options: response.requestOptions);
+        var decSettings = DecoderSettings(
+            whetherUseInt: (v) => v <= BigInt.parse('9007199254740991'));
+        var jsonResponse = decodeJson(response.data, settings: decSettings)
+            as Map<String, dynamic>;
+
+        return DioResponse(jsonResponse["code"], jsonResponse["errMsg"],
+            data: jsonResponse["data"], options: response.requestOptions);
       } catch (e) {
         return DioResponse(codeParseError, e.toString(),
             data: response, options: response.requestOptions);

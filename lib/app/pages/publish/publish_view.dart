@@ -23,11 +23,11 @@ class _PublishViewState extends State<PublishView> {
   @override
   void initState() {
     super.initState();
-    ctr.noteId = int.parse(Get.parameters["id"] ?? "0");
+    ctr.noteId = BigInt.parse(Get.parameters["id"] ?? "0");
     ctr.noteType = int.parse(Get.parameters["type"] ?? "1");
     ctr.detail.noteType = ctr.noteType;
 
-    if (ctr.noteId != 0) {
+    if (ctr.noteId != BigInt.zero) {
       // 修改信息
       ctr.requestNoteDetail();
     } else {
@@ -62,7 +62,7 @@ class _PublishViewState extends State<PublishView> {
         const SizedBox(height: 20),
         PubNoteTendency(ctr.detail, onTap: ctr.onTapTendency),
         const SizedBox(height: 20),
-        if (ctr.noteId == 0) ...[
+        if (ctr.noteId == BigInt.zero) ...[
           PubCreateType(ctr.createList, ctr.classifyId,
               onTap: ctr.onTapCreateType),
           const SizedBox(height: 20),
@@ -75,7 +75,8 @@ class _PublishViewState extends State<PublishView> {
   Widget buildButtons() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       OutlinedButton(
-          onPressed: ctr.onTapPub, child: Text(ctr.noteId == 0 ? "发布" : "修改")),
+          onPressed: ctr.onTapPub,
+          child: Text(ctr.noteId == BigInt.zero ? "发布" : "修改")),
       const SizedBox(width: 40),
       OutlinedButton(onPressed: Get.back, child: const Text("取消")),
     ]);

@@ -6,7 +6,7 @@ BeanNoteBack beanNoteBackFromJson(String str) =>
 String beanNoteBackToJson(BeanNoteBack data) => json.encode(data.toJson());
 
 class BeanNoteBack {
-  int noteId;
+  BigInt noteId;
   String title;
   String cover;
   int noteType;

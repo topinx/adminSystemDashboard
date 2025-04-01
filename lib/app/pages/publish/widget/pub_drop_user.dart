@@ -93,7 +93,7 @@ class _PubDropUserState extends State<PubDropUser> {
           width: 180,
           child: TextField(
             style: textStyle,
-            enabled: widget.ctr.noteId == 0,
+            enabled: widget.ctr.noteId == BigInt.zero,
             controller: widget.controller,
             onSubmitted: (string) => onShowToast(inputContext, string),
             decoration: const InputDecoration(hintText: "输入并查找"),

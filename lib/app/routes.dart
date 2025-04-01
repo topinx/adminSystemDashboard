@@ -26,8 +26,9 @@ abstract class Routes {
 
   static const pubRecommend = home + _Paths.pubRecommend;
   static const pubCreative = home + _Paths.pubCreative;
-  static String PUBLISH(int id, int type) => '$home/publish/id=$id/type=$type';
-  static String NOTE_DETAIL(int id) => '$home/noteDetail/id=$id';
+  static String PUBLISH(BigInt id, int type) =>
+      '$home/publish/id=$id/type=$type';
+  static String NOTE_DETAIL(BigInt id) => '$home/noteDetail/id=$id';
 
   static const reportUser = home + _Paths.reportUser;
   static const reportNote = home + _Paths.reportNote;

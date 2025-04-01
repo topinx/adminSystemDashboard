@@ -24,16 +24,16 @@ class NoteManage with RequestMixin {
   }
 
   void breakAndStartNext(BeanDraft draft) {
-    showToast(draft.noteId == 0 ? "发布失败" : "修改失败");
+    showToast(draft.noteId == BigInt.zero ? "发布失败" : "修改失败");
     isLoading = false;
-    homeCtr.updatePub(false, draft.noteId == 0);
+    homeCtr.updatePub(false, draft.noteId == BigInt.zero);
     startPublish();
   }
 
   void startNext(BeanDraft draft) {
-    showToast(draft.noteId == 0 ? "发布成功" : "修改成功");
+    showToast(draft.noteId == BigInt.zero ? "发布成功" : "修改成功");
     isLoading = false;
-    homeCtr.updatePub(false, draft.noteId == 0);
+    homeCtr.updatePub(false, draft.noteId == BigInt.zero);
     startPublish();
   }
 
@@ -43,7 +43,7 @@ class NoteManage with RequestMixin {
     isLoading = true;
     BeanDraft draft = draftList.removeAt(0);
 
-    homeCtr.updatePub(true, draft.noteId == 0);
+    homeCtr.updatePub(true, draft.noteId == BigInt.zero);
 
     for (var material in draft.materialList) {
       if (material.imgLink.isNotEmpty) continue;
@@ -84,7 +84,7 @@ class NoteManage with RequestMixin {
 
     setDraftExtra(draft);
 
-    if (draft.noteId == 0) {
+    if (draft.noteId == BigInt.zero) {
       await requestPub(draft);
     } else {
       await requestModify(draft);
@@ -140,7 +140,7 @@ class NoteManage with RequestMixin {
     await post(
       HttpConstants.updateNote,
       param: {
-        "noteId": draft.noteId,
+        "noteId": "${draft.noteId}",
         "cover": draft.cover.imgLink,
         "title": draft.title,
         "textContent": draft.textContent,

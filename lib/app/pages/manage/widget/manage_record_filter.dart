@@ -12,7 +12,7 @@ class ManageRecordFilter extends StatelessWidget {
   final Function(int, String) onTimeChange;
 
   void onTapVerify() {
-    Get.toNamed(Routes.NOTE_DETAIL(0));
+    Get.toNamed(Routes.NOTE_DETAIL(BigInt.zero));
   }
 
   @override
