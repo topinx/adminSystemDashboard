@@ -90,6 +90,10 @@ class HttpConstants {
   /// 审核笔记
   static const checkNote = "/adminsystem/contentManagement/auditNote";
 
+  /// 更新审核
+  static const updateCheck =
+      "/adminsystem/contentManagement/updateAuditedStatus";
+
   /// 发布笔记
   static const publish = "/adminsystem/contentManagement/publishNote";
 

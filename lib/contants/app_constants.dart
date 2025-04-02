@@ -6,13 +6,13 @@ class AppConstants {
   /// 环境配置
   ///
   /// 分别为本地 测试 线上
-  static const AppEnv appEnv = AppEnv.onTest;
+  static const AppEnv appEnv = AppEnv.onLine;
 
   /// http请求的host
   static final Map<AppEnv, String> _httpLink = {
     AppEnv.onLocal: "http://192.168.101.25:8090",
     AppEnv.onTest: "http://64.181.205.24:8090",
-    AppEnv.onLine: "",
+    AppEnv.onLine: "http://10.0.0.220:8090",
   };
   static get httpLink => _httpLink[appEnv];
 
@@ -20,7 +20,7 @@ class AppConstants {
   static final Map<AppEnv, String> _assetsLink = {
     AppEnv.onLocal: "https://my-worker.iosdevelope.workers.dev/",
     AppEnv.onTest: "https://my-worker.iosdevelope.workers.dev/",
-    AppEnv.onLine: "",
+    AppEnv.onLine: "https://my-worker-pro.iosdevelope.workers.dev/",
   };
   static get assetsLink => _assetsLink[appEnv];
 
@@ -28,7 +28,8 @@ class AppConstants {
 
   static String signToken() {
     String token = jwt.sign(
-      SecretKey('secretKey'),
+      SecretKey(
+          appEnv == AppEnv.onLine ? "b0bb5c0474eafd36f7556" : 'secretKey'),
       algorithm: JWTAlgorithm.HS256,
       expiresIn: const Duration(seconds: 30),
     );

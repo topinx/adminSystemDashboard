@@ -75,11 +75,31 @@ class NoteDetailController extends GetxController with RequestMixin {
       param: {
         "noteId": "$curNote",
         "auditedStatus": detail.auditedStatus,
-        "recommendedType": detail.recommendedStatus,
+        "recommendedStatus": detail.recommendedStatus,
         "tendency": detail.tendency,
       },
       success: (data) {
         showToast("审核成功");
+        update();
+      },
+    );
+
+    BotToast.closeAllLoading();
+  }
+
+  Future<void> requestUpdateCheck() async {
+    BotToast.showLoading();
+
+    await post(
+      HttpConstants.updateCheck,
+      param: {
+        "noteId": "$curNote",
+        "auditedStatus": detail.auditedStatus,
+        "recommendedStatus": detail.recommendedStatus,
+        "tendency": detail.tendency,
+      },
+      success: (data) {
+        showToast("修改审核成功");
         update();
       },
     );
@@ -149,13 +169,22 @@ class NoteDetailController extends GetxController with RequestMixin {
       showToast("请选择笔记偏好");
       return;
     }
+    if (detail.auditedStatus == 0) {
+      detail.auditedStatus = 1;
+      detail.recommendedStatus = 0;
+      detail.auditedBy = AppStorage().beanLogin.userId;
+      detail.auditedNickname = AppStorage().beanLogin.nickname;
 
-    detail.auditedStatus = 1;
-    detail.recommendedStatus = 0;
-    detail.auditedBy = AppStorage().beanLogin.userId;
-    detail.auditedNickname = AppStorage().beanLogin.nickname;
+      requestCheckNote();
+    } else {
+      if (detail.auditedBy != AppStorage().beanLogin.userId) return;
+      detail.auditedStatus = 1;
+      detail.recommendedStatus = 0;
+      detail.auditedBy = AppStorage().beanLogin.userId;
+      detail.auditedNickname = AppStorage().beanLogin.nickname;
 
-    requestCheckNote();
+      requestUpdateCheck();
+    }
   }
 
   /// 审核不通过
@@ -164,13 +193,22 @@ class NoteDetailController extends GetxController with RequestMixin {
       showToast("请选择笔记偏好");
       return;
     }
+    if (detail.auditedStatus == 0) {
+      detail.auditedStatus = 2;
+      detail.recommendedStatus = 0;
+      detail.auditedBy = AppStorage().beanLogin.userId;
+      detail.auditedNickname = AppStorage().beanLogin.nickname;
 
-    detail.auditedStatus = 2;
-    detail.recommendedStatus = 0;
-    detail.auditedBy = AppStorage().beanLogin.userId;
-    detail.auditedNickname = AppStorage().beanLogin.nickname;
+      requestCheckNote();
+    } else {
+      if (detail.auditedBy != AppStorage().beanLogin.userId) return;
+      detail.auditedStatus = 2;
+      detail.recommendedStatus = 0;
+      detail.auditedBy = AppStorage().beanLogin.userId;
+      detail.auditedNickname = AppStorage().beanLogin.nickname;
 
-    requestCheckNote();
+      requestUpdateCheck();
+    }
   }
 
   /// 审核违规
@@ -179,13 +217,22 @@ class NoteDetailController extends GetxController with RequestMixin {
       showToast("请选择笔记偏好");
       return;
     }
+    if (detail.auditedStatus == 0) {
+      detail.auditedStatus = 3;
+      detail.recommendedStatus = 0;
+      detail.auditedBy = AppStorage().beanLogin.userId;
+      detail.auditedNickname = AppStorage().beanLogin.nickname;
 
-    detail.auditedStatus = 3;
-    detail.recommendedStatus = 0;
-    detail.auditedBy = AppStorage().beanLogin.userId;
-    detail.auditedNickname = AppStorage().beanLogin.nickname;
+      requestCheckNote();
+    } else {
+      if (detail.auditedBy != AppStorage().beanLogin.userId) return;
+      detail.auditedStatus = 3;
+      detail.recommendedStatus = 0;
+      detail.auditedBy = AppStorage().beanLogin.userId;
+      detail.auditedNickname = AppStorage().beanLogin.nickname;
 
-    requestCheckNote();
+      requestUpdateCheck();
+    }
   }
 
   /// 审核通过并推荐
@@ -194,13 +241,22 @@ class NoteDetailController extends GetxController with RequestMixin {
       showToast("请选择笔记偏好");
       return;
     }
+    if (detail.auditedStatus == 0) {
+      detail.auditedStatus = 1;
+      detail.recommendedStatus = 1;
+      detail.auditedBy = AppStorage().beanLogin.userId;
+      detail.auditedNickname = AppStorage().beanLogin.nickname;
 
-    detail.auditedStatus = 1;
-    detail.recommendedStatus = 1;
-    detail.auditedBy = AppStorage().beanLogin.userId;
-    detail.auditedNickname = AppStorage().beanLogin.nickname;
+      requestCheckNote();
+    } else {
+      if (detail.auditedBy != AppStorage().beanLogin.userId) return;
+      detail.auditedStatus = 1;
+      detail.recommendedStatus = 1;
+      detail.auditedBy = AppStorage().beanLogin.userId;
+      detail.auditedNickname = AppStorage().beanLogin.nickname;
 
-    requestCheckNote();
+      requestUpdateCheck();
+    }
   }
 
   String getTopicList() {

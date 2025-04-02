@@ -5,6 +5,7 @@ import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/pages.dart';
+import 'package:top_back/contants/app_constants.dart';
 import 'package:top_back/contants/app_storage.dart';
 
 import 'dio_client.dart';
@@ -75,8 +76,15 @@ MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC90FUsMRCrNH1kjzRTUJdRwUcufXXZ449ePwKke1m/
 -----END PUBLIC KEY-----
   ''';
 
+  final String _publicLinePem = '''
+-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCOxQN1rsAJ+C9trlfaXQ0kZrmkL/rKhCg+qISEFnls5H0vENOMLQsmgVPCXrZ9HUCkxvURcB7gy+VhKXoLwRsbQSJ3mtBROzhoa9ydihR1CwroRQ4+S4qDuw6EW/IrI74yjTmONpaZOzjEVrwlT9xOUd5o8whI4VSTPCfyAK2P2QIDAQAB
+-----END PUBLIC KEY-----
+  ''';
+
   String encryptPassword(String input) {
-    dynamic parser = RSAKeyParser().parse(_publicPem);
+    dynamic parser = RSAKeyParser().parse(
+        (AppConstants.appEnv == AppEnv.onLine ? _publicLinePem : _publicPem));
     final encrypt = Encrypter(RSA(publicKey: parser));
     return encrypt.encrypt(input).base64;
   }
