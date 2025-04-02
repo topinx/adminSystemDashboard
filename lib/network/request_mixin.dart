@@ -78,13 +78,14 @@ MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC90FUsMRCrNH1kjzRTUJdRwUcufXXZ449ePwKke1m/
 
   final String _publicLinePem = '''
 -----BEGIN PUBLIC KEY-----
-MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCOxQN1rsAJ+C9trlfaXQ0kZrmkL/rKhCg+qISEFnls5H0vENOMLQsmgVPCXrZ9HUCkxvURcB7gy+VhKXoLwRsbQSJ3mtBROzhoa9ydihR1CwroRQ4+S4qDuw6EW/IrI74yjTmONpaZOzjEVrwlT9xOUd5o8whI4VSTPCfyAK2P2QIDAQAB
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCgQvkfgwcjbGDlE2tx3GqoNjKjYCyZPV/mf2GL285FPvbTE1XaLKLRaMnEk6ZLXCSRfYdU4xDy41VFwyNeowSnTlFC6V8RGj5bUtig7GaUbJ8hxocIVNF4IEo7lgdTYVpZFrtAwIn84dW4yTlHs96M4l9NtgfN4jhQW5HJZlW6pwIDAQAB
 -----END PUBLIC KEY-----
   ''';
 
   String encryptPassword(String input) {
-    dynamic parser = RSAKeyParser().parse(
-        (AppConstants.appEnv == AppEnv.onLine ? _publicLinePem : _publicPem));
+    String key =
+        AppConstants.appEnv == AppEnv.onLine ? _publicLinePem : _publicPem;
+    dynamic parser = RSAKeyParser().parse(key);
     final encrypt = Encrypter(RSA(publicKey: parser));
     return encrypt.encrypt(input).base64;
   }
