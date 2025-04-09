@@ -4,6 +4,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:top_back/app/widgets/responsive_widget.dart';
 import 'package:top_back/contants/http_constants.dart';
@@ -94,7 +95,7 @@ class AccountCreateController extends GetxController with RequestMixin {
         source: ImageSource.camera, imageQuality: 80);
     if (file == null) return;
     fileAvatarName = file.name;
-    userAvatar = await file.readAsBytes();
+    userAvatar = await onCropImage(file);
     update();
   }
 
@@ -103,8 +104,17 @@ class AccountCreateController extends GetxController with RequestMixin {
         source: ImageSource.camera, imageQuality: 80);
     if (file == null) return;
     fileCoverName = file.name;
-    userCover = await file.readAsBytes();
+    userCover = await onCropImage(file);
     update();
+  }
+
+  Future<Uint8List?> onCropImage(XFile file) async {
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: file.path,
+      compressQuality: 100,
+      uiSettings: [WebUiSettings(context: Get.context!)],
+    );
+    return await croppedFile?.readAsBytes();
   }
 
   void onTapAreaCode(BuildContext context) async {
