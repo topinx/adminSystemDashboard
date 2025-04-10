@@ -9,6 +9,7 @@ import 'widget/pub_drop_user.dart';
 import 'widget/pub_image_list.dart';
 import 'widget/pub_input_field.dart';
 import 'widget/pub_note_tendency.dart';
+import 'widget/pub_position.dart';
 
 class PublishView extends StatefulWidget {
   const PublishView({super.key});
@@ -52,6 +53,10 @@ class _PublishViewState extends State<PublishView> {
         const SizedBox(height: 20),
         PubImageList(ctr),
         const SizedBox(height: 20),
+        if (ctr.noteId == BigInt.zero) ...[
+          PubPosition(ctr),
+          const SizedBox(height: 20),
+        ],
         PubInputTitle(ctr.inputTitle),
         const SizedBox(height: 20),
         PubInputContent(ctr.inputContent),

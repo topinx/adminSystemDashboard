@@ -1,0 +1,83 @@
+[
+  {
+    "name": "加利福尼亚州-金门大桥",
+    "location": "US-CASan Francisco",
+    "position": {
+      "lat": 37.8176155,
+      "lon": -122.47831227441239,
+      "display_name": "Golden Gate Bridge, San Francisco, California, 94129, United States"
+    }
+  },
+  {
+    "name": "得克萨斯州-阿拉莫遗址",
+    "location": "US-TXSan Antonio",
+    "position": {
+      "lat": 29.4260383,
+      "lon": -98.4860308,
+      "display_name": "Alamo Plaza, Downtown, San Antonio, Bexar County, Texas, 78205, United States"
+    }
+  },
+  {
+    "name": "佛罗里达州-迪士尼魔法王国",
+    "location": "US-FL",
+    "position": {
+      "lat": 28.4179389,
+      "lon": -81.581329,
+      "display_name": "Casey's Corner, 211, Main Street, Bay Lake, Orange County, Florida, 32830, United States"
+    }
+  },
+  {
+    "name": "纽约州-时代广场",
+    "location": "US-NYNew York",
+    "position": {
+      "lat": 40.75906355,
+      "lon": -73.98516826983334,
+      "display_name": "Duffy Square, Theater District, Manhattan Community Board 5, Manhattan, New York County, New York, 10036, United States"
+    }
+  },
+  {
+    "name": "宾夕法尼亚州-独立宫",
+    "location": "US-PAPhiladelphia",
+    "position": {
+      "lat": 39.95273867785454,
+      "lon": -75.16517547330676,
+      "display_name": "North 15th Street, Gayborhood, Center City, Philadelphia, Philadelphia County, Pennsylvania, 19102, United States"
+    }
+  },
+  {
+    "name": "伊利诺伊州-云门雕塑",
+    "location": "US-ILChicago",
+    "position": {
+      "lat": 41.8788366,
+      "lon": -87.62965992024928,
+      "display_name": "Federal Plaza, Printer's Row, Loop, Chicago, Cook County, Illinois, 60604, United States"
+    }
+  },
+  {
+    "name": "俄亥俄州-摇滚名人堂",
+    "location": "US-OHCleveland",
+    "position": {
+      "lat": 41.508498349999996,
+      "lon": -81.69540678589516,
+      "display_name": "Rock and Roll Hall of Fame, East 9th Street, Downtown Cleveland, Cleveland, Cuyahoga County, Ohio, 44114, United States"
+    }
+  },
+  {
+    "name": "乔治亚州-可口可乐世界",
+    "location": "US-GAAtlanta",
+    "position": {
+      "lat": 33.7490553,
+      "lon": -84.38817113010235,
+      "display_name": "The Georgia State Capitol, 206, Washington Street Southwest, South Downtown, Atlanta, Fulton County, Georgia, 30334, United States"
+    }
+  },
+  {
+    "name": "北卡罗来纳州-北卡罗来纳州议会大厦",
+    "location": "US-NCRaleigh",
+    "position": {
+      "lat": 35.77974970773255,
+      "lon": -78.63802447885966,
+      "display_name": "84, South Wilmington Street, Warehouse District, Raleigh, Wake County, North Carolina, 27601, United States"
+    }
+  }
+]

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import 'auth_middleware.dart';
@@ -23,6 +24,12 @@ class AppPages {
       binding: HomeBinding(),
       middlewares: [AuthMiddleware()],
       children: [
+        GetPage(
+          maintainState: false,
+          name: _Paths.accountEmpty,
+          transition: Transition.noTransition,
+          page: () => Container(),
+        ),
         GetPage(
           maintainState: false,
           name: _Paths.accountManage,

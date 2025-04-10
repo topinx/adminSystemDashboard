@@ -9,6 +9,7 @@ abstract class Routes {
 
   static const home = _Paths.home;
 
+  static const accountEmpty = home + _Paths.accountEmpty;
   static const accountCreate = home + _Paths.accountCreate;
   static const accountManage = home + _Paths.accountManage;
   static const accountOwner = home + _Paths.accountOwner;
@@ -43,6 +44,7 @@ abstract class _Paths {
   static const accountManage = '/account/manage';
   static const accountOwner = '/account/accounts';
 
+  static const accountEmpty = '/accountEmpty';
   static const accountCreate = '/accountCreate';
   static const accountInfo = '/accountInfo/id=:userId';
   static const accountNote = '/accountNote/id=:userId';

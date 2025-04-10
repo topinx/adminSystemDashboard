@@ -34,6 +34,10 @@ class BeanDraft {
 
   int? classifyId;
 
+  String position = "";
+
+  String location = "";
+
   BeanDraft();
 
   factory BeanDraft.fromNoteDetail(BeanNoteDetail detail) {

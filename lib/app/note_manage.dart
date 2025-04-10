@@ -129,7 +129,9 @@ class NoteManage with RequestMixin {
         "status": draft.status,
         "topicList": draft.topicList,
         "createBy": draft.createBy,
-        "classifyId": draft.classifyId
+        "classifyId": draft.classifyId,
+        "position": draft.position,
+        "location": draft.location,
       },
       success: (_) => startNext(draft),
       error: (_, __) => breakAndStartNext(draft),

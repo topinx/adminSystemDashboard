@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:top_back/contants/app_constants.dart';
 
 import '../controller/login_controller.dart';
 
@@ -14,31 +13,16 @@ class LoginCard extends StatefulWidget {
 
 class _LoginCardState extends State<LoginCard> {
   Widget buildLoginButton(BuildContext context) {
-    return GetBuilder<LoginController>(builder: (ctr) {
-      Widget btnLogin = ElevatedButton(
+    return GetBuilder<LoginController>(
+      builder: (ctr) => ElevatedButton(
         onPressed: ctr.onTapLogin,
-        child: ctr.isLogin
-            ? const CupertinoActivityIndicator(radius: 6)
-            : const Text("登录"),
-      );
-
-      if (AppConstants.appEnv == AppEnv.onLine) {
-        return SizedBox(width: double.infinity, child: btnLogin);
-      }
-
-      Widget btnRegister = ElevatedButton(
-        onPressed: ctr.onTapRegister,
-        child: ctr.isRegister
-            ? const CupertinoActivityIndicator(radius: 6)
-            : const Text("创建"),
-      );
-
-      return Row(children: [
-        Expanded(flex: 2, child: btnLogin),
-        const SizedBox(width: 5),
-        Expanded(flex: 1, child: btnRegister),
-      ]);
-    });
+        child: Center(
+          child: ctr.isLogin
+              ? const CupertinoActivityIndicator(radius: 6)
+              : const Text("登录"),
+        ),
+      ),
+    );
   }
 
   @override

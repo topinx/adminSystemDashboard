@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_back/app/pages.dart';
 import 'package:top_back/bean/bean_menu.dart';
+import 'package:top_back/contants/app_storage.dart';
 import 'package:top_back/contants/http_constants.dart';
 import 'package:top_back/network/request_mixin.dart';
 
@@ -123,6 +124,9 @@ class HomeController extends GetxController with RequestMixin {
     for (var temp in tempList) {
       BeanMenu bean = BeanMenu.fromJson(temp);
       if (routeMap[bean.resourceId] == null) continue;
+      if (!AppStorage().beanLogin.resourceList.contains(bean.resourceId)) {
+        continue;
+      }
 
       if (bean.parentId == 0) {
         menuList.add(routeMap[bean.resourceId]!);

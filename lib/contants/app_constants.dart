@@ -20,7 +20,7 @@ class AppConstants {
   static final Map<AppEnv, String> _assetsLink = {
     AppEnv.onLocal: "https://my-worker.iosdevelope.workers.dev/",
     AppEnv.onTest: "https://my-worker.iosdevelope.workers.dev/",
-    AppEnv.onLine: "https://my-worker-pro.iosdevelope.workers.dev/",
+    AppEnv.onLine: "https://oss.topinx.com/",
   };
   static get assetsLink => _assetsLink[appEnv];
 
