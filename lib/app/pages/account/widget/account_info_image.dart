@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:top_back/contants/app_constants.dart';
 
@@ -42,8 +43,20 @@ class _AccountInfoImageState extends State<AccountInfoImage> {
         source: ImageSource.camera, imageQuality: 80);
     if (file == null) return;
     imageName = file.name;
-    imageData = await file.readAsBytes();
+    imageData = await onCropImage(file);
+    if (imageData == null) return;
+
     if (mounted) setState(() {});
+    widget.onChange(imageName, imageData!);
+  }
+
+  Future<Uint8List?> onCropImage(XFile file) async {
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: file.path,
+      compressQuality: 100,
+      uiSettings: [WebUiSettings(context: context)],
+    );
+    return await croppedFile?.readAsBytes();
   }
 
   @override
