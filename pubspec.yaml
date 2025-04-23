@@ -1,29 +1,36 @@
 name: top_back
-description: "project."
-publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.5.2
+  sdk: ^3.5.4
 
 dependencies:
   flutter:
     sdk: flutter
 
-
   cupertino_icons: ^1.0.8
-  flutter_admin_scaffold: ^1.4.0
-  get: 5.0.0-release-candidate-6
+  flex_color_scheme: ^8.0.2
+  go_router: ^15.0.0
+  encrypt: ^5.0.3
+  dio: ^5.8.0+1
+  toastification: ^2.3.0
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+  json_bigint: ^3.1.0
+  logger: ^2.5.0
+  shared_preferences: ^2.5.3
+  dropdown_search: ^6.0.2
+  data_table_2: 2.5.16
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^4.0.0
+  build_runner: ^2.4.13
+  riverpod_generator: ^2.6.3
+  riverpod_lint: ^2.6.3
 
 flutter:
 
   uses-material-design: true
-
-  assets:
-    - assets/

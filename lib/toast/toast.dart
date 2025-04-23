@@ -1,0 +1,48 @@
+import 'package:top_back/pages/widget/common.dart';
+import 'package:top_back/router/router.dart';
+import 'package:flutter/material.dart';
+import 'package:toastification/toastification.dart';
+
+class Toast {
+  static void showToast(String text) => toastification.show(
+        type: ToastificationType.error,
+        style: ToastificationStyle.fillColored,
+        autoCloseDuration: const Duration(seconds: 5),
+        showProgressBar: false,
+        icon: Icon(Icons.error_outline),
+        description: Text(text),
+      );
+
+  static OverlayEntry? _entryLoading;
+
+  static void showLoading([bool dismiss = false]) {
+    dismissLoading();
+
+    _entryLoading ??=
+        OverlayEntry(builder: (_) => LoadingEntry(dismiss: dismiss));
+    navigatorKey.currentState?.overlay?.insert(_entryLoading!);
+  }
+
+  static void dismissLoading() {
+    _entryLoading?.remove();
+    _entryLoading = null;
+  }
+}
+
+class LoadingEntry extends StatelessWidget {
+  const LoadingEntry({super.key, this.dismiss = false});
+
+  final bool dismiss;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: dismiss ? Toast.dismissLoading : null,
+      child: Container(
+        alignment: Alignment.center,
+        color: Colors.black38,
+        child: const CommonLoading(),
+      ),
+    );
+  }
+}

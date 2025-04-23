@@ -1,11 +1,15 @@
+import 'package:top_back/router/router.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:top_back/app/app_delegate.dart';
-import 'package:top_back/contants/theme.dart';
-import 'package:top_back/app/pages.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toastification/toastification.dart';
 
-void main() async {
-  runApp(const App());
+import 'constants/app_storage.dart';
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Storage().init().then((_) => runApp(const ProviderScope(child: App())));
 }
 
 class App extends StatefulWidget {
@@ -18,17 +22,17 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'Top Backstage',
-      theme: themeData,
-      themeMode: ThemeMode.light,
-      getPages: AppPages.routes,
-      routerDelegate: AppDelegate.delegate,
-      onInit: () {
-        final delegate = Get.rootController.rootDelegate;
-        delegate.navigatorObservers?.add(GetObserver(null, Get.routing));
-      },
+    return ToastificationWrapper(
+      child: MaterialApp.router(
+        scrollBehavior: const ScrollBehavior().copyWith(
+          scrollbars: false,
+          dragDevices: PointerDeviceKind.values.toSet(),
+        ),
+        debugShowCheckedModeBanner: false,
+        themeMode: ThemeMode.light,
+        theme: FlexThemeData.light(scheme: FlexScheme.indigoM3),
+        routerConfig: router,
+      ),
     );
   }
 }

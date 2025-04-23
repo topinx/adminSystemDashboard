@@ -1,49 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
 
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="top_back">
+  <meta name="apple-mobile-web-app-title" content="backstage">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>top_back</title>
+  <title>backstage</title>
   <link rel="manifest" href="manifest.json">
+
   <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background-color: #FCFCFC;
+    .loading-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      z-index: 9999;
     }
-    @media (prefers-color-scheme: dark) {
-      body {
-        background-color: #D1D1D1;
-      }
+
+    .loader {
+      width: 48px;
+      height: 48px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
     }
-    #loading-spinner {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+
+    .loading-text {
+      font-family: Arial, sans-serif;
+      color: #333;
+      font-size: 18px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loaded .loading-container {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div id="loading-spinner">
-    <img src="assets/loading.gif" alt="Loading...">
-  </div>
-  <script src="flutter_bootstrap.js" async></script>
-  <script>
-    window.addEventListener('flutter-first-frame', function () {
-      document.getElementById('loading-spinner').style.display = 'none';
+<div class="loading-container">
+  <div class="loader"></div>
+  <div class="loading-text">Loading...</div>
+</div>
+
+<script src="flutter_bootstrap.js" async></script>
+<script>
+  window.addEventListener('flutter-first-frame', function () {
+      document.body.classList.add('loaded');
     });
-  </script>
+</script>
 </body>
 </html>
