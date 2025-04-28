@@ -24,20 +24,15 @@ class _TableIndicatorState extends State<TableIndicator> {
   }
 
   @override
-  void didUpdateWidget(covariant TableIndicator oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    cur =
-        1 + ((widget.ctr.currentRowIndex + 1) / widget.ctr.rowsPerPage).floor();
-    max = (widget.ctr.rowCount / widget.ctr.rowsPerPage).ceil();
-  }
-
-  @override
   void dispose() {
     widget.ctr.removeListener(update);
     super.dispose();
   }
 
   void update() {
+    cur =
+        1 + ((widget.ctr.currentRowIndex + 1) / widget.ctr.rowsPerPage).floor();
+    max = (widget.ctr.rowCount / widget.ctr.rowsPerPage).ceil();
     if (mounted) setState(() {});
   }
 
@@ -50,7 +45,7 @@ class _TableIndicatorState extends State<TableIndicator> {
   }
 
   void onTapNum(int n) {
-    widget.ctr.goToPageWithRow((n - 1) & widget.ctr.rowsPerPage);
+    widget.ctr.goToPageWithRow((n - 1) * 10 + 1);
   }
 
   List<Widget> indicatorList() {
@@ -105,9 +100,10 @@ class Indicator extends StatelessWidget {
   Indicator.BtnP(this.active, {this.onTap})
       : child = Icon(Icons.keyboard_arrow_left, color: Colors.black12);
 
-  Indicator.Num(int num, this.active, {this.onTap})
-      : child = Text("$num",
-            style: TextStyle(color: active ? Colors.black : Colors.black45));
+  Indicator.Num(int num, bool same, {this.onTap})
+      : this.active = true,
+        child = Text("$num",
+            style: TextStyle(color: same ? Colors.black : Colors.black45));
 
   Indicator.Dot({this.onTap})
       : active = false,

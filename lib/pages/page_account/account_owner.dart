@@ -164,7 +164,7 @@ class _AccountOwnerState extends ConsumerState<AccountOwner> {
   @override
   Widget build(BuildContext context) {
     var paramProvider = ref.watch(accountSearchParam);
-    var count1 = ref.watch(accountCnt1);
+    var count = ref.watch(accountCnt1);
 
     return Column(children: [
       Row(children: [
@@ -193,7 +193,7 @@ class _AccountOwnerState extends ConsumerState<AccountOwner> {
         const Spacer(),
         Expanded(
             flex: 2,
-            child: Text("共${count1.value ?? 0}个用户", textAlign: TextAlign.end)),
+            child: Text("共${count.value ?? 0}个用户", textAlign: TextAlign.end)),
         const Spacer(),
       ]),
       const SizedBox(height: 20),

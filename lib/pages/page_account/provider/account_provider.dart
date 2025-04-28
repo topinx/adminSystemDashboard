@@ -110,3 +110,9 @@ final accountCnt1 = FutureProvider<int>(
         query: {"userId": Storage().user.userId});
   },
 );
+
+final accountCnt2 = FutureProvider<int>(
+      (ref) async {
+    return await DioRequest().request(HttpConstant.accountCnt);
+  },
+);
