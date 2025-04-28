@@ -1,4 +1,3 @@
-import 'package:top_back/bean/bean_account.dart';
 import 'package:top_back/constants/app_storage.dart';
 import 'package:top_back/constants/http_constants.dart';
 import 'package:top_back/network/dio_request.dart';
@@ -105,72 +104,9 @@ final accountSearchParam =
   (ref) => AccountSearchParamProvider(),
 );
 
-final accountCntProvider = FutureProvider<int>(
+final accountCnt1 = FutureProvider<int>(
   (ref) async {
-    return await DioRequest().request(
-      HttpConstant.accountCnt,
-      query: {"userId": Storage().user.userId},
-    );
+    return await DioRequest().request(HttpConstant.accountCnt,
+        query: {"userId": Storage().user.userId});
   },
 );
-
-final accountProvider = AsyncNotifierProvider<AccountListNotifier,
-    ({List<BeanAccount> beanList, int count})>(
-  AccountListNotifier.new,
-);
-
-class AccountListNotifier
-    extends AsyncNotifier<({List<BeanAccount> beanList, int count})> {
-  int pageIndex = 1;
-
-  @override
-  Future<({List<BeanAccount> beanList, int count})> build() async {
-    return fetchList();
-  }
-
-  Future<({List<BeanAccount> beanList, int count})> fetchList() async {
-    final param = ref.read(accountSearchParam);
-
-    final query = {
-      "pageNo": pageIndex,
-      "limit": 10,
-      "userId": Storage().user.userId,
-      "nickname": param.nick,
-      "phone": param.phone,
-      "email": param.email,
-      "status": param.state_a_param,
-      "authenticationStatus": param.state_v_param,
-    };
-
-    final response = await Future.wait([
-      DioRequest().request(HttpConstant.accountList, query: query),
-      DioRequest().request(HttpConstant.accountCnt, query: query),
-    ]);
-
-    pageIndex = response[0]["pageNo"];
-
-    final tempList = response[0]["list"] ?? [];
-    List<BeanAccount> beanList = List<BeanAccount>.from(
-      tempList.map((x) => BeanAccount.fromJson(x)),
-    );
-
-    int count = response[1] ?? 0;
-
-    return (beanList: beanList, count: count);
-  }
-
-  /// 刷新数据
-  Future<void> refresh() async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() => fetchList());
-  }
-
-  /// 加载下一页
-  Future<void> loadNext({int? page}) async {
-    if (page != null) {
-      pageIndex = page;
-    }
-    final response = await fetchList();
-    state = AsyncValue.data(response);
-  }
-}

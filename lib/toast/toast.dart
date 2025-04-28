@@ -7,7 +7,8 @@ class Toast {
   static void showToast(String text) => toastification.show(
         type: ToastificationType.error,
         style: ToastificationStyle.fillColored,
-        autoCloseDuration: const Duration(seconds: 5),
+        animationDuration: const Duration(milliseconds: 300),
+        autoCloseDuration: const Duration(seconds: 3),
         showProgressBar: false,
         icon: Icon(Icons.error_outline),
         description: Text(text),

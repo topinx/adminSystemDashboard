@@ -27,11 +27,13 @@ class BorderButton extends StatelessWidget {
 }
 
 class DropButton extends StatelessWidget {
-  const DropButton(this.text, this.items, {super.key});
+  const DropButton(this.text, this.items, {super.key, this.onChanged});
 
   final String text;
 
   final Future<List<String>> Function(String, LoadProps?)? items;
+
+  final Function(String?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,7 @@ class DropButton extends StatelessWidget {
       clickProps: ClickProps(borderRadius: BorderRadius.circular(20)),
       mode: Mode.custom,
       items: items,
+      onChanged: onChanged,
       popupProps: PopupProps.menu(
         menuProps: MenuProps(margin: EdgeInsets.only(top: 12)),
         fit: FlexFit.loose,
