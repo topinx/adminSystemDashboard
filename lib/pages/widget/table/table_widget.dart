@@ -21,7 +21,6 @@ class TableWidget<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(alignment: Alignment.bottomCenter, children: [
       AsyncPaginatedDataTable2(
-        key: UniqueKey(),
         horizontalMargin: 20,
         dividerThickness: 0,
         checkboxHorizontalMargin: 20,
