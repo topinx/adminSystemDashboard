@@ -1,5 +1,5 @@
 import 'package:top_back/bean/bean_user.dart';
-import 'package:top_back/constants/app_contants.dart';
+import 'package:top_back/constants/app_constants.dart';
 import 'package:top_back/constants/app_storage.dart';
 import 'package:top_back/constants/http_constants.dart';
 import 'package:top_back/network/dio_request.dart';

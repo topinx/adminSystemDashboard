@@ -1,4 +1,4 @@
-import 'package:top_back/constants/app_contants.dart';
+import 'package:top_back/constants/app_constants.dart';
 import 'package:top_back/network/token_interceptor.dart';
 import 'package:top_back/router/router.dart';
 import 'package:top_back/toast/toast.dart';
@@ -14,7 +14,7 @@ class DioRequest {
     dio.interceptors.add(TokenInterceptor(dio));
   }
 
-  static DioRequest _instance = DioRequest._();
+  static final DioRequest _instance = DioRequest._();
   factory DioRequest() => _instance;
 
   final decSettings = DecoderSettings(
