@@ -1,3 +1,4 @@
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:logger/logger.dart';
 
@@ -25,6 +26,21 @@ class AppConstants {
   };
   static get assetsLink => _assetsLink[appEnv];
 
+  /// 资源地址
+  static final Map<AppEnv, String> _jwtKey = {
+    AppEnv.DEV: "secretKey",
+    AppEnv.TST: "secretKey",
+    AppEnv.LIN: "b0bb5c0474eafd36f7556",
+  };
+  static final jwt = JWT({'app': "com.hotspot.client.topinx"});
+
+  static String signToken() {
+    String token = jwt.sign(SecretKey(_jwtKey[appEnv]!),
+        algorithm: JWTAlgorithm.HS256, expiresIn: const Duration(seconds: 30));
+
+    return "Bearer $token";
+  }
+
   /// pem
   static final Map<AppEnv, String> _passwordPem = {
     AppEnv.DEV: '''
@@ -43,6 +59,7 @@ MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCgQvkfgwcjbGDlE2tx3GqoNjKjYCyZPV/mf2GL285F
 -----END PUBLIC KEY-----
   ''',
   };
+
   static get passwordPem => _passwordPem[appEnv];
 
   static String encryptPassword(String input) {

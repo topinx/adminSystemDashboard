@@ -21,6 +21,7 @@ dependencies:
   shared_preferences: ^2.5.3
   dropdown_search: ^6.0.2
   data_table_2: 2.5.16
+  dart_jsonwebtoken: ^2.17.0
 
 dev_dependencies:
   flutter_test:
