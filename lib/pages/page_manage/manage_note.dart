@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:top_back/bean/bean_note.dart';
+import 'package:top_back/pages/widget/common_button.dart';
 import 'package:top_back/pages/widget/filter_drop.dart';
 import 'package:top_back/pages/widget/input_search.dart';
 import 'package:top_back/pages/widget/table/table_widget.dart';
 
-class ManageNote extends StatefulWidget {
+class ManageNote extends ConsumerStatefulWidget {
   const ManageNote({super.key});
 
   @override
-  State<ManageNote> createState() => _ManageNoteState();
+  ConsumerState createState() => _ManageNoteState();
 }
 
-class _ManageNoteState extends State<ManageNote> {
+class _ManageNoteState extends ConsumerState<ManageNote> {
   final TextEditingController input = TextEditingController();
 
   final stateList1 = ["全部", "男性", "女性", "综合"];
@@ -31,11 +34,19 @@ class _ManageNoteState extends State<ManageNote> {
     "操作"
   ];
 
-  // TableController<BeanAccount> controller = TableController<BeanAccount>();
+  TableController<BeanNote> controller = TableController<BeanNote>();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.builder = buildTabRowList;
+    controller.future = requestBeanList;
+  }
 
   @override
   void dispose() {
     super.dispose();
+    controller.dispose();
     input.dispose();
   }
 
@@ -43,6 +54,30 @@ class _ManageNoteState extends State<ManageNote> {
     if (string == null) return;
     int index = stateList1.indexOf(string);
     if (index == -1) return;
+  }
+
+  Future<List<BeanNote>> requestBeanList(int page) async {
+    return [];
+  }
+
+  ({String key, List<Widget> widgetList}) buildTabRowList(BeanNote? bean) {
+    if (bean == null) {
+      return (key: "", widgetList: List.generate(9, (_) => TabPlace()));
+    }
+
+    List<Widget> beanList = [
+      TabImage(bean.cover),
+      TabText(bean.title),
+      TabText(bean.title),
+      TabText(bean.title),
+      TabText(bean.title),
+      TabText(bean.title),
+      TabText(bean.title),
+      TabText(bean.title),
+      TxtButton("查看详情")
+    ];
+
+    return (key: "${bean.noteId}", widgetList: beanList);
   }
 
   Widget buildFilterDrops() {

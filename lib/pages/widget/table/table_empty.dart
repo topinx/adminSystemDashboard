@@ -30,6 +30,22 @@ class TabText extends StatelessWidget {
   }
 }
 
+class TabImage extends StatelessWidget {
+  const TabImage(this.path, {super.key});
+
+  final String? path;
+
+  @override
+  Widget build(BuildContext context) {
+    String string = path ?? "";
+    if (string.isEmpty) {
+      return const SizedBox();
+    }
+
+    return Text(string.isEmpty ? "-" : string);
+  }
+}
+
 class TabPlace extends StatelessWidget {
   const TabPlace({super.key});
 
