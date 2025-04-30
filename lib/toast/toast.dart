@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:top_back/pages/widget/common.dart';
 import 'package:top_back/router/router.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,13 @@ class Toast {
     _entryLoading?.remove();
     _entryLoading = null;
   }
+
+  static Future<bool?> showAlert(String content) async {
+    bool? confirm = await showDialog(
+        context: navigatorKey.currentContext!, builder: (_) => Alert(content));
+
+    return confirm;
+  }
 }
 
 class LoadingEntry extends StatelessWidget {
@@ -44,6 +53,27 @@ class LoadingEntry extends StatelessWidget {
         color: Colors.black38,
         child: const CommonLoading(),
       ),
+    );
+  }
+}
+
+class Alert extends StatelessWidget {
+  const Alert(this.content, {super.key});
+
+  final String content;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoAlertDialog(
+      content: SizedBox(height: 40, child: Center(child: Text(content))),
+      actions: [
+        CupertinoButton(
+            onPressed: () => context.pop(true),
+            child: Text("确定", style: TextStyle(color: Colors.blue))),
+        CupertinoButton(
+            onPressed: () => context.pop(false),
+            child: Text("取消", style: TextStyle(color: Colors.black))),
+      ],
     );
   }
 }

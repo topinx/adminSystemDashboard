@@ -77,6 +77,23 @@ class TableController<T> extends AsyncDataTableSource {
   }
 
   @override
+  DataRow? getRow(int index) {
+    T? bean = index >= _dataList.length ? null : _dataList[index];
+    var row = builder(bean);
+    if (bean == null) {
+      return DataRow2(
+        cells: row.widgetList.map((x) => buildDataCell(x)).toList(),
+      );
+    }
+
+    return DataRow2(
+      key: ValueKey(row.key),
+      onSelectChanged: (s) => onTapSelect(row.key, bean, s),
+      cells: row.widgetList.map((x) => buildDataCell(x)).toList(),
+    );
+  }
+
+  @override
   Future<AsyncRowsResponse> getRows(int startIndex, int count) async {
     if (dataLen == 0) {
       return AsyncRowsResponse(
