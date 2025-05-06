@@ -17,4 +17,10 @@ class HttpConstant {
   /// 批量修改账号状态
   static const modifyStatus =
       "/adminsystem/accountManagement/batchUpdateStatus";
+
+  /// 查询笔记列表
+  static const noteList = "/adminsystem/contentManagement/getNoteList";
+
+  /// 查询笔记总数
+  static const noteCnt = "/adminsystem/contentManagement/countAuditNote";
 }

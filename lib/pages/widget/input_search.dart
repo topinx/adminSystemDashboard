@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class InputSearch extends StatelessWidget {
-  InputSearch(this.input, {super.key});
+  InputSearch(this.input, this.onTap, {super.key});
 
   final TextEditingController input;
+
+  final Function() onTap;
 
   final enableBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(4),
@@ -17,7 +19,7 @@ class InputSearch extends StatelessWidget {
 
   Widget buildSearchButton() {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: onTap,
       style: ElevatedButton.styleFrom(
         fixedSize: Size(100, 38),
         shape: RoundedRectangleBorder(

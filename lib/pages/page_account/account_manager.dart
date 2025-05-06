@@ -32,6 +32,7 @@ class _AccountManagerState extends ConsumerState<AccountManager> {
   @override
   void initState() {
     super.initState();
+    controller.enableSelect = true;
     controller.builder = buildTabRowList;
     controller.future = requestBeanList;
 
@@ -207,10 +208,7 @@ class _AccountManagerState extends ConsumerState<AccountManager> {
       ]),
       const SizedBox(height: 20),
       Expanded(
-        child: TableWidget(
-          columns: columns,
-          controller: controller,
-        ),
+        child: TableWidget(columns: columns, controller: controller),
       ),
     ]);
   }

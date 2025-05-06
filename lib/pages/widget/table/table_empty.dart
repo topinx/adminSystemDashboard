@@ -42,7 +42,11 @@ class TabImage extends StatelessWidget {
       return const SizedBox();
     }
 
-    return Text(string.isEmpty ? "-" : string);
+    return Padding(
+      padding: const EdgeInsets.all(2),
+      child: Image.network(AppConstants.assetsLink + path,
+          headers: {"Authorization": AppConstants.signToken()}),
+    );
   }
 }
 

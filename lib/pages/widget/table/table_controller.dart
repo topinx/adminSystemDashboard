@@ -7,6 +7,8 @@ typedef AsyncFuture<T> = Future<List<T>> Function(int page);
 class TableController<T> extends AsyncDataTableSource {
   int dataLen = 0;
 
+  bool enableSelect = false;
+
   late TabBuilder<T?> builder;
 
   late AsyncFuture<T> future;
@@ -64,7 +66,8 @@ class TableController<T> extends AsyncDataTableSource {
 
     return DataRow2(
       key: ValueKey(row.key),
-      onSelectChanged: (s) => onTapSelect(row.key, bean, s),
+      onSelectChanged:
+          !enableSelect ? null : (s) => onTapSelect(row.key, bean, s),
       cells: row.widgetList.map((x) => buildDataCell(x)).toList(),
     );
   }
@@ -88,7 +91,8 @@ class TableController<T> extends AsyncDataTableSource {
 
     return DataRow2(
       key: ValueKey(row.key),
-      onSelectChanged: (s) => onTapSelect(row.key, bean, s),
+      onSelectChanged:
+          !enableSelect ? null : (s) => onTapSelect(row.key, bean, s),
       cells: row.widgetList.map((x) => buildDataCell(x)).toList(),
     );
   }

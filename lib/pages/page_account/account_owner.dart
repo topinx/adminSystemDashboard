@@ -33,6 +33,7 @@ class _AccountOwnerState extends ConsumerState<AccountOwner> {
   @override
   void initState() {
     super.initState();
+    controller.enableSelect = true;
     controller.builder = buildTabRowList;
     controller.future = requestBeanList;
 
@@ -212,10 +213,7 @@ class _AccountOwnerState extends ConsumerState<AccountOwner> {
       ]),
       const SizedBox(height: 20),
       Expanded(
-        child: TableWidget(
-          columns: columns,
-          controller: controller,
-        ),
+        child: TableWidget(columns: columns, controller: controller),
       ),
     ]);
   }

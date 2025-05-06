@@ -72,22 +72,6 @@ class AccountSearchParam {
 class AccountSearchParamProvider extends StateNotifier<AccountSearchParam> {
   AccountSearchParamProvider() : super(AccountSearchParam());
 
-  void updateParam({
-    String? nick,
-    String? phone,
-    String? email,
-    int? state_a,
-    int? state_v,
-  }) {
-    state = state.copyWith(
-      nick: nick,
-      phone: phone,
-      email: email,
-      state_a: state_a,
-      state_v: state_v,
-    );
-  }
-
   void defParam() {
     state = state.copyWith(
       nick: "",
@@ -112,7 +96,7 @@ final accountCnt1 = FutureProvider<int>(
 );
 
 final accountCnt2 = FutureProvider<int>(
-      (ref) async {
+  (ref) async {
     return await DioRequest().request(HttpConstant.accountCnt);
   },
 );
