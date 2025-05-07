@@ -30,7 +30,10 @@ class _AppState extends State<App> {
         ),
         debugShowCheckedModeBanner: false,
         themeMode: ThemeMode.light,
-        theme: FlexThemeData.light(scheme: FlexScheme.indigoM3),
+        theme: FlexThemeData.light(scheme: FlexScheme.indigoM3).copyWith(
+          progressIndicatorTheme:
+              ProgressIndicatorThemeData(color: Colors.transparent),
+        ),
         routerConfig: router,
       ),
     );

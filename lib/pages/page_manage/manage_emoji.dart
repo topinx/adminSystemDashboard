@@ -10,6 +10,6 @@ class ManageEmoji extends StatefulWidget {
 class _ManageEmojiState extends State<ManageEmoji> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Column();
   }
 }

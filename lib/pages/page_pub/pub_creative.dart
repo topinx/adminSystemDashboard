@@ -10,6 +10,6 @@ class PubCreative extends StatefulWidget {
 class _PubCreativeState extends State<PubCreative> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Column();
   }
 }

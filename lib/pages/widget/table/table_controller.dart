@@ -34,13 +34,14 @@ class TableController<T> extends AsyncDataTableSource {
 
   void onTapSelect(String key, T bean, bool? select) {
     if (select == null) return;
-    setRowSelection(ValueKey(key), select);
 
     if (select && !_selection.contains(bean)) {
       _selection.add(bean);
     } else if (!select && _selection.contains(bean)) {
       _selection.remove(bean);
     }
+
+    setRowSelection(ValueKey(key), select);
   }
 
   void onSelectAll(bool? select) {
@@ -51,8 +52,8 @@ class TableController<T> extends AsyncDataTableSource {
       _selection.addAll(_selection);
       selectAllOnThePage();
     } else {
-      deselectAllOnThePage();
       _selection.clear();
+      deselectAllOnThePage();
     }
   }
 
@@ -77,24 +78,6 @@ class TableController<T> extends AsyncDataTableSource {
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Center(child: x),
     ));
-  }
-
-  @override
-  DataRow? getRow(int index) {
-    T? bean = index >= _dataList.length ? null : _dataList[index];
-    var row = builder(bean);
-    if (bean == null) {
-      return DataRow2(
-        cells: row.widgetList.map((x) => buildDataCell(x)).toList(),
-      );
-    }
-
-    return DataRow2(
-      key: ValueKey(row.key),
-      onSelectChanged:
-          !enableSelect ? null : (s) => onTapSelect(row.key, bean, s),
-      cells: row.widgetList.map((x) => buildDataCell(x)).toList(),
-    );
   }
 
   @override

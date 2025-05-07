@@ -10,6 +10,6 @@ class PubRecommend extends StatefulWidget {
 class _PubRecommendState extends State<PubRecommend> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Column();
   }
 }

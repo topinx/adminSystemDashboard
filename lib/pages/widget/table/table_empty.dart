@@ -26,7 +26,7 @@ class TabText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String string = text ?? "";
-    return Text(string.isEmpty ? "-" : string);
+    return Text(string.isEmpty ? "-" : string, maxLines: 1);
   }
 }
 
@@ -44,8 +44,12 @@ class TabImage extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(2),
-      child: Image.network(AppConstants.assetsLink + path,
-          headers: {"Authorization": AppConstants.signToken()}),
+      child: Image.network(
+        AppConstants.assetsLink + path,
+        headers: {"Authorization": AppConstants.signToken()},
+        errorBuilder: (_, er, __) =>
+            Icon(Icons.error_outline, color: Colors.grey),
+      ),
     );
   }
 }
