@@ -29,14 +29,14 @@ class PubDetailBar extends StatelessWidget {
                 onPressed: ctr.onTapDelete, icon: const Icon(Icons.delete)),
           );
         }),
-        GetBuilder<NoteDetailController>(builder: (ctr) {
-          return Visibility(
-            visible: ctr.detail.isOwner,
-            child: IconButton(
-                onPressed: ctr.onTapEdit,
-                icon: const Icon(Icons.edit_note_outlined)),
-          );
-        })
+        // GetBuilder<NoteDetailController>(builder: (ctr) {
+        //   return Visibility(
+        //     visible: ctr.detail.isOwner,
+        //     child: IconButton(
+        //         onPressed: ctr.onTapEdit,
+        //         icon: const Icon(Icons.edit_note_outlined)),
+        //   );
+        // })
       ]),
     );
   }
