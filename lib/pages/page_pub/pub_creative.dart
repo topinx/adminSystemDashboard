@@ -10,6 +10,12 @@ class PubCreative extends StatefulWidget {
 class _PubCreativeState extends State<PubCreative> {
   @override
   Widget build(BuildContext context) {
-    return const Column();
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        color: Theme.of(context).canvasColor,
+      ),
+      child: const Column(),
+    );
   }
 }

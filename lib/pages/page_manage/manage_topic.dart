@@ -126,14 +126,20 @@ class _ManageTopicState extends State<ManageTopic> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      InputSearch(input, onTapSearch),
-      const SizedBox(height: 50),
-      buildFilterDrops(),
-      const SizedBox(height: 20),
-      Expanded(
-        child: TableWidget(columns: columns, controller: controller),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        color: Theme.of(context).canvasColor,
       ),
-    ]);
+      child: Column(children: [
+        InputSearch(input, onTapSearch),
+        const SizedBox(height: 50),
+        buildFilterDrops(),
+        const SizedBox(height: 20),
+        Expanded(
+          child: TableWidget(columns: columns, controller: controller),
+        ),
+      ]),
+    );
   }
 }

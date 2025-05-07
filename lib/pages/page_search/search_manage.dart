@@ -10,6 +10,12 @@ class SearchManage extends StatefulWidget {
 class _SearchManageState extends State<SearchManage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        color: Theme.of(context).canvasColor,
+      ),
+      child: const Column(),
+    );
   }
 }

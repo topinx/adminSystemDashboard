@@ -10,6 +10,12 @@ class ReportUser extends StatefulWidget {
 class _ReportUserState extends State<ReportUser> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        color: Theme.of(context).canvasColor,
+      ),
+      child: const Column(),
+    );
   }
 }

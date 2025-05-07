@@ -1,5 +1,21 @@
 part of 'router.dart';
 
+var pageBuilder = (context, state, page) {
+  return CustomTransitionPage(
+    key: state.pageKey,
+    child: page,
+    transitionDuration: const Duration(milliseconds: 350),
+    reverseTransitionDuration: const Duration(milliseconds: 350),
+    transitionsBuilder: (context, anim, _, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      var tween = Tween(begin: begin, end: end);
+
+      return SlideTransition(position: anim.drive(tween), child: child);
+    },
+  );
+};
+
 class RouterPath {
   static String path_login = "/login";
 

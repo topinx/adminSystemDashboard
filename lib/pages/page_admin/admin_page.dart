@@ -17,10 +17,6 @@ class _AdminPageState extends State<AdminPage> {
     return Container(
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        color: Theme.of(context).canvasColor,
-      ),
       child: widget.child,
     );
   }

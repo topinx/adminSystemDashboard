@@ -164,52 +164,58 @@ class _AccountManagerState extends ConsumerState<AccountManager> {
     var paramProvider = ref.watch(accountSearchParam);
     var count = ref.watch(accountCnt2);
 
-    return Column(children: [
-      Row(children: [
-        Expanded(flex: 2, child: InputFiled(inputN, "用户昵称")),
-        const Spacer(),
-        Expanded(flex: 2, child: InputFiled(inputN, "用户手机")),
-        const Spacer(),
-        Expanded(flex: 2, child: InputFiled(inputN, "用户邮箱")),
-        const Spacer(),
-      ]),
-      const SizedBox(height: 20),
-      Row(children: [
-        Expanded(
-          flex: 2,
-          child: InputDrop("账号状态", stateList1[paramProvider.state_a],
-              (_, __) async => stateList1,
-              onChanged: onStateAChanged),
-        ),
-        const Spacer(),
-        Expanded(
-          flex: 2,
-          child: InputDrop("认证状态", stateList2[paramProvider.state_v],
-              (_, __) async => stateList2,
-              onChanged: onStateVChanged),
-        ),
-        const Spacer(),
-        Expanded(
-            flex: 2,
-            child: Text("共${count.value ?? 0}个用户", textAlign: TextAlign.end)),
-        const Spacer(),
-      ]),
-      const SizedBox(height: 20),
-      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-        BorderButton("查询", onTap: onTapSearch),
-        const SizedBox(width: 20),
-        BorderButton("重置", onTap: onTapReset),
-        const SizedBox(width: 20),
-        DropButton(
-          "批量处理",
-          (_, __) async => ["批量启用", "批量停用"],
-          onChanged: onDropChanged,
-        ),
-      ]),
-      const SizedBox(height: 20),
-      Expanded(
-        child: TableWidget(columns: columns, controller: controller),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        color: Theme.of(context).canvasColor,
       ),
-    ]);
+      child: Column(children: [
+        Row(children: [
+          Expanded(flex: 2, child: InputFiled(inputN, "用户昵称")),
+          const Spacer(),
+          Expanded(flex: 2, child: InputFiled(inputN, "用户手机")),
+          const Spacer(),
+          Expanded(flex: 2, child: InputFiled(inputN, "用户邮箱")),
+          const Spacer(),
+        ]),
+        const SizedBox(height: 20),
+        Row(children: [
+          Expanded(
+            flex: 2,
+            child: InputDrop("账号状态", stateList1[paramProvider.state_a],
+                (_, __) async => stateList1,
+                onChanged: onStateAChanged),
+          ),
+          const Spacer(),
+          Expanded(
+            flex: 2,
+            child: InputDrop("认证状态", stateList2[paramProvider.state_v],
+                (_, __) async => stateList2,
+                onChanged: onStateVChanged),
+          ),
+          const Spacer(),
+          Expanded(
+              flex: 2,
+              child: Text("共${count.value ?? 0}个用户", textAlign: TextAlign.end)),
+          const Spacer(),
+        ]),
+        const SizedBox(height: 20),
+        Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+          BorderButton("查询", onTap: onTapSearch),
+          const SizedBox(width: 20),
+          BorderButton("重置", onTap: onTapReset),
+          const SizedBox(width: 20),
+          DropButton(
+            "批量处理",
+            (_, __) async => ["批量启用", "批量停用"],
+            onChanged: onDropChanged,
+          ),
+        ]),
+        const SizedBox(height: 20),
+        Expanded(
+          child: TableWidget(columns: columns, controller: controller),
+        ),
+      ]),
+    );
   }
 }

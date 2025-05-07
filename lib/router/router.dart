@@ -25,55 +25,55 @@ final router = GoRouter(
     ShellRoute(builder: (_, state, child) => AdminPage(child), routes: [
       GoRoute(
         path: RouterPath.path_dashboard,
-        builder: (context, state) => const DashboardPage(),
+        pageBuilder: (c, s) => pageBuilder(c, s, const DashboardPage()),
       ),
       GoRoute(
         path: RouterPath.path_account_manager,
-        builder: (context, state) => const AccountManager(),
+        pageBuilder: (c, s) => pageBuilder(c, s, const AccountManager()),
       ),
       GoRoute(
         path: RouterPath.path_account_owner,
-        builder: (context, state) => const AccountOwner(),
+        pageBuilder: (c, s) => pageBuilder(c, s, const AccountOwner()),
       ),
       GoRoute(
         path: RouterPath.path_manage_note,
-        builder: (context, state) => const ManageNote(),
+        pageBuilder: (c, s) => pageBuilder(c, s, const ManageNote()),
       ),
       GoRoute(
         path: RouterPath.path_manage_topic,
-        builder: (context, state) => const ManageTopic(),
+        pageBuilder: (c, s) => pageBuilder(c, s, const ManageTopic()),
       ),
       GoRoute(
         path: RouterPath.path_manage_emoji,
-        builder: (context, state) => const ManageEmoji(),
+        pageBuilder: (c, s) => pageBuilder(c, s, const ManageEmoji()),
       ),
       GoRoute(
         path: RouterPath.path_manage_classify,
-        builder: (context, state) => const ManageClassify(),
+        pageBuilder: (c, s) => pageBuilder(c, s, const ManageClassify()),
       ),
       GoRoute(
         path: RouterPath.path_manage_review,
-        builder: (context, state) => const ManageReview(),
+        pageBuilder: (c, s) => pageBuilder(c, s, const ManageReview()),
       ),
       GoRoute(
         path: RouterPath.path_search_manage,
-        builder: (context, state) => const SearchManage(),
+        pageBuilder: (c, s) => pageBuilder(c, s, const SearchManage()),
       ),
       GoRoute(
         path: RouterPath.path_pub_recommend,
-        builder: (context, state) => const PubRecommend(),
+        pageBuilder: (c, s) => pageBuilder(c, s, const PubRecommend()),
       ),
       GoRoute(
         path: RouterPath.path_pub_creative,
-        builder: (context, state) => const PubCreative(),
+        pageBuilder: (c, s) => pageBuilder(c, s, const PubCreative()),
       ),
       GoRoute(
         path: RouterPath.path_report_user,
-        builder: (context, state) => const ReportUser(),
+        pageBuilder: (c, s) => pageBuilder(c, s, const ReportUser()),
       ),
       GoRoute(
         path: RouterPath.path_report_note,
-        builder: (context, state) => const ReportNote(),
+        pageBuilder: (c, s) => pageBuilder(c, s, const ReportNote()),
       ),
     ]),
   ],

@@ -10,6 +10,12 @@ class ManageEmoji extends StatefulWidget {
 class _ManageEmojiState extends State<ManageEmoji> {
   @override
   Widget build(BuildContext context) {
-    return const Column();
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        color: Theme.of(context).canvasColor,
+      ),
+      child: const Column(),
+    );
   }
 }
