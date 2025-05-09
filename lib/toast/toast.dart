@@ -6,13 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 
 class Toast {
-  static void showToast(String text) => toastification.show(
-        type: ToastificationType.error,
+  static void showToast(String text, [bool success = false]) =>
+      toastification.show(
+        type: success ? ToastificationType.success : ToastificationType.error,
         style: ToastificationStyle.fillColored,
         animationDuration: const Duration(milliseconds: 300),
         autoCloseDuration: const Duration(seconds: 3),
         showProgressBar: false,
-        icon: Icon(Icons.error_outline),
+        icon: Icon(success ? Icons.check_circle_outline : Icons.error_outline),
         description: Text(text),
       );
 
