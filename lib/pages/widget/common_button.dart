@@ -64,14 +64,16 @@ class DropButton extends StatelessWidget {
 }
 
 class TxtButton extends StatelessWidget {
-  const TxtButton(this.text, {super.key});
+  const TxtButton(this.text, {super.key, this.onTap});
 
   final String text;
+
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {},
+      onPressed: onTap,
       style: TextButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       ),

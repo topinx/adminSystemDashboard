@@ -29,4 +29,10 @@ class HttpConstant {
 
   /// 话题总数
   static const topicCnt = "/adminsystem/contentManagement/countTopic";
+
+  /// 笔记详情
+  static const noteInfo = "/adminsystem/contentManagement/getNoteDetail";
+
+  /// 更新笔记
+  static const editNote = "/adminsystem/contentManagement/updateNote";
 }
