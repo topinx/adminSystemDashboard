@@ -37,4 +37,7 @@ class RouterPath {
 
   static String path_report_user = "/report_user";
   static String path_report_note = "/report_note";
+
+  static String path_account_info = "/account_info/:id";
+  static String account_info(int id) => "/account_info/$id";
 }

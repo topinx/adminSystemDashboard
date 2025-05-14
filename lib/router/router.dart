@@ -2,6 +2,7 @@ import 'package:top_back/constants/app_storage.dart';
 import 'package:top_back/pages/index.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:top_back/pages/page_account/account_info.dart';
 
 part 'router_path.dart';
 
@@ -17,6 +18,11 @@ final router = GoRouter(
 
     return null;
   },
+  errorBuilder: (_, state) => Material(
+    child: Container(
+        alignment: Alignment.center,
+        child: Text("${state.uri.toString()} error")),
+  ),
   routes: [
     GoRoute(
       path: RouterPath.path_login,
@@ -74,6 +80,11 @@ final router = GoRouter(
       GoRoute(
         path: RouterPath.path_report_note,
         pageBuilder: (c, s) => pageBuilder(c, s, const ReportNote()),
+      ),
+      GoRoute(
+        path: RouterPath.path_account_info,
+        pageBuilder: (c, s) =>
+            pageBuilder(c, s, AccountInfo(s.pathParameters['id']!)),
       ),
     ]),
   ],

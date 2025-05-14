@@ -1,5 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class BorderButton extends StatelessWidget {
   const BorderButton(this.text, {super.key, this.onTap});
@@ -79,5 +80,37 @@ class TxtButton extends StatelessWidget {
       ),
       child: Text(text, style: TextStyle(color: Colors.blue)),
     );
+  }
+}
+
+class ElvButton extends StatelessWidget {
+  const ElvButton(this.text, {super.key, this.onTap, this.warn = false});
+
+  final String text;
+
+  final Function()? onTap;
+
+  final bool warn;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onTap,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: warn ? Colors.orange : Colors.blue,
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+      ),
+      child: Text(text),
+    );
+  }
+}
+
+class PopButton extends StatelessWidget {
+  const PopButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElvButton("< 返回", onTap: context.pop);
   }
 }

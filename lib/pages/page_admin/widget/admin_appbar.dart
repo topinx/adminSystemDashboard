@@ -1,5 +1,6 @@
 import 'package:top_back/constants/app_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:top_back/pages/widget/common_button.dart';
 import 'package:top_back/router/router.dart';
 import 'package:top_back/toast/toast.dart';
 
@@ -37,13 +38,6 @@ class LoginOutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onTapLoginOut,
-      style: ElevatedButton.styleFrom(
-        fixedSize: const Size(80, 25),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-      ),
-      child: Text("退出"),
-    );
+    return ElvButton("退出", warn: true, onTap: onTapLoginOut);
   }
 }

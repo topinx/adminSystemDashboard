@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:top_back/bean/bean_account.dart';
 import 'package:top_back/constants/http_constants.dart';
 import 'package:top_back/network/dio_request.dart';
@@ -8,6 +9,7 @@ import 'package:top_back/pages/widget/common_button.dart';
 import 'package:top_back/pages/widget/input_drop.dart';
 import 'package:top_back/pages/widget/input_filed.dart';
 import 'package:top_back/pages/widget/table/table_widget.dart';
+import 'package:top_back/router/router.dart';
 import 'package:top_back/toast/toast.dart';
 
 class AccountManager extends ConsumerStatefulWidget {
@@ -86,6 +88,10 @@ class _AccountManagerState extends ConsumerState<AccountManager> {
     }
   }
 
+  void onTapUser(BeanAccount account) {
+    context.push(RouterPath.account_info(account.userId));
+  }
+
   ({String key, List<Widget> widgetList}) buildTabRowList(BeanAccount? bean) {
     if (bean == null) {
       return (key: "", widgetList: List.generate(6, (_) => TabPlace()));
@@ -100,7 +106,7 @@ class _AccountManagerState extends ConsumerState<AccountManager> {
       TabText(bean.email),
       TabText(status1),
       TabText(status2),
-      TxtButton("查看详情")
+      TxtButton("查看详情", onTap: () => onTapUser(bean))
     ];
 
     return (key: "${bean.userId}", widgetList: beanList);

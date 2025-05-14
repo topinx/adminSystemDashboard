@@ -20,23 +20,23 @@ class BeanNote {
   String auditedNickname;
 
   BeanNote({
-    required this.noteId,
-    required this.title,
-    required this.cover,
-    required this.noteType,
-    required this.status,
-    required this.createBy,
-    required this.createNickname,
-    required this.createTime,
-    required this.tendency,
-    required this.auditedStatus,
-    required this.recommendedStatus,
-    required this.auditedBy,
-    required this.auditedNickname,
-  });
+    BigInt? id,
+    this.title = "",
+    this.cover = "",
+    this.noteType = 1,
+    this.status = 1,
+    this.createBy = 0,
+    this.createNickname = "",
+    this.createTime = "",
+    this.tendency = 3,
+    this.auditedStatus = 0,
+    this.recommendedStatus = null,
+    this.auditedBy = 0,
+    this.auditedNickname = "",
+  }) : noteId = id ?? BigInt.zero;
 
   factory BeanNote.fromJson(Map<String, dynamic> json) => BeanNote(
-        noteId: json["noteId"],
+        id: json["noteId"],
         title: json["title"],
         cover: json["cover"],
         noteType: json["noteType"],
