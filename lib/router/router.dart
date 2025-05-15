@@ -2,7 +2,6 @@ import 'package:top_back/constants/app_storage.dart';
 import 'package:top_back/pages/index.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:top_back/pages/page_account/account_info.dart';
 
 part 'router_path.dart';
 
@@ -85,6 +84,10 @@ final router = GoRouter(
         path: RouterPath.path_account_info,
         pageBuilder: (c, s) =>
             pageBuilder(c, s, AccountInfo(s.pathParameters['id']!)),
+      ),
+      GoRoute(
+        path: RouterPath.path_account_create,
+        pageBuilder: (c, s) => pageBuilder(c, s, AccountCreate()),
       ),
     ]),
   ],

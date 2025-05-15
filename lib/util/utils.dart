@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:html' as html;
 
 import 'package:flutter/foundation.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:top_back/bean/bean_image.dart';
+import 'package:top_back/constants/app_storage.dart';
+import 'package:top_back/router/router.dart';
 
 class Utils {
   static String? onValidatorNick(String? string) {
@@ -113,5 +116,27 @@ class Utils {
       }
     });
     return completer.future;
+  }
+
+  static Future<Uint8List?> onCropImage(XMLImage image) async {
+    final blob = html.Blob([image.bytes]);
+    final objectUrl = html.Url.createObjectUrlFromBlob(blob);
+
+    final cropped = await ImageCropper().cropImage(
+      sourcePath: objectUrl,
+      uiSettings: [WebUiSettings(context: navigatorKey.currentContext!)],
+    );
+
+    html.Url.revokeObjectUrl(objectUrl);
+    return await cropped?.readAsBytes();
+  }
+
+  static String objectName(String folder, String name,
+      [int? user, String? forceSuffix]) {
+    int time = DateTime.now().microsecondsSinceEpoch;
+    int userId = user ?? Storage().user.userId;
+    int dot = name.lastIndexOf(".");
+    String suffix = forceSuffix ?? (name.substring(dot));
+    return "$folder/$userId/$time$suffix";
   }
 }

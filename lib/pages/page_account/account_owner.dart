@@ -65,6 +65,10 @@ class _AccountOwnerState extends ConsumerState<AccountOwner> {
     ref.read(accountSearchParam.notifier).defParam();
   }
 
+  void onTapCreate() {
+    context.push(RouterPath.path_account_create);
+  }
+
   void onStateAChanged(String? string) {
     if (string == null) return;
     int index = stateList1.indexOf(string);
@@ -214,7 +218,7 @@ class _AccountOwnerState extends ConsumerState<AccountOwner> {
           const SizedBox(width: 20),
           BorderButton("重置", onTap: onTapReset),
           const SizedBox(width: 20),
-          BorderButton("创建账号"),
+          BorderButton("创建账号", onTap: onTapCreate),
           const SizedBox(width: 20),
           DropButton(
             "批量处理",

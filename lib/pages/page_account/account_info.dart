@@ -16,6 +16,7 @@ import 'widget/user_edit_drop.dart';
 import 'widget/user_edit_input.dart';
 import 'widget/user_image.dart';
 import 'widget/user_note_card.dart';
+import 'widget/user_txt_title.dart';
 
 class AccountInfo extends ConsumerStatefulWidget {
   const AccountInfo(this.user, {super.key});
@@ -107,6 +108,18 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
 
   Future<void> requestEdit() async {
     var info = ref.read(userInfoProvider);
+
+    if (info.avatar.imgData != null) {
+      String objectName = Utils.objectName("avatar", info.avatar.imgData!.name);
+      info.avatar.imgLink =
+          await DioRequest().upload(info.avatar.imgData!.bytes, objectName);
+    }
+
+    if (info.cover.imgData != null) {
+      String objectName = Utils.objectName("cover", info.cover.imgData!.name);
+      info.cover.imgLink =
+          await DioRequest().upload(info.cover.imgData!.bytes, objectName);
+    }
 
     await DioRequest()
         .request(HttpConstant.editAccount, method: DioMethod.POST, data: {
@@ -224,6 +237,10 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
     List<XMLImage> files = await Utils.pickFile();
     if (files.isEmpty) return;
 
+    var crop = await Utils.onCropImage(files.first);
+    if (crop == null) return;
+
+    files.first.bytes = crop;
     ref
         .read(userInfoProvider.notifier)
         .updateAvatar(BeanImage(account.avatar, files.first));
@@ -298,22 +315,22 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
             Text("基本信息",
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
             const SizedBox(height: 20),
-            Text("用户头像："),
+            UserTxtTitle("用户头像："),
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: UserImage(image: info.avatar, onPick: onPickAvatar),
             ),
             const SizedBox(height: 20),
-            Text("用户昵称："),
+            UserTxtTitle("用户昵称："),
             const SizedBox(height: 10),
             UserEditInput.nick(inputNick, edit),
             const SizedBox(height: 20),
-            Text("账号ID："),
+            UserTxtTitle("账号ID："),
             const SizedBox(height: 10),
             UserEditText("${widget.user}"),
             const SizedBox(height: 20),
-            Text("性别："),
+            UserTxtTitle("性别："),
             const SizedBox(height: 10),
             UserEditDrop(
               stateList1[info.gender],
@@ -322,25 +339,25 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
               enable: edit,
             ),
             const SizedBox(height: 20),
-            Text("年龄："),
+            UserTxtTitle("年龄："),
             const SizedBox(height: 10),
             UserEditText("${info.age}"),
             const SizedBox(height: 20),
-            Text("出生日期："),
+            UserTxtTitle("出生日期："),
             const SizedBox(height: 10),
             UserEditDate(info.birthday, edit, onChanged: onBirthChanged),
             const SizedBox(height: 20),
-            Text("注册日期："),
+            UserTxtTitle("注册日期："),
             const SizedBox(height: 10),
             UserEditText(info.createDate),
             const SizedBox(height: 20),
-            Text("绑定手机："),
+            UserTxtTitle("绑定手机："),
             const SizedBox(height: 10),
             Row(children: [
               UserEditInput.phone(inputPhone, edit),
             ]),
             const SizedBox(height: 20),
-            Text("邮箱地址："),
+            UserTxtTitle("邮箱地址："),
             const SizedBox(height: 10),
             UserEditInput.email(inputEmail, edit),
           ]),
@@ -356,11 +373,11 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
     return SingleChildScrollView(
         padding: EdgeInsets.zero,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text("用户简介："),
+          UserTxtTitle("用户简介："),
           const SizedBox(height: 10),
           UserEditInput.brief(inputBrief, edit),
           const SizedBox(height: 20),
-          Text("账号状态："),
+          UserTxtTitle("账号状态："),
           const SizedBox(height: 10),
           UserEditDrop(
             stateList2[info.state_a],
@@ -369,7 +386,7 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
             enable: edit,
           ),
           const SizedBox(height: 20),
-          Text("认证状态："),
+          UserTxtTitle("认证状态："),
           const SizedBox(height: 10),
           UserEditDrop(
             stateList3[info.state_v - 1],
