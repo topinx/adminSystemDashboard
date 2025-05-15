@@ -1,3 +1,4 @@
+import 'package:top_back/bean/bean_topic.dart';
 import 'package:top_back/constants/app_storage.dart';
 import 'package:top_back/pages/index.dart';
 import 'package:flutter/material.dart';
@@ -93,6 +94,11 @@ final router = GoRouter(
         path: RouterPath.path_account_note,
         pageBuilder: (c, s) =>
             pageBuilder(c, s, AccountNote(s.pathParameters['id']!)),
+      ),
+      GoRoute(
+        path: RouterPath.path_topic_create,
+        pageBuilder: (c, s) =>
+            dialogBuilder(c, s, TopicCreate(s.extra as BeanTopic?)),
       ),
     ]),
   ],

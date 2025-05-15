@@ -14,6 +14,7 @@ export 'page_manage/manage_topic.dart';
 export 'page_manage/manage_emoji.dart';
 export 'page_manage/manage_classify.dart';
 export 'page_manage/manage_review.dart';
+export 'page_manage/topic_create.dart';
 
 export 'page_search/search_manage.dart';
 

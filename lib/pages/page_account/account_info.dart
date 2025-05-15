@@ -9,6 +9,8 @@ import 'package:top_back/constants/http_constants.dart';
 import 'package:top_back/network/dio_request.dart';
 import 'package:top_back/pages/page_account/provider/account_info_provider.dart';
 import 'package:top_back/pages/widget/common_button.dart';
+import 'package:top_back/pages/widget/image.dart';
+import 'package:top_back/pages/widget/page_card.dart';
 import 'package:top_back/router/router.dart';
 import 'package:top_back/toast/toast.dart';
 import 'package:top_back/util/utils.dart';
@@ -16,7 +18,6 @@ import 'package:dio/dio.dart' as dio;
 
 import 'widget/user_edit_drop.dart';
 import 'widget/user_edit_input.dart';
-import 'widget/user_image.dart';
 import 'widget/user_note_card.dart';
 import 'widget/user_txt_title.dart';
 
@@ -336,10 +337,7 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
             const SizedBox(height: 20, width: double.infinity),
             UserTxtTitle("用户头像："),
             const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: UserImage(image: info.avatar, onPick: onPickAvatar),
-            ),
+            PickImage(image: info.avatar, onPick: onPickAvatar),
             const SizedBox(height: 20),
             UserTxtTitle("用户昵称："),
             const SizedBox(height: 10),
@@ -400,10 +398,7 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
           const SizedBox(height: 20),
           UserTxtTitle("主页封面："),
           const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: UserImage(image: info.cover, onPick: onPickCover),
-          ),
+          PickImage(image: info.cover, onPick: onPickCover),
           const SizedBox(height: 20),
           UserTxtTitle("账号状态："),
           const SizedBox(height: 10),
@@ -448,12 +443,8 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        color: Theme.of(context).canvasColor,
-      ),
-      child: Column(children: [
+    return PageCard(
+      view: Column(children: [
         buildAppBar(),
         const SizedBox(height: 20),
         Expanded(

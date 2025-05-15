@@ -16,6 +16,25 @@ var pageBuilder = (context, state, page) {
   );
 };
 
+var dialogBuilder = (context, state, page) {
+  return CustomTransitionPage(
+    key: state.pageKey,
+    child: page,
+    opaque: false,
+    barrierColor: Colors.black12,
+    barrierDismissible: true,
+    transitionDuration: const Duration(milliseconds: 350),
+    reverseTransitionDuration: const Duration(milliseconds: 350),
+    transitionsBuilder: (context, anim, _, child) {
+      const begin = Offset(0.0, 1.0);
+      const end = Offset.zero;
+      var tween = Tween(begin: begin, end: end);
+
+      return SlideTransition(position: anim.drive(tween), child: child);
+    },
+  );
+};
+
 class RouterPath {
   static String path_login = "/login";
 
@@ -45,4 +64,6 @@ class RouterPath {
 
   static String path_account_note = "/account_note/:id";
   static String account_note(int id) => "/account_note/$id";
+
+  static String path_topic_create = "/topic_create";
 }

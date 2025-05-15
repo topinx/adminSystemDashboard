@@ -62,4 +62,10 @@ class HttpConstant {
 
   /// 删除话题
   static const topicDelete = "/adminsystem/contentManagement/deleteTopic";
+
+  /// 创建话题
+  static const topicCreate = "/adminsystem/contentManagement/createTopic";
+
+  /// 编辑话题
+  static const topicEdit = "/adminsystem/contentManagement/updateTopic";
 }

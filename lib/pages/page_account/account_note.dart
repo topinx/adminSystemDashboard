@@ -6,6 +6,7 @@ import 'package:top_back/network/dio_request.dart';
 import 'package:top_back/pages/widget/common_button.dart';
 import 'package:top_back/pages/widget/filter_drop.dart';
 import 'package:top_back/pages/widget/input_search.dart';
+import 'package:top_back/pages/widget/page_card.dart';
 
 import '../page_manage/provider/note_provider.dart';
 import '../widget/table/table_widget.dart';
@@ -208,12 +209,8 @@ class _AccountNoteState extends ConsumerState<AccountNote> {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        color: Theme.of(context).canvasColor,
-      ),
-      child: Column(children: [
+    return PageCard(
+      view: Column(children: [
         Align(alignment: Alignment.centerLeft, child: PopButton()),
         const SizedBox(height: 20),
         InputSearch(input, onTapSearch),

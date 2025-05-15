@@ -6,6 +6,7 @@ import 'package:top_back/network/dio_request.dart';
 import 'package:top_back/pages/widget/common_button.dart';
 import 'package:top_back/pages/widget/filter_drop.dart';
 import 'package:top_back/pages/widget/input_search.dart';
+import 'package:top_back/pages/widget/page_card.dart';
 import 'package:top_back/pages/widget/table/table_widget.dart';
 
 import 'provider/note_provider.dart';
@@ -165,12 +166,8 @@ class _ManageReviewState extends State<ManageReview> {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        color: Theme.of(context).canvasColor,
-      ),
-      child: Column(children: [
+    return PageCard(
+      view: Column(children: [
         InputSearch(input, onTapSearch),
         const SizedBox(height: 50),
         buildFilterDrops(),

@@ -1,8 +1,8 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
-class InputDrop extends StatelessWidget {
-  InputDrop(this.text, this.current, this.items,
+class UserFilterDrop extends StatelessWidget {
+  UserFilterDrop(this.text, this.current, this.items,
       {super.key, required this.onChanged});
 
   final String text;

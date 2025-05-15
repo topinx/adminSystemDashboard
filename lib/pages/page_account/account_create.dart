@@ -5,13 +5,14 @@ import 'package:top_back/constants/app_constants.dart';
 import 'package:top_back/constants/http_constants.dart';
 import 'package:top_back/network/dio_request.dart';
 import 'package:top_back/pages/widget/common_button.dart';
+import 'package:top_back/pages/widget/image.dart';
+import 'package:top_back/pages/widget/page_card.dart';
 import 'package:top_back/toast/toast.dart';
 import 'package:top_back/util/utils.dart';
 
 import 'provider/account_create_provider.dart';
 import 'widget/user_edit_drop.dart';
 import 'widget/user_edit_input.dart';
-import 'widget/user_image.dart';
 import 'widget/user_txt_title.dart';
 
 class AccountCreate extends ConsumerStatefulWidget {
@@ -143,10 +144,7 @@ class _AccountCreateState extends ConsumerState<AccountCreate> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           UserTxtTitle("用户头像："),
           const SizedBox(height: 10, width: double.infinity),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: UserImage(image: create.avatar, onPick: onPickAvatar),
-          ),
+          PickImage(image: create.avatar, onPick: onPickAvatar),
           const SizedBox(height: 20),
           UserTxtTitle("用户昵称：", require: true),
           const SizedBox(height: 10),
@@ -187,10 +185,7 @@ class _AccountCreateState extends ConsumerState<AccountCreate> {
           const SizedBox(height: 20),
           UserTxtTitle("主页封面："),
           const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: UserImage(image: create.cover, onPick: onPickCover),
-          ),
+          PickImage(image: create.cover, onPick: onPickCover),
         ]),
       ),
     );
@@ -198,12 +193,8 @@ class _AccountCreateState extends ConsumerState<AccountCreate> {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        color: Theme.of(context).canvasColor,
-      ),
-      child: Column(children: [
+    return PageCard(
+      view: Column(children: [
         Row(children: [
           PopButton(),
           const Spacer(),

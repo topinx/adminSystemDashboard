@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class InputFiled extends StatelessWidget {
-  InputFiled(this.input, this.text, {super.key});
+class UserFilterInput extends StatelessWidget {
+  UserFilterInput(this.input, this.text, {super.key});
 
   final TextEditingController input;
 

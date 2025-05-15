@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:top_back/pages/widget/page_card.dart';
 
 class ReportNote extends StatefulWidget {
   const ReportNote({super.key});
@@ -10,12 +11,6 @@ class ReportNote extends StatefulWidget {
 class _ReportNoteState extends State<ReportNote> {
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        color: Theme.of(context).canvasColor,
-      ),
-      child: const Column(),
-    );
+    return PageCard(view: const Column());
   }
 }

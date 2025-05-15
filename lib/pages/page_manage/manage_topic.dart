@@ -1,12 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:top_back/bean/bean_topic.dart';
 import 'package:top_back/constants/http_constants.dart';
 import 'package:top_back/network/dio_request.dart';
 import 'package:top_back/pages/widget/common_button.dart';
 import 'package:top_back/pages/widget/input_search.dart';
+import 'package:top_back/pages/widget/page_card.dart';
 import 'package:top_back/pages/widget/table/table_widget.dart';
+import 'package:top_back/router/router.dart';
 import 'package:top_back/toast/toast.dart';
 
 class ManageTopic extends StatefulWidget {
@@ -87,13 +90,15 @@ class _ManageTopicState extends State<ManageTopic> {
 
   Future<void> requestModify(List<int> topics, [bool unSelect = true]) async {
     Toast.showLoading();
-    await DioRequest().request(
+    var response = await DioRequest().request(
       HttpConstant.topicStatus,
       method: DioMethod.POST,
       data: {"ids": topics, "status": 0},
     );
     Toast.dismissLoading();
 
+    if (response is bool && !response) return;
+    Toast.showToast("操作成功", true);
     if (unSelect) {
       controller.onSelectAll(false);
     }
@@ -102,10 +107,12 @@ class _ManageTopicState extends State<ManageTopic> {
 
   Future<void> requestDelete(List<int> topics, [bool unSelect = true]) async {
     Toast.showLoading();
-    await DioRequest().request(HttpConstant.topicDelete,
+    var response = await DioRequest().request(HttpConstant.topicDelete,
         method: DioMethod.POST, data: json.encode(topics));
     Toast.dismissLoading();
 
+    if (response is bool && !response) return;
+    Toast.showToast("删除成功", true);
     controller.dataLen -= topics.length;
     if (unSelect) {
       controller.onSelectAll(false);
@@ -113,9 +120,35 @@ class _ManageTopicState extends State<ManageTopic> {
     controller.refreshDatasource();
   }
 
-  void onTapCreate() {}
+  void onTapModify(BeanTopic bean) async {
+    if (bean.status == 1) {
+      bool? confirm = await Toast.showAlert("确定封禁话题？");
+      if (confirm == null || !confirm) return;
+    }
 
-  void onTapEdit(BeanTopic bean) async {}
+    Toast.showLoading();
+    var response = await DioRequest().request(
+      HttpConstant.topicStatus,
+      method: DioMethod.POST,
+      data: {
+        "ids": [bean.id],
+        "status": bean.status == 0 ? 1 : 0
+      },
+    );
+    Toast.dismissLoading();
+
+    if (response is bool && !response) return;
+    Toast.showToast("操作成功", true);
+    controller.refreshDatasource();
+  }
+
+  void onTapCreate() {
+    context.push(RouterPath.path_topic_create);
+  }
+
+  void onTapEdit(BeanTopic bean) async {
+    context.push(RouterPath.path_topic_create, extra: bean);
+  }
 
   void onTapDelete(BeanTopic bean) async {
     bool? confirm = await Toast.showAlert("确定删除话题？");
@@ -137,6 +170,8 @@ class _ManageTopicState extends State<ManageTopic> {
       TabText(bean.topSearch?.name ?? ""),
       TabText(bean.createTime),
       Wrap(alignment: WrapAlignment.center, children: [
+        TxtButton(bean.status == 0 ? "启用" : "禁用",
+            onTap: () => onTapModify(bean)),
         TxtButton("编辑", onTap: () => onTapEdit(bean)),
         TxtButton("删除", onTap: () => onTapDelete(bean)),
       ])
@@ -168,12 +203,8 @@ class _ManageTopicState extends State<ManageTopic> {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        color: Theme.of(context).canvasColor,
-      ),
-      child: Column(children: [
+    return PageCard(
+      view: Column(children: [
         InputSearch(input, onTapSearch),
         const SizedBox(height: 50),
         buildFilterDrops(),

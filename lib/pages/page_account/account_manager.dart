@@ -6,11 +6,13 @@ import 'package:top_back/constants/http_constants.dart';
 import 'package:top_back/network/dio_request.dart';
 import 'package:top_back/pages/page_account/provider/account_provider.dart';
 import 'package:top_back/pages/widget/common_button.dart';
-import 'package:top_back/pages/widget/input_drop.dart';
-import 'package:top_back/pages/widget/input_filed.dart';
+import 'package:top_back/pages/widget/page_card.dart';
 import 'package:top_back/pages/widget/table/table_widget.dart';
 import 'package:top_back/router/router.dart';
 import 'package:top_back/toast/toast.dart';
+
+import 'widget/user_filter_drop.dart';
+import 'widget/user_filter_input.dart';
 
 class AccountManager extends ConsumerStatefulWidget {
   const AccountManager({super.key});
@@ -172,32 +174,28 @@ class _AccountManagerState extends ConsumerState<AccountManager> {
     var paramProvider = ref.watch(accountSearchParam);
     var count = ref.watch(accountCnt2);
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        color: Theme.of(context).canvasColor,
-      ),
-      child: Column(children: [
+    return PageCard(
+      view: Column(children: [
         Row(children: [
-          Expanded(flex: 2, child: InputFiled(inputN, "用户昵称")),
+          Expanded(flex: 2, child: UserFilterInput(inputN, "用户昵称")),
           const Spacer(),
-          Expanded(flex: 2, child: InputFiled(inputN, "用户手机")),
+          Expanded(flex: 2, child: UserFilterInput(inputN, "用户手机")),
           const Spacer(),
-          Expanded(flex: 2, child: InputFiled(inputN, "用户邮箱")),
+          Expanded(flex: 2, child: UserFilterInput(inputN, "用户邮箱")),
           const Spacer(),
         ]),
         const SizedBox(height: 20),
         Row(children: [
           Expanded(
             flex: 2,
-            child: InputDrop("账号状态", stateList1[paramProvider.state_a],
+            child: UserFilterDrop("账号状态", stateList1[paramProvider.state_a],
                 (_, __) async => stateList1,
                 onChanged: onStateAChanged),
           ),
           const Spacer(),
           Expanded(
             flex: 2,
-            child: InputDrop("认证状态", stateList2[paramProvider.state_v],
+            child: UserFilterDrop("认证状态", stateList2[paramProvider.state_v],
                 (_, __) async => stateList2,
                 onChanged: onStateVChanged),
           ),
