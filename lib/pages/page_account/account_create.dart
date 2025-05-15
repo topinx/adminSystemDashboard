@@ -64,12 +64,14 @@ class _AccountCreateState extends ConsumerState<AccountCreate> {
       String objectName = Utils.objectName("avatar", info.avatar.imgData!.name);
       info.avatar.imgLink =
           await DioRequest().upload(info.avatar.imgData!.bytes, objectName);
+      if (info.avatar.imgLink.isEmpty) return;
     }
 
     if (info.cover.imgData != null) {
       String objectName = Utils.objectName("cover", info.cover.imgData!.name);
       info.cover.imgLink =
           await DioRequest().upload(info.cover.imgData!.bytes, objectName);
+      if (info.cover.imgLink.isEmpty) return;
     }
 
     await DioRequest()

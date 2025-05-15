@@ -3,20 +3,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:top_back/bean/bean_note.dart';
 import 'package:top_back/constants/http_constants.dart';
 import 'package:top_back/network/dio_request.dart';
-import 'package:top_back/pages/page_manage/provider/note_provider.dart';
 import 'package:top_back/pages/widget/common_button.dart';
 import 'package:top_back/pages/widget/filter_drop.dart';
 import 'package:top_back/pages/widget/input_search.dart';
-import 'package:top_back/pages/widget/table/table_widget.dart';
 
-class ManageNote extends ConsumerStatefulWidget {
-  const ManageNote({super.key});
+import '../page_manage/provider/note_provider.dart';
+import '../widget/table/table_widget.dart';
+
+class AccountNote extends ConsumerStatefulWidget {
+  const AccountNote(this.user, {super.key});
+
+  final String user;
 
   @override
-  ConsumerState createState() => _ManageNoteState();
+  ConsumerState<AccountNote> createState() => _AccountNoteState();
 }
 
-class _ManageNoteState extends ConsumerState<ManageNote> {
+class _AccountNoteState extends ConsumerState<AccountNote> {
   final TextEditingController input = TextEditingController();
 
   final stateList1 = ["全部", "男性", "女性", "综合"];
@@ -113,18 +116,11 @@ class _ManageNoteState extends ConsumerState<ManageNote> {
     onSearch();
   }
 
-  void onTimeChanged(String s, String e) {
-    param.timeBegin = s;
-    param.timeEnd = e;
-    onSearch();
-  }
-
   Future<List<BeanNote>> requestBeanList(int page) async {
     final query = {
       "pageNo": page,
       "limit": 10,
-      "beginTime": param.timeBegin,
-      "endTime": param.timeEnd,
+      "createByList": [widget.user],
       "auditedStatus": param.auditedStatus,
       "tendency": param.tendency,
       "recommendedStatus": param.recommendedStatus,
@@ -144,8 +140,7 @@ class _ManageNoteState extends ConsumerState<ManageNote> {
 
   Future<int> requestBeanCount() async {
     final query = {
-      "beginTime": param.timeBegin,
-      "endTime": param.timeEnd,
+      "createByList": [widget.user],
       "auditedStatus": param.auditedStatus,
       "tendency": param.tendency,
       "recommendedStatus": param.recommendedStatus,
@@ -205,13 +200,6 @@ class _ManageNoteState extends ConsumerState<ManageNote> {
             const SizedBox(width: 10),
             FilterDrop("推荐状态", stateList5[0], (_, __) async => stateList5,
                 onChanged: onState5Changed),
-            const SizedBox(width: 10),
-            FilterTime(
-              "发布时间",
-              start: param.timeBegin,
-              end: param.timeEnd,
-              onChanged: onTimeChanged,
-            ),
           ]),
         ),
       );
@@ -226,6 +214,8 @@ class _ManageNoteState extends ConsumerState<ManageNote> {
         color: Theme.of(context).canvasColor,
       ),
       child: Column(children: [
+        Align(alignment: Alignment.centerLeft, child: PopButton()),
+        const SizedBox(height: 20),
         InputSearch(input, onTapSearch),
         const SizedBox(height: 50),
         buildFilterDrops(),

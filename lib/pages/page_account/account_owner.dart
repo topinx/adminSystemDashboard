@@ -159,7 +159,7 @@ class _AccountOwnerState extends ConsumerState<AccountOwner> {
   Future<void> requestModify(int status) async {
     Toast.showLoading();
 
-    await DioRequest().request(
+    var response = await DioRequest().request(
       HttpConstant.modifyStatus,
       method: DioMethod.POST,
       data: {
@@ -169,6 +169,7 @@ class _AccountOwnerState extends ConsumerState<AccountOwner> {
     );
     Toast.dismissLoading();
 
+    if (response is bool && !response) return;
     onTapSearch();
   }
 

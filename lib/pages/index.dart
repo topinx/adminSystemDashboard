@@ -7,6 +7,7 @@ export 'page_account/account_manager.dart';
 export 'page_account/account_owner.dart';
 export 'page_account/account_info.dart';
 export 'page_account/account_create.dart';
+export 'page_account/account_note.dart';
 
 export 'page_manage/manage_note.dart';
 export 'page_manage/manage_topic.dart';

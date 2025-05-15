@@ -42,4 +42,7 @@ class RouterPath {
   static String account_info(int id) => "/account_info/$id";
 
   static String path_account_create = "/account_create";
+
+  static String path_account_note = "/account_note/:id";
+  static String account_note(int id) => "/account_note/$id";
 }

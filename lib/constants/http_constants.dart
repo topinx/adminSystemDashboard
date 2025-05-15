@@ -56,4 +56,10 @@ class HttpConstant {
 
   /// 创建应用账号
   static const createAccount = "/adminsystem/accountManagement/createAccount";
+
+  /// 编辑话题状态
+  static const topicStatus = "/adminsystem/contentManagement/updateTopicStatus";
+
+  /// 删除话题
+  static const topicDelete = "/adminsystem/contentManagement/deleteTopic";
 }

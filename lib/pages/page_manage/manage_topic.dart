@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:top_back/bean/bean_topic.dart';
 import 'package:top_back/constants/http_constants.dart';
@@ -67,19 +69,59 @@ class _ManageTopicState extends State<ManageTopic> {
     return await DioRequest().request(HttpConstant.topicCnt, query: query);
   }
 
-  void onDropChanged(String? string) {
+  void onDropChanged(String? string) async {
     if (controller.selection.isEmpty) return Toast.showToast("请先选择话题");
 
-    if (string == "批量启用") {
-      requestModify(1);
-    } else if (string == "批量停用") {
-      requestModify(0);
+    if (string == "批量封禁") {
+      bool? confirm = await Toast.showAlert("确定封禁话题？");
+      if (confirm == null || !confirm) return;
+      List<int> topics = controller.selection.map((x) => x.id).toList();
+      requestModify(topics);
+    } else if (string == "批量删除") {
+      bool? confirm = await Toast.showAlert("确定删除话题？");
+      if (confirm == null || !confirm) return;
+      List<int> topics = controller.selection.map((x) => x.id).toList();
+      await requestDelete(topics);
     }
   }
 
-  Future<void> requestModify(int status) async {}
+  Future<void> requestModify(List<int> topics, [bool unSelect = true]) async {
+    Toast.showLoading();
+    await DioRequest().request(
+      HttpConstant.topicStatus,
+      method: DioMethod.POST,
+      data: {"ids": topics, "status": 0},
+    );
+    Toast.dismissLoading();
+
+    if (unSelect) {
+      controller.onSelectAll(false);
+    }
+    controller.refreshDatasource();
+  }
+
+  Future<void> requestDelete(List<int> topics, [bool unSelect = true]) async {
+    Toast.showLoading();
+    await DioRequest().request(HttpConstant.topicDelete,
+        method: DioMethod.POST, data: json.encode(topics));
+    Toast.dismissLoading();
+
+    controller.dataLen -= topics.length;
+    if (unSelect) {
+      controller.onSelectAll(false);
+    }
+    controller.refreshDatasource();
+  }
 
   void onTapCreate() {}
+
+  void onTapEdit(BeanTopic bean) async {}
+
+  void onTapDelete(BeanTopic bean) async {
+    bool? confirm = await Toast.showAlert("确定删除话题？");
+    if (confirm == null || !confirm) return;
+    await requestDelete([bean.id]);
+  }
 
   ({String key, List<Widget> widgetList}) buildTabRowList(BeanTopic? bean) {
     if (bean == null) {
@@ -95,8 +137,8 @@ class _ManageTopicState extends State<ManageTopic> {
       TabText(bean.topSearch?.name ?? ""),
       TabText(bean.createTime),
       Wrap(alignment: WrapAlignment.center, children: [
-        TxtButton("编辑"),
-        TxtButton("删除"),
+        TxtButton("编辑", onTap: () => onTapEdit(bean)),
+        TxtButton("删除", onTap: () => onTapDelete(bean)),
       ])
     ];
 

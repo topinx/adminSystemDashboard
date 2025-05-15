@@ -8,14 +8,11 @@ class TimePicker extends StatefulWidget {
     this.rangeMode = false,
     this.rangeStart,
     this.rangeEnd,
-    this.init,
   });
 
   final Offset offset;
 
   final bool rangeMode;
-
-  final DateTime? init;
 
   final DateTime? rangeStart;
 
@@ -30,15 +27,28 @@ class _TimePickerState extends State<TimePicker>
   late AnimationController anim;
   late Animation<double> animation;
 
+  DateTime? rangeStart;
+  DateTime? rangeEnd;
+
+  @override
+  void didUpdateWidget(covariant TimePicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    rangeStart = widget.rangeStart;
+    rangeEnd = widget.rangeEnd;
+  }
+
   @override
   void initState() {
     super.initState();
     anim = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 300));
 
-    animation = Tween<double>(begin: 0, end: 240).animate(
+    animation = Tween<double>(begin: 0, end: 280).animate(
       CurvedAnimation(parent: anim, curve: Curves.easeOut),
     );
+
+    rangeStart = widget.rangeStart;
+    rangeEnd = widget.rangeEnd;
 
     WidgetsBinding.instance.addPostFrameCallback((_) => anim.forward());
   }
@@ -52,15 +62,22 @@ class _TimePickerState extends State<TimePicker>
   void onSelectionChanged(DateRangePickerSelectionChangedArgs? selection) {
     if (!widget.rangeMode) {
       Navigator.of(context).pop(selection?.value);
+    } else {
+      if (selection?.value == null) return;
+      if (selection!.value is PickerDateRange) {
+        PickerDateRange range = selection.value;
+        rangeStart = range.startDate;
+        rangeEnd = range.endDate;
+      }
     }
   }
 
-  void onTapCancel() {
-    Navigator.of(context).pop();
+  void onTapClear() {
+    Navigator.of(context).pop({"start": null, "end": null});
   }
 
   void onTapConfirm(data) {
-    Navigator.of(context).pop();
+    Navigator.of(context).pop({"start": rangeStart, "end": rangeEnd});
   }
 
   Widget buildPickerContent(BuildContext context) {
@@ -71,11 +88,11 @@ class _TimePickerState extends State<TimePicker>
       enableMultiView: widget.rangeMode,
       view: DateRangePickerView.month,
       confirmText: "确定",
-      cancelText: "取消",
-      initialSelectedDate: widget.init,
+      cancelText: "清除",
       onSelectionChanged: onSelectionChanged,
       onSubmit: onTapConfirm,
-      onCancel: onTapCancel,
+      onCancel: onTapClear,
+      showActionButtons: widget.rangeMode,
       backgroundColor: Theme.of(context).canvasColor,
       navigationDirection: DateRangePickerNavigationDirection.horizontal,
       selectionColor: Colors.blue,
@@ -84,7 +101,9 @@ class _TimePickerState extends State<TimePicker>
         backgroundColor: Theme.of(context).canvasColor,
       ),
       selectionShape: DateRangePickerSelectionShape.circle,
-      initialSelectedRange: PickerDateRange(widget.rangeStart, widget.rangeEnd),
+      initialSelectedRange: widget.rangeStart == null
+          ? null
+          : PickerDateRange(widget.rangeStart, widget.rangeEnd),
     );
   }
 
@@ -101,7 +120,7 @@ class _TimePickerState extends State<TimePicker>
             child: SingleChildScrollView(
                 padding: EdgeInsets.zero,
                 child: SizedBox(
-                  height: 240,
+                  height: 280,
                   width: widget.rangeMode ? 480 : 240,
                   child: buildPickerContent(context),
                 )),

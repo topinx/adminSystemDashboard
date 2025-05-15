@@ -33,15 +33,15 @@ class _LoginPageState extends State<LoginPage> {
     if (!validate) return;
 
     Toast.showLoading();
-
     String password = AppConstants.encryptPassword(inputP.text);
     var response = await DioRequest().request(
       HttpConstant.login,
       method: DioMethod.POST,
       data: {"userId": inputA.text, "password": password},
     );
-
     Toast.dismissLoading();
+    if (response is bool && !response) return;
+
     onLoginSuccess(response);
   }
 

@@ -110,7 +110,7 @@ class UserEditDate extends StatelessWidget {
 
     RenderBox box = context.findRenderObject() as RenderBox;
     Offset position = box.localToGlobal(Offset.zero);
-    Offset offset = Offset(position.dx, position.dy - 250);
+    Offset offset = Offset(position.dx, position.dy - 290);
 
     var date = await showDialog(
       context: context,

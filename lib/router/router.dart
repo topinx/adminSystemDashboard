@@ -89,6 +89,11 @@ final router = GoRouter(
         path: RouterPath.path_account_create,
         pageBuilder: (c, s) => pageBuilder(c, s, AccountCreate()),
       ),
+      GoRoute(
+        path: RouterPath.path_account_note,
+        pageBuilder: (c, s) =>
+            pageBuilder(c, s, AccountNote(s.pathParameters['id']!)),
+      ),
     ]),
   ],
 );

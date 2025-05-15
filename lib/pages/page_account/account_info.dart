@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:top_back/bean/bean_account_info.dart';
 import 'package:top_back/bean/bean_image.dart';
 import 'package:top_back/bean/bean_inter_cnt.dart';
@@ -8,6 +9,7 @@ import 'package:top_back/constants/http_constants.dart';
 import 'package:top_back/network/dio_request.dart';
 import 'package:top_back/pages/page_account/provider/account_info_provider.dart';
 import 'package:top_back/pages/widget/common_button.dart';
+import 'package:top_back/router/router.dart';
 import 'package:top_back/toast/toast.dart';
 import 'package:top_back/util/utils.dart';
 import 'package:dio/dio.dart' as dio;
@@ -64,6 +66,8 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
       HttpConstant.accountInfo,
       query: {"userId": widget.user},
     );
+    if (response is bool && !response) return;
+
     account = BeanAccountInfo.fromJson(response);
     onUserInfo();
   }
@@ -93,16 +97,19 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
       data:
           dio.FormData.fromMap({"userId": widget.user, "phone": account.phone}),
     );
+    if (response is bool && !response) return;
+
     account = BeanAccountInfo.fromJson(response);
     onUserInfo();
   }
 
   Future<void> requestResetPwd() async {
-    await DioRequest().request(
+    var response = await DioRequest().request(
       HttpConstant.resetPassword,
       method: DioMethod.POST,
       data: dio.FormData.fromMap({"userId": widget.user}),
     );
+    if (response is bool && !response) return;
 
     Toast.showToast("重置成功", true);
   }
@@ -114,12 +121,14 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
       String objectName = Utils.objectName("avatar", info.avatar.imgData!.name);
       info.avatar.imgLink =
           await DioRequest().upload(info.avatar.imgData!.bytes, objectName);
+      if (info.avatar.imgLink.isEmpty) return;
     }
 
     if (info.cover.imgData != null) {
       String objectName = Utils.objectName("cover", info.cover.imgData!.name);
       info.cover.imgLink =
           await DioRequest().upload(info.cover.imgData!.bytes, objectName);
+      if (info.cover.imgLink.isEmpty) return;
     }
 
     await DioRequest()
@@ -231,7 +240,9 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
     Toast.dismissLoading();
   }
 
-  void onTapCheck() {}
+  void onTapCheck() {
+    context.push(RouterPath.account_note(int.parse(widget.user)));
+  }
 
   void onPickAvatar() async {
     if (!ref.read(userEditProvider)) return;

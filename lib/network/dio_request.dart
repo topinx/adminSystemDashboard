@@ -24,18 +24,14 @@ class DioRequest {
 
   Future<(List<String>, String)> signMedia(
       String objectName, int partNumber) async {
-    try {
-      var response = await request(
-        HttpConstant.signMedia,
-        query: {"objectName": objectName, "partNumber": partNumber},
-      );
-      List<String> partList = List<String>.from(response?["partPresign"] ?? []);
-      String complete = response?["completePresign"] ?? "";
+    var response = await request(
+      HttpConstant.signMedia,
+      query: {"objectName": objectName, "partNumber": partNumber},
+    );
+    List<String> partList = List<String>.from(response?["partPresign"] ?? []);
+    String complete = response?["completePresign"] ?? "";
 
-      return (partList, complete);
-    } catch (_) {
-      return (<String>[], "");
-    }
+    return (partList, complete);
   }
 
   Future<String> upload(Uint8List bytes, String objectName) async {
@@ -150,13 +146,13 @@ class DioRequest {
 
       if (jsonResponse["code"] == 200) return jsonResponse["data"];
       _onRequestError(jsonResponse["code"], jsonResponse["errMsg"]);
-      return null;
+      return false;
     } on DioException catch (error) {
       _onRequestError(-200, error.message ?? "");
-      return null;
+      return false;
     } catch (error) {
       _onRequestError(-200, error.toString());
-      return null;
+      return false;
     }
   }
 
