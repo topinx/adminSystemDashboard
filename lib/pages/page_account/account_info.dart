@@ -44,6 +44,7 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
   @override
   void initState() {
     super.initState();
+    ref.read(userInfoProvider).removeImgMemory();
     requestUserInfo();
     requestInterCnt();
     requestNoteInfo();
@@ -251,6 +252,9 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
     List<XMLImage> files = await Utils.pickFile();
     if (files.isEmpty) return;
 
+    var crop = await Utils.onCropImage(files.first);
+    if (crop == null) return;
+    files.first.bytes = crop;
     ref
         .read(userInfoProvider.notifier)
         .updateCover(BeanImage(account.bgImg, files.first));
@@ -279,7 +283,11 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
   }
 
   void onBirthChanged(String date) {
-    ref.read(userInfoProvider.notifier).updateBirth(date);
+    ref.read(userInfoProvider.notifier).updateBirth(date.substring(0, 10));
+  }
+
+  void onCodeChanged(String code) {
+    ref.read(userInfoProvider).phoneArea = code;
   }
 
   Widget buildAppBar() {
@@ -314,7 +322,7 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text("基本信息",
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
-            const SizedBox(height: 20),
+            const SizedBox(height: 20, width: double.infinity),
             UserTxtTitle("用户头像："),
             const SizedBox(height: 10),
             Padding(
@@ -353,9 +361,11 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
             const SizedBox(height: 20),
             UserTxtTitle("绑定手机："),
             const SizedBox(height: 10),
-            Row(children: [
-              UserEditInput.phone(inputPhone, edit),
-            ]),
+            UserEditInput.phone(
+              inputPhone,
+              edit,
+              PhonePrefix(info.phoneArea, edit, onChanged: onCodeChanged),
+            ),
             const SizedBox(height: 20),
             UserTxtTitle("邮箱地址："),
             const SizedBox(height: 10),
@@ -376,6 +386,13 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
           UserTxtTitle("用户简介："),
           const SizedBox(height: 10),
           UserEditInput.brief(inputBrief, edit),
+          const SizedBox(height: 20),
+          UserTxtTitle("主页封面："),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: UserImage(image: info.cover, onPick: onPickCover),
+          ),
           const SizedBox(height: 20),
           UserTxtTitle("账号状态："),
           const SizedBox(height: 10),

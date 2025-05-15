@@ -19,6 +19,7 @@ class NetImage extends StatelessWidget {
       headers: {"Authorization": AppConstants.signToken()},
       width: imgW,
       height: imgH,
+      errorBuilder: (_, o, s) => Icon(Icons.error_outline),
     );
   }
 }

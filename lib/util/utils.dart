@@ -38,6 +38,15 @@ class Utils {
     return null;
   }
 
+  static String? onValidatorPwd(String? string) {
+    if (string == null || string.isEmpty) return "请输入密码";
+    bool hasMatch = RegExp(r'[0-9a-zA-Z]').hasMatch(string);
+    if (string.length < 6 || string.length > 18 || !hasMatch) {
+      return "密码格式为6-18位的数字或字母,区分大小写";
+    }
+    return null;
+  }
+
   static bool isEmail(String s) => hasMatch(s,
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
 

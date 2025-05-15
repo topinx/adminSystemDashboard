@@ -8,10 +8,23 @@ class UserCreateInfo {
 
   int gender = 0;
 
+  String birth = "";
+
+  String phoneArea = "+1";
+
+  String get birthday => birth.isEmpty ? "设置日期" : birth;
+
+  void removeImgMemory() {
+    avatar = BeanImage("", null);
+    cover = BeanImage("", null);
+  }
+
   UserCreateInfo({
     BeanImage? avatar,
     BeanImage? cover,
     this.gender = 0,
+    this.birth = "",
+    this.phoneArea = "+1",
   })  : this.avatar = avatar ?? BeanImage("", null),
         this.cover = avatar ?? BeanImage("", null);
 
@@ -19,11 +32,15 @@ class UserCreateInfo {
     BeanImage? avatar,
     BeanImage? cover,
     int? gender,
+    String? birth,
+    String? phoneArea,
   }) {
     return UserCreateInfo(
       avatar: avatar ?? this.avatar,
       cover: cover ?? this.cover,
       gender: gender ?? this.gender,
+      birth: birth ?? this.birth,
+      phoneArea: phoneArea ?? this.phoneArea,
     );
   }
 }
@@ -37,6 +54,10 @@ class UserCreateProvider extends StateNotifier<UserCreateInfo> {
 
   void updateCover(BeanImage image) {
     state = state.copyWith(cover: image);
+  }
+
+  void updateBirth(String date) {
+    state = state.copyWith(birth: date);
   }
 }
 

@@ -111,6 +111,6 @@ class PopButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElvButton("< 返回", onTap: context.pop);
+    return TxtButton("< 返回", onTap: context.pop);
   }
 }

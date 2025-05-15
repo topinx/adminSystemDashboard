@@ -34,6 +34,11 @@ class UserEditInfo {
       ? "0000-00-00 00:00:00"
       : DateTime.fromMillisecondsSinceEpoch(create).toString().substring(0, 19);
 
+  void removeImgMemory() {
+    avatar = BeanImage("", null);
+    cover = BeanImage("", null);
+  }
+
   UserEditInfo({
     BeanImage? avatar,
     BeanImage? cover,

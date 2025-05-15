@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:top_back/pages/widget/input_edit.dart';
+import 'package:top_back/pages/widget/phone_code/phone_code_sheet.dart';
 import 'package:top_back/pages/widget/time_picker.dart';
 import 'package:top_back/util/utils.dart';
 
@@ -12,6 +13,7 @@ class UserEditInput extends StatelessWidget {
     this.formatter,
     this.validator,
     required this.maxLine,
+    this.prefix,
   });
 
   final TextEditingController? input;
@@ -24,12 +26,15 @@ class UserEditInput extends StatelessWidget {
 
   final int maxLine;
 
+  final Widget? prefix;
+
   UserEditInput.nick(this.input, this.enable)
       : formatter = [LengthLimitingTextInputFormatter(30)],
         validator = Utils.onValidatorNick,
-        maxLine = 1;
+        maxLine = 1,
+        prefix = null;
 
-  UserEditInput.phone(this.input, this.enable)
+  UserEditInput.phone(this.input, this.enable, this.prefix)
       : formatter = [
           LengthLimitingTextInputFormatter(15),
           FilteringTextInputFormatter.digitsOnly
@@ -40,17 +45,34 @@ class UserEditInput extends StatelessWidget {
   UserEditInput.email(this.input, this.enable)
       : formatter = [LengthLimitingTextInputFormatter(45)],
         validator = Utils.onValidatorEmail,
-        maxLine = 1;
+        maxLine = 1,
+        prefix = null;
 
   UserEditInput.brief(this.input, this.enable)
       : formatter = [LengthLimitingTextInputFormatter(500)],
         validator = null,
-        maxLine = 5;
+        maxLine = 5,
+        prefix = null;
+
+  UserEditInput.password(this.input, this.enable)
+      : formatter = [
+          FilteringTextInputFormatter.allow(RegExp(r'[0-9a-zA-Z]')),
+          LengthLimitingTextInputFormatter(18),
+        ],
+        validator = Utils.onValidatorPwd,
+        maxLine = 1,
+        prefix = null;
 
   @override
   Widget build(BuildContext context) {
-    return InputEdit(input, enable,
-        formatter: formatter, validator: validator, maxLine: maxLine);
+    return InputEdit(
+      input,
+      enable,
+      formatter: formatter,
+      validator: validator,
+      maxLine: maxLine,
+      prefix: prefix,
+    );
   }
 }
 
@@ -124,6 +146,66 @@ class UserEditDate extends StatelessWidget {
       builder: (c) => GestureDetector(
         onTap: () => onTapPicker(c),
         child: buildPicker(),
+      ),
+    );
+  }
+}
+
+class PhonePrefix extends StatefulWidget {
+  const PhonePrefix(this.code, this.enable, {super.key, this.onChanged});
+
+  final String code;
+
+  final bool enable;
+
+  final Function(String)? onChanged;
+
+  @override
+  State<PhonePrefix> createState() => _PhonePrefixState();
+}
+
+class _PhonePrefixState extends State<PhonePrefix> {
+  String code = "";
+
+  @override
+  void initState() {
+    super.initState();
+    code = widget.code;
+  }
+
+  @override
+  void didUpdateWidget(covariant PhonePrefix oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    code = widget.code;
+  }
+
+  void onTapCode() async {
+    if (!widget.enable) return;
+    var codeString =
+        await showDialog(context: context, builder: (_) => PhoneCodeSheet());
+    if (codeString == null) return;
+    code = "+$codeString";
+    if (mounted) setState(() {});
+
+    if (widget.onChanged != null) {
+      widget.onChanged!("+$codeString");
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTapCode,
+      child: Container(
+        height: 30,
+        width: 50,
+        color: Colors.transparent,
+        margin: const EdgeInsets.only(right: 5),
+        alignment: Alignment.center,
+        child: Row(children: [
+          Expanded(child: Center(child: Text(code))),
+          Container(width: 1, height: 20, color: Color(0xFF979797))
+        ]),
       ),
     );
   }

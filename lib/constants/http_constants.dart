@@ -53,4 +53,7 @@ class HttpConstant {
 
   /// 查询用户互动数据
   static const interactiveCnt = "/adminsystem/accountManagement/homePageCnt";
+
+  /// 创建应用账号
+  static const createAccount = "/adminsystem/accountManagement/createAccount";
 }

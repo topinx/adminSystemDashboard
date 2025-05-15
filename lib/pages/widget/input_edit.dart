@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class InputEdit extends StatelessWidget {
-  InputEdit(this.input, this.enable,
-      {super.key, this.formatter, this.validator, this.maxLine = 1});
+  InputEdit(
+    this.input,
+    this.enable, {
+    super.key,
+    this.formatter,
+    this.validator,
+    this.maxLine = 1,
+    this.prefix,
+  });
 
   final TextEditingController? input;
 
@@ -14,6 +21,8 @@ class InputEdit extends StatelessWidget {
   final String? Function(String?)? validator;
 
   final int maxLine;
+
+  final Widget? prefix;
 
   final disableBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(4),
@@ -39,12 +48,14 @@ class InputEdit extends StatelessWidget {
       inputFormatters: formatter,
       style: TextStyle(color: color, fontSize: 14),
       validator: validator,
-      autovalidateMode: AutovalidateMode.always,
+      autovalidateMode: AutovalidateMode.onUnfocus,
       maxLines: maxLine,
       decoration: InputDecoration(
         constraints: const BoxConstraints(maxWidth: 200),
         isDense: true,
         counterText: "",
+        prefixIcon: prefix,
+        prefixIconConstraints: const BoxConstraints(maxWidth: 60),
         errorStyle: TextStyle(color: Colors.red, fontSize: 12),
         contentPadding: const EdgeInsets.all(10),
         disabledBorder: disableBorder,
