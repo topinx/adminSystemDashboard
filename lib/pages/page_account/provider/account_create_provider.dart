@@ -62,6 +62,6 @@ class UserCreateProvider extends StateNotifier<UserCreateInfo> {
 }
 
 final userCreateProvider =
-    StateNotifierProvider<UserCreateProvider, UserCreateInfo>(
+    StateNotifierProvider.autoDispose<UserCreateProvider, UserCreateInfo>(
   (ref) => UserCreateProvider(),
 );

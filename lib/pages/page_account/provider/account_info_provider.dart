@@ -104,15 +104,17 @@ class UserEditInfoProvider extends StateNotifier<UserEditInfo> {
 }
 
 final userInfoProvider =
-    StateNotifierProvider<UserEditInfoProvider, UserEditInfo>(
+    StateNotifierProvider.autoDispose<UserEditInfoProvider, UserEditInfo>(
   (ref) => UserEditInfoProvider(),
 );
 
-final userInterProvider = StateProvider<BeanInterCnt>((ref) => BeanInterCnt());
+final userInterProvider =
+    StateProvider.autoDispose<BeanInterCnt>((ref) => BeanInterCnt());
 
 class UserNoteInfo {
   int count = 0;
   BeanNote note = BeanNote();
 }
 
-final userNoteProvider = StateProvider<UserNoteInfo>((ref) => UserNoteInfo());
+final userNoteProvider =
+    StateProvider.autoDispose<UserNoteInfo>((ref) => UserNoteInfo());

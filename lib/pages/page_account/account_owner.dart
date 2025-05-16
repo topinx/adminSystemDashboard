@@ -167,6 +167,8 @@ class _AccountOwnerState extends ConsumerState<AccountOwner> {
     Toast.dismissLoading();
 
     if (response is bool && !response) return;
+    Toast.showToast("修改成功", true);
+
     onTapSearch(page: null);
   }
 

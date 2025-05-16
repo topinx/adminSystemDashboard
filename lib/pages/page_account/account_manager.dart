@@ -160,6 +160,8 @@ class _AccountManagerState extends ConsumerState<AccountManager> {
     Toast.dismissLoading();
 
     if (response is bool && !response) return;
+    Toast.showToast("修改成功", true);
+
     onTapSearch(page: null);
   }
 

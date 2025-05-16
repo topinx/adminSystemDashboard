@@ -83,8 +83,8 @@ class AccountSearchParamProvider extends StateNotifier<AccountSearchParam> {
   }
 }
 
-final accountSearchParam =
-    StateNotifierProvider<AccountSearchParamProvider, AccountSearchParam>(
+final accountSearchParam = StateNotifierProvider.autoDispose<
+    AccountSearchParamProvider, AccountSearchParam>(
   (ref) => AccountSearchParamProvider(),
 );
 

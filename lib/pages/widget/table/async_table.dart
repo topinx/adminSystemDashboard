@@ -15,6 +15,7 @@ class AsyncTable<T> extends StatelessWidget {
   final AsyncBuilder<T> builder;
 
   Widget buildCheckbox({
+    required String key,
     required bool? checked,
     required VoidCallback? onRowTap,
     required ValueChanged<bool?>? onSelect,
@@ -36,6 +37,43 @@ class AsyncTable<T> extends StatelessWidget {
       contents = TableRowInkWell(onTap: onRowTap, child: contents);
     }
     return TableCell(
+      key: ValueKey("check-$key"),
+      verticalAlignment: TableCellVerticalAlignment.fill,
+      child: contents,
+    );
+  }
+
+  Widget buildDragBox(int rowIndex, String key, {bool isHeading = false}) {
+    Widget contents = isHeading
+        ? const SizedBox()
+        : Row(children: [
+            if (rowIndex > 0)
+              IconButton(
+                onPressed: () => ctr._dataCtr.moveUp(rowIndex),
+                iconSize: 20,
+                tooltip: "上移",
+                padding: EdgeInsets.zero,
+                icon: Icon(Icons.keyboard_double_arrow_up,
+                    color: Colors.black12, weight: 1),
+              ),
+            if (rowIndex < ctr._dataCtr.dataRowLen - 1)
+              IconButton(
+                onPressed: () => ctr._dataCtr.moveDown(rowIndex),
+                iconSize: 20,
+                tooltip: "下移",
+                padding: EdgeInsets.zero,
+                icon: Icon(Icons.keyboard_double_arrow_down,
+                    color: Colors.black12, weight: 1),
+              )
+          ]);
+
+    contents = Padding(
+      padding: EdgeInsetsDirectional.only(start: 5, end: 5),
+      child: Center(child: contents),
+    );
+
+    return TableCell(
+      key: ValueKey("drag-$key"),
       verticalAlignment: TableCellVerticalAlignment.fill,
       child: contents,
     );
@@ -70,7 +108,9 @@ class AsyncTable<T> extends StatelessWidget {
 
     List<TableColumnWidth> columnWidths = List<TableColumnWidth>.filled(
         columnsLen + 1, const IntrinsicColumnWidth(flex: 1));
-    columnWidths[0] = FixedColumnWidth(12 + Checkbox.width + 12);
+
+    double size = Checkbox.width * (ctr._dataCtr._sortStatus ? 4 : 1);
+    columnWidths[0] = FixedColumnWidth(12 + size + 12);
 
     List<TableRow> tableRows = [
       /// 先插入表头
@@ -82,12 +122,15 @@ class AsyncTable<T> extends StatelessWidget {
     ];
 
     /// 给表头插入checkbox
-    tableRows[0].children[0] = buildCheckbox(
-      checked: ctr._dataCtr.isAllSelected,
-      onRowTap: null,
-      onSelect: ctr._dataCtr._onAllSelected,
-      status: true,
-    );
+    tableRows[0].children[0] = ctr._dataCtr._sortStatus
+        ? buildDragBox(0, "head", isHeading: true)
+        : buildCheckbox(
+            key: "head",
+            checked: ctr._dataCtr.isAllSelected,
+            onRowTap: null,
+            onSelect: ctr._dataCtr._onAllSelected,
+            status: true,
+          );
 
     for (int columnIndex = 0; columnIndex < columnsLen; columnIndex++) {
       final int column = columnIndex + 1;
@@ -109,12 +152,15 @@ class AsyncTable<T> extends StatelessWidget {
         children: List<Widget>.filled(columnsLen + 1, NullWidget()),
       );
 
-      tableRow.children[0] = buildCheckbox(
-        checked: selected,
-        onRowTap: () => ctr._dataCtr._onRowSelected(!selected, bean),
-        onSelect: (s) => ctr._dataCtr._onRowSelected(s, bean),
-        status: false,
-      );
+      tableRow.children[0] = ctr._dataCtr._sortStatus
+          ? buildDragBox(rowIndex, key)
+          : buildCheckbox(
+              checked: selected,
+              key: key,
+              onRowTap: () => ctr._dataCtr._onRowSelected(!selected, bean),
+              onSelect: (s) => ctr._dataCtr._onRowSelected(s, bean),
+              status: false,
+            );
 
       for (int columnIndex = 0; columnIndex < columnsLen; columnIndex++) {
         final int column = columnIndex + 1;
@@ -141,7 +187,7 @@ class AsyncTable<T> extends StatelessWidget {
 
   Widget buildIndicator() {
     return Visibility(
-      visible: ctr._pageCtr.dataLen > 0,
+      visible: ctr._pageCtr.dataLen > 0 && !ctr._pageCtr._sortStatus,
       child: AsyncIndicator(
         onTap: (i) => ctr.fetchData(page: i),
         cur: ctr._pageCtr.page,

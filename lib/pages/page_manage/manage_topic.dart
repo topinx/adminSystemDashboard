@@ -102,7 +102,7 @@ class _ManageTopicState extends State<ManageTopic> {
     controller.fetchData();
   }
 
-  Future<void> requestDelete(List<int> topics, [bool unSelect = true]) async {
+  Future<void> requestDelete(List<int> topics) async {
     Toast.showLoading();
     var response = await DioRequest().request(HttpConstant.topicDelete,
         method: DioMethod.POST, data: json.encode(topics));
