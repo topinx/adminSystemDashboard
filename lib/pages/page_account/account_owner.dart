@@ -8,7 +8,7 @@ import 'package:top_back/pages/widget/common_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:top_back/pages/widget/page_card.dart';
-import 'package:top_back/pages/widget/table/table_widget.dart';
+import 'package:top_back/pages/widget/table/async_table.dart';
 import 'package:top_back/router/router.dart';
 import 'package:top_back/toast/toast.dart';
 
@@ -32,14 +32,13 @@ class _AccountOwnerState extends ConsumerState<AccountOwner> {
 
   final columns = ["账号名称", "手机号", "邮箱", "认证状态", "状态", "操作"];
 
-  TableController<BeanAccount> controller = TableController<BeanAccount>();
+  AsyncTableController<BeanAccount> controller =
+      AsyncTableController<BeanAccount>();
 
   @override
   void initState() {
     super.initState();
-    controller.enableSelect = true;
-    controller.builder = buildTabRowList;
-    controller.future = requestBeanList;
+    controller.initialize(columns: columns, future: requestBeanList);
 
     onTapSearch();
   }
@@ -53,10 +52,10 @@ class _AccountOwnerState extends ConsumerState<AccountOwner> {
     inputE.dispose();
   }
 
-  void onTapSearch() async {
+  void onTapSearch({int? page = 1}) async {
     int dataLen = await requestBeanCount();
-    controller.dataLen = dataLen;
-    controller.refreshDatasource();
+    controller.updateDataLen(dataLen);
+    controller.fetchData(page: page);
   }
 
   void onTapReset() {
@@ -99,32 +98,28 @@ class _AccountOwnerState extends ConsumerState<AccountOwner> {
     context.push(RouterPath.account_info(account.userId));
   }
 
-  ({String key, List<Widget> widgetList}) buildTabRowList(BeanAccount? bean) {
-    if (bean == null) {
-      return (key: "", widgetList: List.generate(6, (_) => TabPlace()));
-    }
-
+  ({String key, List<Widget> widgetList}) buildTabRowList(BeanAccount bean) {
     String status1 = ["", "普通用户", "认证博主", "认证商户"][bean.authenticationStatus];
     String status2 = ["已停用", "正常使用"][bean.status];
 
     List<Widget> beanList = [
-      TabText(bean.nickname),
-      TabText(bean.phone),
-      TabText(bean.email),
-      TabText(status1),
-      TabText(status2),
+      AsyncText(bean.nickname),
+      AsyncText(bean.phone),
+      AsyncText(bean.email),
+      AsyncText(status1),
+      AsyncText(status2),
       TxtButton("查看详情", onTap: () => onTapUser(bean))
     ];
 
     return (key: "${bean.userId}", widgetList: beanList);
   }
 
-  Future<List<BeanAccount>> requestBeanList(int page) async {
+  Future<List<BeanAccount>> requestBeanList(int page, int limit) async {
     final param = ref.read(accountSearchParam);
 
     final query = {
       "pageNo": page,
-      "limit": 10,
+      "limit": limit,
       "userId": Storage().user.userId,
       "nickname": param.nick,
       "phone": param.phone,
@@ -172,7 +167,7 @@ class _AccountOwnerState extends ConsumerState<AccountOwner> {
     Toast.dismissLoading();
 
     if (response is bool && !response) return;
-    onTapSearch();
+    onTapSearch(page: null);
   }
 
   @override
@@ -227,7 +222,7 @@ class _AccountOwnerState extends ConsumerState<AccountOwner> {
         ]),
         const SizedBox(height: 20),
         Expanded(
-          child: TableWidget(columns: columns, controller: controller),
+          child: AsyncTable(ctr: controller, builder: buildTabRowList),
         ),
       ]),
     );

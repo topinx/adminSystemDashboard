@@ -9,7 +9,7 @@ class PageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).canvasColor,
-      padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
+      padding: const EdgeInsets.fromLTRB(16, 25, 16, 10),
       child: view,
     );
   }

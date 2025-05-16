@@ -68,4 +68,7 @@ class HttpConstant {
 
   /// 编辑话题
   static const topicEdit = "/adminsystem/contentManagement/updateTopic";
+
+  /// 查询热搜列表
+  static const hotSearchList = "/adminsystem/searchManagement/getHotSearchList";
 }

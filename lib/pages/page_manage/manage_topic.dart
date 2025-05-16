@@ -8,7 +8,7 @@ import 'package:top_back/network/dio_request.dart';
 import 'package:top_back/pages/widget/common_button.dart';
 import 'package:top_back/pages/widget/input_search.dart';
 import 'package:top_back/pages/widget/page_card.dart';
-import 'package:top_back/pages/widget/table/table_widget.dart';
+import 'package:top_back/pages/widget/table/async_table.dart';
 import 'package:top_back/router/router.dart';
 import 'package:top_back/toast/toast.dart';
 
@@ -22,16 +22,15 @@ class ManageTopic extends StatefulWidget {
 class _ManageTopicState extends State<ManageTopic> {
   final TextEditingController input = TextEditingController();
 
-  TableController<BeanTopic> controller = TableController<BeanTopic>();
+  AsyncTableController<BeanTopic> controller =
+      AsyncTableController<BeanTopic>();
 
   final columns = ["话题名称", "话题封面", "话题笔记数", "话题状态", "关联热搜", "创建时间", "操作"];
 
   @override
   void initState() {
     super.initState();
-    controller.enableSelect = true;
-    controller.builder = buildTabRowList;
-    controller.future = requestBeanList;
+    controller.initialize(columns: columns, future: requestBeanList);
 
     WidgetsBinding.instance.addPostFrameCallback((_) => onTapSearch());
   }
@@ -45,14 +44,14 @@ class _ManageTopicState extends State<ManageTopic> {
 
   void onTapSearch() async {
     int dataLen = await requestBeanCount();
-    controller.dataLen = dataLen;
-    controller.refreshDatasource();
+    controller.updateDataLen(dataLen);
+    controller.fetchData(page: 1);
   }
 
-  Future<List<BeanTopic>> requestBeanList(int page) async {
+  Future<List<BeanTopic>> requestBeanList(int page, int limit) async {
     final query = {
       "pageNo": page,
-      "limit": 10,
+      "limit": limit,
       "name": input.text,
     };
 
@@ -88,7 +87,7 @@ class _ManageTopicState extends State<ManageTopic> {
     }
   }
 
-  Future<void> requestModify(List<int> topics, [bool unSelect = true]) async {
+  Future<void> requestModify(List<int> topics) async {
     Toast.showLoading();
     var response = await DioRequest().request(
       HttpConstant.topicStatus,
@@ -99,10 +98,8 @@ class _ManageTopicState extends State<ManageTopic> {
 
     if (response is bool && !response) return;
     Toast.showToast("操作成功", true);
-    if (unSelect) {
-      controller.onSelectAll(false);
-    }
-    controller.refreshDatasource();
+
+    controller.fetchData();
   }
 
   Future<void> requestDelete(List<int> topics, [bool unSelect = true]) async {
@@ -113,11 +110,11 @@ class _ManageTopicState extends State<ManageTopic> {
 
     if (response is bool && !response) return;
     Toast.showToast("删除成功", true);
-    controller.dataLen -= topics.length;
-    if (unSelect) {
-      controller.onSelectAll(false);
-    }
-    controller.refreshDatasource();
+
+    int dataLen = controller.dataLen;
+    controller.updateDataLen(dataLen - topics.length);
+
+    controller.fetchData();
   }
 
   void onTapModify(BeanTopic bean) async {
@@ -139,7 +136,7 @@ class _ManageTopicState extends State<ManageTopic> {
 
     if (response is bool && !response) return;
     Toast.showToast("操作成功", true);
-    controller.refreshDatasource();
+    controller.fetchData();
   }
 
   void onTapCreate() {
@@ -156,19 +153,15 @@ class _ManageTopicState extends State<ManageTopic> {
     await requestDelete([bean.id]);
   }
 
-  ({String key, List<Widget> widgetList}) buildTabRowList(BeanTopic? bean) {
-    if (bean == null) {
-      return (key: "", widgetList: List.generate(7, (_) => TabPlace()));
-    }
-
+  ({String key, List<Widget> widgetList}) buildTabRowList(BeanTopic bean) {
     String status = ["禁用状态", "启用状态"][bean.status];
     List<Widget> beanList = [
-      TabText(bean.name),
-      TabImage(bean.avatar),
-      TabText("${bean.noteCnt}"),
-      TabText(status),
-      TabText(bean.topSearch?.name ?? ""),
-      TabText(bean.createTime),
+      AsyncText(bean.name),
+      AsyncImage(bean.avatar),
+      AsyncText("${bean.noteCnt}"),
+      AsyncText(status),
+      AsyncText(bean.topSearch?.name ?? ""),
+      AsyncText(bean.createTime),
       Wrap(alignment: WrapAlignment.center, children: [
         TxtButton(bean.status == 0 ? "启用" : "禁用",
             onTap: () => onTapModify(bean)),
@@ -210,7 +203,7 @@ class _ManageTopicState extends State<ManageTopic> {
         buildFilterDrops(),
         const SizedBox(height: 20),
         Expanded(
-          child: TableWidget(columns: columns, controller: controller),
+          child: AsyncTable(ctr: controller, builder: buildTabRowList),
         ),
       ]),
     );

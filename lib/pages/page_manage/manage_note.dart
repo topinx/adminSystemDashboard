@@ -8,7 +8,7 @@ import 'package:top_back/pages/widget/common_button.dart';
 import 'package:top_back/pages/widget/filter_drop.dart';
 import 'package:top_back/pages/widget/input_search.dart';
 import 'package:top_back/pages/widget/page_card.dart';
-import 'package:top_back/pages/widget/table/table_widget.dart';
+import 'package:top_back/pages/widget/table/async_table.dart';
 
 class ManageNote extends ConsumerStatefulWidget {
   const ManageNote({super.key});
@@ -40,13 +40,12 @@ class _ManageNoteState extends ConsumerState<ManageNote> {
     "操作"
   ];
 
-  TableController<BeanNote> controller = TableController<BeanNote>();
+  AsyncTableController<BeanNote> controller = AsyncTableController<BeanNote>();
 
   @override
   void initState() {
     super.initState();
-    controller.builder = buildTabRowList;
-    controller.future = requestBeanList;
+    controller.initialize(columns: columns, future: requestBeanList);
 
     WidgetsBinding.instance.addPostFrameCallback((_) => onTapSearch());
   }
@@ -65,8 +64,8 @@ class _ManageNoteState extends ConsumerState<ManageNote> {
 
   void onSearch() async {
     int dataLen = await requestBeanCount();
-    controller.dataLen = dataLen;
-    controller.refreshDatasource();
+    controller.updateDataLen(dataLen);
+    controller.fetchData(page: 1);
   }
 
   void onState1Changed(String? string) {
@@ -120,10 +119,10 @@ class _ManageNoteState extends ConsumerState<ManageNote> {
     onSearch();
   }
 
-  Future<List<BeanNote>> requestBeanList(int page) async {
+  Future<List<BeanNote>> requestBeanList(int page, int limit) async {
     final query = {
       "pageNo": page,
-      "limit": 10,
+      "limit": limit,
       "beginTime": param.timeBegin,
       "endTime": param.timeEnd,
       "auditedStatus": param.auditedStatus,
@@ -157,11 +156,7 @@ class _ManageNoteState extends ConsumerState<ManageNote> {
     return await DioRequest().request(HttpConstant.noteCnt, query: query);
   }
 
-  ({String key, List<Widget> widgetList}) buildTabRowList(BeanNote? bean) {
-    if (bean == null) {
-      return (key: "", widgetList: List.generate(9, (_) => TabPlace()));
-    }
-
+  ({String key, List<Widget> widgetList}) buildTabRowList(BeanNote bean) {
     String audited = ["未审核", "通过", "未通过", "违规"][bean.auditedStatus];
     String recommended = bean.recommendedStatus == null
         ? ""
@@ -170,14 +165,14 @@ class _ManageNoteState extends ConsumerState<ManageNote> {
     String status = ["私密", "公开", "好友可见"][bean.status];
 
     List<Widget> beanList = [
-      TabImage(bean.cover),
-      TabText(bean.title),
-      TabText(audited),
-      TabText(recommended),
-      TabText(noteType),
-      TabText(status),
-      TabText(bean.auditedNickname),
-      TabText(bean.createTime),
+      AsyncImage(bean.cover),
+      AsyncText(bean.title),
+      AsyncText(audited),
+      AsyncText(recommended),
+      AsyncText(noteType),
+      AsyncText(status),
+      AsyncText(bean.auditedNickname),
+      AsyncText(bean.createTime),
       TxtButton("查看详情")
     ];
 
@@ -228,7 +223,7 @@ class _ManageNoteState extends ConsumerState<ManageNote> {
         buildFilterDrops(),
         const SizedBox(height: 20),
         Expanded(
-          child: TableWidget(columns: columns, controller: controller),
+          child: AsyncTable(ctr: controller, builder: buildTabRowList),
         ),
       ]),
     );
