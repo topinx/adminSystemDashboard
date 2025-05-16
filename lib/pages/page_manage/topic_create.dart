@@ -51,10 +51,6 @@ class _TopicCreateState extends State<TopicCreate> {
     if (mounted) setState(() {});
   }
 
-  void onTapCancel() {
-    context.pop();
-  }
-
   void onTapConfirm() {
     bool validate = formKey.currentState?.validate() ?? false;
     if (!validate) return;
@@ -135,14 +131,16 @@ class _TopicCreateState extends State<TopicCreate> {
 
   Widget buildCardContent() {
     return SizedBox(
-      width: 360,
+      width: 300,
       child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: Text(txtTitle,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+              child: Text(
+                txtTitle,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
             ),
             const SizedBox(height: 20),
             Text("话题标题："),

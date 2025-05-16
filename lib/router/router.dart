@@ -1,3 +1,4 @@
+import 'package:top_back/bean/bean_hot.dart';
 import 'package:top_back/bean/bean_topic.dart';
 import 'package:top_back/constants/app_storage.dart';
 import 'package:top_back/pages/index.dart';
@@ -99,6 +100,11 @@ final router = GoRouter(
         path: RouterPath.path_topic_create,
         pageBuilder: (c, s) =>
             dialogBuilder(c, s, TopicCreate(s.extra as BeanTopic?)),
+      ),
+      GoRoute(
+        path: RouterPath.path_search_create,
+        pageBuilder: (c, s) =>
+            dialogBuilder(c, s, SearchCreate(s.extra as BeanHot?)),
       ),
     ]),
   ],

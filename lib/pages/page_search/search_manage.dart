@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:top_back/bean/bean_hot.dart';
 import 'package:top_back/constants/http_constants.dart';
 import 'package:top_back/network/dio_request.dart';
@@ -11,6 +12,7 @@ import 'package:top_back/pages/widget/common_button.dart';
 import 'package:top_back/pages/widget/input_search.dart';
 import 'package:top_back/pages/widget/page_card.dart';
 import 'package:top_back/pages/widget/table/async_table.dart';
+import 'package:top_back/router/router.dart';
 import 'package:top_back/toast/toast.dart';
 
 class SearchManage extends ConsumerStatefulWidget {
@@ -110,9 +112,15 @@ class _SearchManageState extends ConsumerState<SearchManage> {
 
     isAutoSort = success;
     ref.read(searchSortProvider.notifier).switchToAuto(auto);
+
+    if (auto) {
+      controller.fetchData();
+    }
   }
 
-  void onTapCreate() {}
+  void onTapCreate() {
+    context.push(RouterPath.path_search_create);
+  }
 
   void onTapEditSort() {
     ref.read(searchSortProvider.notifier).switchSortStatus();
@@ -145,7 +153,9 @@ class _SearchManageState extends ConsumerState<SearchManage> {
     await requestDelete([bean.id]);
   }
 
-  void onTapEdit(BeanHot bean) {}
+  void onTapEdit(BeanHot bean) {
+    context.push(RouterPath.path_search_create, extra: bean);
+  }
 
   void onTapPinned(BeanHot bean) async {
     List<int> topics = controller.dataList.map((x) => x.id).toList();

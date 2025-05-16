@@ -17,6 +17,7 @@ export 'page_manage/manage_review.dart';
 export 'page_manage/topic_create.dart';
 
 export 'page_search/search_manage.dart';
+export 'page_search/search_create.dart';
 
 export 'page_pub/pub_recommend.dart';
 export 'page_pub/pub_creative.dart';

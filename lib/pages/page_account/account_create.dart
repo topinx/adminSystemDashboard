@@ -25,7 +25,7 @@ class AccountCreate extends ConsumerStatefulWidget {
 class _AccountCreateState extends ConsumerState<AccountCreate> {
   GlobalKey<FormState> formKey = GlobalKey();
 
-  final stateList1 = ["选择", "男", "女"];
+  final stateList1 = ["不设置", "男", "女"];
 
   TextEditingController inputNick = TextEditingController();
   TextEditingController inputPhone = TextEditingController();
@@ -148,20 +148,26 @@ class _AccountCreateState extends ConsumerState<AccountCreate> {
           const SizedBox(height: 20),
           UserTxtTitle("用户昵称：", require: true),
           const SizedBox(height: 10),
-          UserEditInput.nick(inputNick, true),
+          UserEditInput.nick(inputNick, true, isCreate: true),
           const SizedBox(height: 20),
           UserTxtTitle("性别："),
           const SizedBox(height: 10),
           UserEditDrop(
-            stateList1[0],
+            "设置性别",
             (_, __) async => stateList1,
             onChanged: onState1Changed,
             enable: true,
+            isCreate: true,
           ),
           const SizedBox(height: 20),
           UserTxtTitle("出生日期："),
           const SizedBox(height: 10),
-          UserEditDate(create.birthday, true, onChanged: onBirthChanged),
+          UserEditDate(
+            create.birthday,
+            true,
+            onChanged: onBirthChanged,
+            isCreate: true,
+          ),
           const SizedBox(height: 20),
           UserTxtTitle("手机：", require: true),
           const SizedBox(height: 10),
@@ -169,19 +175,20 @@ class _AccountCreateState extends ConsumerState<AccountCreate> {
             inputPhone,
             true,
             PhonePrefix(create.phoneArea, true, onChanged: onCodeChanged),
+            isCreate: true,
           ),
           const SizedBox(height: 20),
           UserTxtTitle("邮箱地址："),
           const SizedBox(height: 10),
-          UserEditInput.email(inputEmail, true),
+          UserEditInput.email(inputEmail, true, isCreate: true),
           const SizedBox(height: 20),
           UserTxtTitle("密码：(6-18位的数字或字母,区分大小写)", require: true),
           const SizedBox(height: 10),
-          UserEditInput.password(inputPwd, true),
+          UserEditInput.password(inputPwd, true, isCreate: true),
           const SizedBox(height: 20),
           UserTxtTitle("用户简介："),
           const SizedBox(height: 10),
-          UserEditInput.brief(inputBrief, true),
+          UserEditInput.brief(inputBrief, true, isCreate: true),
           const SizedBox(height: 20),
           UserTxtTitle("主页封面："),
           const SizedBox(height: 10),

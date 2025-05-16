@@ -47,6 +47,11 @@ class Utils {
     return null;
   }
 
+  static String? onValidatorEmpty(String? string) {
+    if (string == null || string.isEmpty) return "请输入内容";
+    return null;
+  }
+
   static bool isEmail(String s) => hasMatch(s,
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
 

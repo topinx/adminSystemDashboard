@@ -66,4 +66,5 @@ class RouterPath {
   static String account_note(int id) => "/account_note/$id";
 
   static String path_topic_create = "/topic_create";
+  static String path_search_create = "/search_create";
 }

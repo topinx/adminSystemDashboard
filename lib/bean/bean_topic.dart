@@ -14,13 +14,13 @@ class BeanTopic {
   BeanHotSearch? topSearch;
 
   BeanTopic({
-    required this.id,
-    required this.name,
-    required this.avatar,
-    required this.noteCnt,
-    required this.status,
-    required this.createTime,
-    required this.topSearch,
+    this.id = 0,
+    this.name = "",
+    this.avatar = "",
+    this.noteCnt = 1,
+    this.status = 0,
+    this.createTime = "",
+    this.topSearch = null,
   });
 
   factory BeanTopic.fromJson(Map<String, dynamic> json) => BeanTopic(

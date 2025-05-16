@@ -10,6 +10,8 @@ class InputEdit extends StatelessWidget {
     this.validator,
     this.maxLine = 1,
     this.prefix,
+    this.defBorder,
+    this.maxWidth = 200,
   });
 
   final TextEditingController? input;
@@ -23,6 +25,10 @@ class InputEdit extends StatelessWidget {
   final int maxLine;
 
   final Widget? prefix;
+
+  final OutlineInputBorder? defBorder;
+
+  final double maxWidth;
 
   final disableBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(4),
@@ -51,7 +57,7 @@ class InputEdit extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUnfocus,
       maxLines: maxLine,
       decoration: InputDecoration(
-        constraints: const BoxConstraints(maxWidth: 200),
+        constraints: BoxConstraints(maxWidth: maxWidth),
         isDense: true,
         counterText: "",
         prefixIcon: prefix,
@@ -59,7 +65,7 @@ class InputEdit extends StatelessWidget {
         errorStyle: TextStyle(color: Colors.red, fontSize: 12),
         contentPadding: const EdgeInsets.all(10),
         disabledBorder: disableBorder,
-        enabledBorder: enableBorder,
+        enabledBorder: defBorder ?? enableBorder,
         focusedBorder: enableBorder,
         errorBorder: errorBorder,
         focusedErrorBorder: errorBorder,

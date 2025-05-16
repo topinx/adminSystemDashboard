@@ -6,7 +6,7 @@ import 'package:top_back/pages/widget/time_picker.dart';
 import 'package:top_back/util/utils.dart';
 
 class UserEditInput extends StatelessWidget {
-  const UserEditInput({
+  UserEditInput({
     super.key,
     required this.input,
     required this.enable,
@@ -14,6 +14,8 @@ class UserEditInput extends StatelessWidget {
     this.validator,
     required this.maxLine,
     this.prefix,
+    this.isCreate = false,
+    this.maxWidth = 200,
   });
 
   final TextEditingController? input;
@@ -28,40 +30,55 @@ class UserEditInput extends StatelessWidget {
 
   final Widget? prefix;
 
-  UserEditInput.nick(this.input, this.enable)
+  final bool isCreate;
+
+  final double maxWidth;
+
+  final enableBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(4),
+    borderSide: BorderSide(color: Color(0xFFE5E5E5), width: 1),
+  );
+
+  UserEditInput.nick(this.input, this.enable, {this.isCreate = false})
       : formatter = [LengthLimitingTextInputFormatter(30)],
         validator = Utils.onValidatorNick,
         maxLine = 1,
-        prefix = null;
+        prefix = null,
+        maxWidth = 200;
 
-  UserEditInput.phone(this.input, this.enable, this.prefix)
+  UserEditInput.phone(this.input, this.enable, this.prefix,
+      {this.isCreate = false})
       : formatter = [
           LengthLimitingTextInputFormatter(15),
           FilteringTextInputFormatter.digitsOnly
         ],
         validator = Utils.onValidatorPhone,
-        maxLine = 1;
+        maxLine = 1,
+        maxWidth = 200;
 
-  UserEditInput.email(this.input, this.enable)
+  UserEditInput.email(this.input, this.enable, {this.isCreate = false})
       : formatter = [LengthLimitingTextInputFormatter(45)],
         validator = Utils.onValidatorEmail,
         maxLine = 1,
-        prefix = null;
+        prefix = null,
+        maxWidth = 200;
 
-  UserEditInput.brief(this.input, this.enable)
+  UserEditInput.brief(this.input, this.enable, {this.isCreate = false})
       : formatter = [LengthLimitingTextInputFormatter(500)],
         validator = null,
         maxLine = 5,
-        prefix = null;
+        prefix = null,
+        maxWidth = 300;
 
-  UserEditInput.password(this.input, this.enable)
+  UserEditInput.password(this.input, this.enable, {this.isCreate = false})
       : formatter = [
           FilteringTextInputFormatter.allow(RegExp(r'[0-9a-zA-Z]')),
           LengthLimitingTextInputFormatter(18),
         ],
         validator = Utils.onValidatorPwd,
         maxLine = 1,
-        prefix = null;
+        prefix = null,
+        maxWidth = 200;
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +89,8 @@ class UserEditInput extends StatelessWidget {
       validator: validator,
       maxLine: maxLine,
       prefix: prefix,
+      maxWidth: maxWidth,
+      defBorder: isCreate ? enableBorder : null,
     );
   }
 }
@@ -97,13 +116,16 @@ class UserEditText extends StatelessWidget {
 }
 
 class UserEditDate extends StatelessWidget {
-  const UserEditDate(this.text, this.enable, {super.key, this.onChanged});
+  const UserEditDate(this.text, this.enable,
+      {super.key, this.onChanged, this.isCreate = false});
 
   final String text;
 
   final bool enable;
 
   final Function(String)? onChanged;
+
+  final bool isCreate;
 
   void onTapPicker(BuildContext context) async {
     if (!enable) return;
@@ -124,7 +146,7 @@ class UserEditDate extends StatelessWidget {
   }
 
   Widget buildPicker() {
-    Color color = enable ? Colors.blue : Colors.black;
+    Color color = enable && !isCreate ? Colors.blue : Colors.black;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -134,7 +156,8 @@ class UserEditDate extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
         color: Colors.transparent,
         border: Border.all(
-            color: enable ? Colors.blue : Color(0xFFE5E5E5), width: 1),
+            color: (enable && !isCreate) ? Colors.blue : Color(0xFFE5E5E5),
+            width: 1),
       ),
       child: Text(text, style: TextStyle(color: color, fontSize: 14)),
     );

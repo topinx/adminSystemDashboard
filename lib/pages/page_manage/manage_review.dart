@@ -66,6 +66,10 @@ class _ManageReviewState extends State<ManageReview> {
     controller.fetchData(page: 1);
   }
 
+  void onTapReview() async {}
+
+  void onTapCheck(BeanNote bean) {}
+
   void onState1Changed(String? string) {
     if (string == null) return;
     int index = stateList1.indexOf(string);
@@ -81,6 +85,12 @@ class _ManageReviewState extends State<ManageReview> {
     if (index == -1) return;
 
     param.recommendedStatus = [null, 0, 1][index];
+    onSearch();
+  }
+
+  void onTimeChanged(String s, String e) {
+    param.timeBegin = s;
+    param.timeEnd = e;
     onSearch();
   }
 
@@ -134,7 +144,7 @@ class _ManageReviewState extends State<ManageReview> {
       AsyncText(status),
       AsyncText(bean.createNickname),
       AsyncText(bean.createTime),
-      TxtButton("查看详情")
+      TxtButton("查看详情", onTap: () => onTapCheck(bean))
     ];
 
     return (key: "${bean.noteId}", widgetList: beanList);
@@ -147,12 +157,21 @@ class _ManageReviewState extends State<ManageReview> {
         padding: EdgeInsets.zero,
         child: SizedBox(
           width: constraint.maxWidth < 1200 ? 1200 : constraint.maxWidth,
-          child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+          child: Row(children: [
+            ElvButton("去审核", onTap: onTapReview),
+            const Spacer(),
             FilterDrop("审核状态", stateList1[0], (_, __) async => stateList1,
                 onChanged: onState1Changed),
             const SizedBox(width: 10),
             FilterDrop("推荐状态", stateList2[0], (_, __) async => stateList2,
                 onChanged: onState2Changed),
+            const SizedBox(width: 10),
+            FilterTime(
+              "发布时间",
+              start: param.timeBegin,
+              end: param.timeEnd,
+              onChanged: onTimeChanged,
+            ),
           ]),
         ),
       );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:top_back/pages/widget/input_edit.dart';
 
 class InputTopic extends StatelessWidget {
   InputTopic({super.key, this.input});
@@ -9,16 +10,6 @@ class InputTopic extends StatelessWidget {
   final enableBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(4),
     borderSide: BorderSide(color: Color(0xFFE5E5E5), width: 1),
-  );
-
-  final focusBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(4),
-    borderSide: BorderSide(color: Colors.blue, width: 1),
-  );
-
-  final errorBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(4),
-    borderSide: BorderSide(color: Colors.redAccent, width: 1),
   );
 
   String? onValidatorTopic(String? string) {
@@ -33,29 +24,20 @@ class InputTopic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: input,
-      inputFormatters: [
+    return InputEdit(
+      input,
+      true,
+      formatter: [
         FilteringTextInputFormatter.deny(RegExp(r'[ #@]')),
         LengthLimitingTextInputFormatter(100)
       ],
-      style: TextStyle(color: Colors.blue, fontSize: 14),
-      validator: onValidatorTopic,
-      autovalidateMode: AutovalidateMode.onUnfocus,
-      maxLines: 1,
-      decoration: InputDecoration(
-        constraints: const BoxConstraints(maxWidth: 200),
-        isDense: true,
-        counterText: "",
-        prefixText: "#",
-        prefixStyle: TextStyle(color: Colors.blue),
-        errorStyle: TextStyle(color: Colors.red, fontSize: 12),
-        contentPadding: const EdgeInsets.all(10),
-        enabledBorder: enableBorder,
-        focusedBorder: focusBorder,
-        errorBorder: errorBorder,
-        focusedErrorBorder: errorBorder,
+      maxWidth: 300,
+      prefix: Container(
+        width: 30,
+        alignment: Alignment.center,
+        child: Text("#"),
       ),
+      defBorder: enableBorder,
     );
   }
 }
